@@ -6,8 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
     <!-- Page Meta -->
-    <title>Casper</title>
-    <meta name="description" content="Just a static blog." />
+    <title><% if(typeof(title)!=='undefined') { %><%- title %><% } else { %><%- blog.title %><% } %></title>
+    <meta name="description" content="<% if(typeof(description)!=='undefined') { %><%- description %><% } else { %><%- blog.description %><% } %>" />
 
     <meta name="HandheldFriendly" content="True" />
     <meta name="MobileOptimized" content="320" />
@@ -22,42 +22,18 @@
     <!-- Ghost outputs important style and meta data with this tag -->
     <!-- {{ghost_head}} -->
 </head>
-<body class="post-template"><!-- K: body_class variable, home page class is home-template, post is like: post-template tag-getting-started -->
+<body class="<% if(current.source == 'index') { %>home-template<% } else { %>post-template<% } %>"><!-- K: body_class variable, home page class is home-template, post is like: post-template tag-getting-started -->
 
     <!-- Everything else gets inserted here -->
-    
-        <main class="content" role="main">
+    <% if(current.source == 'index' && current.path.length == 1) { %>
+        <%- yield %>
+    <% } else if(typeof(public._data[current.source])!=='undefined') { %>
+        <%- partial("_post") %>
+    <% } else { %>
+        <%- partial("_page") %>
+    <% } %>
 
-    <article class="post"><!-- page? -->
-        <!-- Each post has the blog logo at the top, with a link back to the home page -->
-<header class="post-header">
-    <a class="blog-logo" href="/">
-        
-            <span class="blog-title">Casper</span>
-        
-    </a>
-</header>
-
-        <!-- Everything below outputs content of the the page which has been published -->
-        
-          <h1>404 Not Found</h1>
-
-        
-
-    </article>
-
-</main>
-
-    
-
-    <footer class="site-footer">
-    <a class="subscribe icon-feed" href="/rss/index.xml"><span class="tooltip">Subscribe!</span></a>
-    <div class="inner">
-         <section class="copyright">All content copyright <a href="/">Casper</a> &copy; 2014 &bull; All rights reserved.</section>
-         <section class="poweredby">Proudly published with <a class="" href="http://harpjs.com">Harp</a></section>
-    </div>
-</footer>
-
+    <%- partial("_shared/footer") %>
     <!-- Ghost outputs important scripts and data with this tag -->
     <!-- {{ghost_foot}} -->
 
