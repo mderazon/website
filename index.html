@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
     <!-- Page Meta -->
-    <title>Casper</title>
+    <title>Code and stuff</title>
     <meta name="description" content="Just a static blog." />
 
     <meta name="HandheldFriendly" content="True" />
@@ -16,6 +16,7 @@
     <!-- <link rel="shortcut icon" href="favicon.ico">-->
 
     <!-- Styles'n'Scripts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" /><!-- K: Need assets variable , or something like basepath -->
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic|Open+Sans:700,400" />
 
@@ -30,13 +31,46 @@
 <header class="site-head" >
     <div class="vertical">
         <div class="site-head-content inner">
-            
-            <h1 class="blog-title">Casper</h1>
+            <a class="blog-logo" href="/"><img src="assets/img/avatar.png" alt="Blog Logo" /></a>
+            <h1 class="blog-title">Code and stuff</h1>
             <h2 class="blog-description">Just a static blog.</h2>
             <p class="post-meta"><a href="http://github.com/kennethormandy/hb-casper">Fork on GitHub</a> &bull; <a href="https://harp.io/apps/new?boilerplate=kennethormandy/hb-casper">Try it on harp.io for free</a></p>
 
         </div>
+        <ul id="social-menu">
+    <li class="content">
+        <a class="cb-github fa-stack fa-lg" href="https://github.com/mderazon" title="Michael Derazon's Github" target="_blank">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-github-alt fa-stack-1x fa-inverse"></i>
+        </a>
+    </li>
+    <li class="content">
+        <a class="cb-stackoverflow fa-stack fa-lg" href="http://stackoverflow.com/users/599912/michael" title="Michael Derazon's Stack Overflow" target="_blank">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-stack-overflow fa-stack-1x fa-inverse"></i>
+        </a>
+    </li>
+    <li class="content">
+        <a class="cb-twitter fa-stack fa-lg" href="http://twitter.com/mderazon" title="Michael Derazon's Twitter" target="_blank">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+        </a>
+    </li>
+    <li class="content">
+        <a class="cb-googleplus fa-stack fa-lg" href="https://plus.google.com/102134491169800656262" title="Michael Derazon's Google Plus" target="_blank">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+        </a>
+    </li>
+    <li class="content">
+        <a class="cb-linkedin fa-stack fa-lg" href="http://linkedin.com/in/mderazon" title="Michael Derazon's LinkedIn" target="_blank">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+        </a>
+    </li>
+</ul>
     </div>
+
 </header>
 
 <!-- The main content area on the homepage  -->
@@ -47,17 +81,17 @@
 
     <article class="post"><!-- K: also needs class tag- for each tag -->
         <header class="post-header">
-            <span class="post-meta"><time datetime="Thu, 09 Jan 2014 22:00:00 GMT">10 Jan 2014</time> on Getting Started<!-- {{tags prefix="on "}}--></span>
-            <h2 class="post-title"><a href="welcome-to-harp">Welcome to Harp</a></h2>
+            <span class="post-meta"><time datetime="Mon, 25 Nov 2013 22:00:00 GMT">26 Nov 2013</time> on Node.js,i18n<!-- {{tags prefix="on "}}--></span>
+            <h2 class="post-title"><a href="i18n-for-node-express">i18n for Node + Express</a></h2>
 
         </header>
         <section class="post-excerpt">
-            <p>This little posts will introduce you to Markdown in Harp. Go ahead and edit the welcome-to-harp.md file to get going and learn how it all works!
-Getting Started
-Writing in Markdown is really easy. Where appropriate, you can use formatting shortcuts to style your content. For example, a list:
+            <p>In this post i&#39;m going to demonstrate a simple way to add multi language support to a node + express project.
+Simple server
+Lets start with a simple server:
 
-Item number one
-Item number&hellip;</p><!-- K: Exerpt isn’t cuttoff exactly the same yet, needs to be plaintext -->
+
+We first require express, then we tell express where to look for our templates files. In this case I used ejs as the template&hellip;</p><!-- K: Exerpt isn’t cuttoff exactly the same yet, needs to be plaintext -->
         </section>
     </article>
 
@@ -73,7 +107,7 @@ Item number&hellip;</p><!-- K: Exerpt isn’t cuttoff exactly the same yet, need
     <footer class="site-footer">
     <a class="subscribe icon-feed" href="/rss/index.xml"><span class="tooltip">Subscribe!</span></a>
     <div class="inner">
-         <section class="copyright">All content copyright <a href="/">Casper</a> &copy; 2014 &bull; All rights reserved.</section>
+         <section class="copyright">All content copyright <a href="/">Code and stuff</a> &copy; 2014 &bull; All rights reserved.</section>
          <section class="poweredby">Proudly published with <a class="" href="http://harpjs.com">Harp</a></section>
     </div>
 </footer>

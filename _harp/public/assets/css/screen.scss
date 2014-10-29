@@ -518,6 +518,32 @@ margin on the iframe, cause it breaks stuff. */
    5. Single Post - When you click on an individual post
    ========================================================================== */
 
+   #social-menu {
+    padding: 0;
+   }
+
+   #social-menu li {
+    display: inline; }
+
+   #social-menu li .cb-github:hover {
+     color: #41c457; }
+
+   #social-menu li .cb-stackoverflow:hover {
+     color: #ffa500; }
+
+   #social-menu li .cb-twitter:hover {
+     color: #16a9d5; }
+
+   #social-menu li .cb-facebook:hover {
+     color: #4A7BC2; }
+
+   #social-menu li .cb-googleplus:hover {
+     color: #d34626; }
+
+   #social-menu li .cb-linkedin:hover {
+     color: #3c99cc; }
+
+
 /* Tweak the .post wrapper style */
 .post-template .post {
     margin-top: 0;

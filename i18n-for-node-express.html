@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Document Settings -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Page Meta -->
+    <title>i18n for Node + Express</title>
+    <meta name="description" content="Just a static blog." />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="MobileOptimized" content="320" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><!-- K: Need assets variable , or something like basepath -->
+
+    <!-- <link rel="shortcut icon" href="favicon.ico">-->
+
+    <!-- Styles'n'Scripts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" /><!-- K: Need assets variable , or something like basepath -->
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic|Open+Sans:700,400" />
+
+    <!-- Ghost outputs important style and meta data with this tag -->
+    <!-- {{ghost_head}} -->
+</head>
+<body class="post-template"><!-- K: body_class variable, home page class is home-template, post is like: post-template tag-getting-started -->
+
+    <!-- Everything else gets inserted here -->
+    
+        <main class="content" role="main">
+
+    <article class="post"><!-- K: {{post_class}}, tags- -->
+        <!-- Each post has the blog logo at the top, with a link back to the home page -->
+        <!-- Each post has the blog logo at the top, with a link back to the home page -->
+<header class="post-header">
+
+    <a class="blog-logo" href="/">
+        
+            <img src="assets/img/avatar.png" alt="Blog Logo" />
+        
+    </a>
+    <ul id="social-menu">
+    <li class="content">
+        <a class="cb-github fa-stack fa-lg" href="https://github.com/mderazon" title="Michael Derazon's Github" target="_blank">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-github-alt fa-stack-1x fa-inverse"></i>
+        </a>
+    </li>
+    <li class="content">
+        <a class="cb-stackoverflow fa-stack fa-lg" href="http://stackoverflow.com/users/599912/michael" title="Michael Derazon's Stack Overflow" target="_blank">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-stack-overflow fa-stack-1x fa-inverse"></i>
+        </a>
+    </li>
+    <li class="content">
+        <a class="cb-twitter fa-stack fa-lg" href="http://twitter.com/mderazon" title="Michael Derazon's Twitter" target="_blank">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+        </a>
+    </li>
+    <li class="content">
+        <a class="cb-googleplus fa-stack fa-lg" href="https://plus.google.com/102134491169800656262" title="Michael Derazon's Google Plus" target="_blank">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+        </a>
+    </li>
+    <li class="content">
+        <a class="cb-linkedin fa-stack fa-lg" href="http://linkedin.com/in/mderazon" title="Michael Derazon's LinkedIn" target="_blank">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+        </a>
+    </li>
+</ul>
+</header>
+
+        <!-- Everything below outputs content of the the post which has been published -->
+        <span class="post-meta"><time datetime="Mon, 25 Nov 2013 22:00:00 GMT">26 Nov 2013</time> on Node.js,i18n<!-- {{tags prefix="on " separator=" | "}} --></span>
+
+        <h1 class="post-title">i18n for Node + Express</h1>
+
+        <section class="post-content">
+            <p>In this post i&#39;m going to demonstrate a simple way to add multi language support to a node + express project.</p>
+<h3>Simple server</h3>
+<p>Lets start with a simple server:</p>
+<script src="https://gist.github.com/mderazon/7229439.js"></script>
+
+<p>We first require <code>express</code>, then we tell express where to look for our templates files. In this case I used <code>ejs</code> as the template engine. I like it because it&#39;s syntax is basically html with special <code>&lt;% ... %&gt;</code> syntax for embedding code from the server. There are other (and more popular) template engines you can chose from.</p>
+<p>In line 7 we add a route for <code>/</code> and tell it to render <code>index.ejs</code>. </p>
+<p>Lets create our <code>index.ejs</code> file under <code>/views</code> dir.</p>
+<script src="https://gist.github.com/mderazon/7229648.js"></script>
+
+<p>Nothing special here, just plain html page. Express guesses what type of template to render by the extension. So when it sees <code>index.ejs</code> it knows it should first pass it through the <code>ejs</code> module to render.</p>
+<h3>Adding translation module</h3>
+<p>Now lets add the i18n functionality. I use <a href="https://github.com/mashpie/i18n-node">i18n-node</a> module. Create another file <code>i18n.js</code> :</p>
+<script src="https://gist.github.com/mderazon/7229824.js"></script>
+
+<p>First we set up some configurations. By default, i18n module uses <code>accept-language</code> request header to guess language settings. You can tell it to look for a cookie that contains the language if you want. In this case I used a cookie named <code>lang</code>.</p>
+<p>Now lets import our newly created module in our server file:</p>
+<script src="https://gist.github.com/mderazon/7230558.js"></script>
+
+<p>In line 7 we add the i18n module as middleware. Make sure you put it before any route is defined. What i18n module does is add a special function called <code>__()</code> to the response object. This function takes care of the translation. </p>
+<p>We need to add the translation <code>__()</code> method to the view file as well :</p>
+<script src="https://gist.github.com/mderazon/7230774.js"></script>
+
+
+
+<h3>Translation files</h3>
+<p>Now when you run the app, notice that i18n creates a folder in a location we previously defined in <code>i18n.js</code>. This folder will contain the translation files. In my case, I have two locales : <code>en</code> and <code>iw</code> so i18n will create two files :</p>
+<ul>
+<li><code>locales/en.json</code></li>
+<li><code>locales/iw.json</code></li>
+</ul>
+<p>The format is very simple. A valid JSON file that contains <code>&quot;sentence&quot; : &quot;translation&quot;</code> pairs. The first time we try to GET <code>/</code> i18n will automatically populate the files. Since I am using English in my code, i18n will populate <code>en.json</code> with:</p>
+<pre><code>{
+    &quot;Hello i18n&quot;: &quot;Hello i18n&quot;
+}</code></pre>
+<p>I will have to edit <code>iw.json</code> with the translation :</p>
+<pre><code>{
+    &quot;Hello i18n&quot;: &quot;שלום i18n&quot;
+}</code></pre>
+<h3>Results</h3>
+<p>Lets test that everything is working okay. I am using <a href="https://chrome.google.com/webstore/detail/postman-rest-client/fdmmgilgnpjigdojojpjoooidkmcomcm/details?hl=en">Postman</a> (which kicks ass) to call the server. First lets make a call with <code>Accept-Language=en</code> header to see the english version :</p>
+<p><img src="assets/img/posts/i18n-for-node-express/postman-en.png" alt="image"></p>
+<p>Now lets change the header for <code>Accept-Language=iw</code> (iw = Hebrew in case you wondered) :</p>
+<p><img src="assets/img/posts/i18n-for-node-express/postman-iw.png" alt="image"></p>
+<h3>Some notes</h3>
+<ul>
+<li>Use escape <code>\</code> character if you want insert problematic characters : <code>__(&quot;can\&#39;t do that&quot;)</code>. Otherwise nasty things will happen.</li>
+<li>In express <code>2.x</code> you need to specifically add <code>__()</code> function to the locals object. Do it by adding the following line just after <code>i18n.init()</code> in the i18n module :</li>
+</ul>
+<pre><code>res.local(&#39;__&#39;, res.__);</code></pre>
+
+        </section>
+
+        <footer class="post-footer">
+
+            
+                <section class="author">
+                    <h4>Michael Derazon</h4>
+                    <p>undefined</p>
+                </section>
+            
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="http://twitter.com/share?text=i18n for Node + Express&url=/i18n-for-node-express"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=/i18n-for-node-express"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=/i18n-for-node-express"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+        </footer>
+
+    </article>
+
+</main>
+    
+
+    <footer class="site-footer">
+    <a class="subscribe icon-feed" href="/rss/index.xml"><span class="tooltip">Subscribe!</span></a>
+    <div class="inner">
+         <section class="copyright">All content copyright <a href="/">Code and stuff</a> &copy; 2014 &bull; All rights reserved.</section>
+         <section class="poweredby">Proudly published with <a class="" href="http://harpjs.com">Harp</a></section>
+    </div>
+</footer>
+
+    <!-- Ghost outputs important scripts and data with this tag -->
+    <!-- {{ghost_foot}} -->
+
+    <!-- The main JavaScript file for Casper -->
+    <script type="text/javascript" src="/asset/js/jquery.fitvids.js"></script><!-- K: Change back to relative links -->
+    <script type="text/javascript" src="/asset/js/index.js"></script>
+
+</body>
+</html>

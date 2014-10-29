@@ -1,8 +1,8 @@
 {
-  "welcome-to-harp": {
-    "title": "Welcome to Harp",
-    "date": "10 Jan 2014",
-    "tags": ["Getting Started"],
+  "i18n-for-node-express": {
+    "title": "i18n for Node + Express",
+    "date": "26 Nov 2013",
+    "tags": ["Node.js", "i18n"],
     "published": true
   }
 }

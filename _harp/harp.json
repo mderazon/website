@@ -1,16 +1,15 @@
 {
   "globals": {
     "blog": {
-      "title": "Casper",
+      "title": "Code and stuff",
       "description": "Just a static blog.",
-      "logo": false,
+      "logo": "assets/img/avatar.png",
       "cover": false,
       "url": "/"
     },
     "author": {
-      "name": "Kenneth Ormandy",
-      "email": "kenneth@chloi.io",
-      "bio": "Hi, I like Harp"
+      "name": "Michael Derazon",
+      "email": "mderazon@hotmail.com"
     }
   },
   "domains": []
