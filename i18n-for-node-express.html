@@ -76,10 +76,10 @@
         <!-- Everything below outputs content of the the post which has been published -->
         <span class="post-meta"><time datetime="Mon, 25 Nov 2013 22:00:00 GMT">26 Nov 2013</time> on node.js,i18n,express<!-- {{tags prefix="on " separator=" | "}} --></span>
 
-        <h1 class="post-title">i18n for Node + Express</h1>
-
-        <section class="post-content">
-            <p>In this post i&#39;m going to demonstrate a simple way to add multi language support to a node + express project.</p>
+        <div id="content-holder" class="node.js i18n express">
+            <h1 class="post-title">i18n for Node + Express</h1>
+            <section class="post-content">
+                <p>In this post i&#39;m going to demonstrate a simple way to add multi language support to a node + express project.</p>
 <h3>Simple server</h3>
 <p>Lets start with a simple server:</p>
 <script src="https://gist.github.com/mderazon/7229439.js"></script>
@@ -130,14 +130,14 @@
 </ul>
 <pre><code>res.local(&#39;__&#39;, res.__);</code></pre>
 
-        </section>
-
+            </section>
+        </div>
         <footer class="post-footer">
 
             
                 <section class="author">
                     <h4>Michael Derazon</h4>
-                    <p>undefined</p>
+                    <!-- <p>undefined</p> -->
                 </section>
             
 

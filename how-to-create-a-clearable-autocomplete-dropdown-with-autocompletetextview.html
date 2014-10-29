@@ -76,10 +76,10 @@
         <!-- Everything below outputs content of the the post which has been published -->
         <span class="post-meta"><time datetime="Mon, 25 Nov 2013 22:00:00 GMT">26 Nov 2013</time> on android<!-- {{tags prefix="on " separator=" | "}} --></span>
 
-        <h1 class="post-title">How to create a clearable autocomplete dropdown with AutoCompleteTextView</h1>
-
-        <section class="post-content">
-            <p>I wanted to create a nice search box with autocomplete results dropdown in the ActionBar. I could have used the <code>SearchView</code> widget but I didn&#39;t want to create a <em>searchable activity</em> and all the necessary overhead. Instead I used a more lightweight approach with <a href="http://developer.android.com/reference/android/widget/AutoCompleteTextView.html">AutoCompleteTextView</a>. I&#39;ll explain here the steps needed to be done in order to make it work.</p>
+        <div id="content-holder" class="android">
+            <h1 class="post-title">How to create a clearable autocomplete dropdown with AutoCompleteTextView</h1>
+            <section class="post-content">
+                <p>I wanted to create a nice search box with autocomplete results dropdown in the ActionBar. I could have used the <code>SearchView</code> widget but I didn&#39;t want to create a <em>searchable activity</em> and all the necessary overhead. Instead I used a more lightweight approach with <a href="http://developer.android.com/reference/android/widget/AutoCompleteTextView.html">AutoCompleteTextView</a>. I&#39;ll explain here the steps needed to be done in order to make it work.</p>
 <p>My model app was the Gmail app which looks like this :</p>
 <p><img src="http://media.tumblr.com/d39b58c2c78601e7f4b923f556297e02/tumblr_inline_mthuwuMRnH1s1qo9o.png" alt=""></p>
 <h2>Creating the layouts</h2>
@@ -125,14 +125,14 @@
 <h3>opened search box with autocomplete results</h3>
 <p><img src="assets/img/posts/how-to-create-a-clearable-autocomplete-dropdown-with-autocompletetextview/search_box_opened_ac.png" alt=""></p>
 
-        </section>
-
+            </section>
+        </div>
         <footer class="post-footer">
 
             
                 <section class="author">
                     <h4>Michael Derazon</h4>
-                    <p>undefined</p>
+                    <!-- <p>undefined</p> -->
                 </section>
             
 

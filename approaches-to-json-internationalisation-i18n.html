@@ -76,10 +76,10 @@
         <!-- Everything below outputs content of the the post which has been published -->
         <span class="post-meta"><time datetime="Sat, 22 Mar 2014 22:00:00 GMT">23 Mar 2014</time> on json,api,i18n<!-- {{tags prefix="on " separator=" | "}} --></span>
 
-        <h1 class="post-title">Approaches to JSON internationalisation (i18n)</h1>
-
-        <section class="post-content">
-            <p>Approaches to JSON internationalisation (i18n)</p>
+        <div id="content-holder" class="json api i18n">
+            <h1 class="post-title">Approaches to JSON internationalisation (i18n)</h1>
+            <section class="post-content">
+                <p>Approaches to JSON internationalisation (i18n)</p>
 <p>I needed to create an API that is capable of serving objects with strings in more than one language. Let me present the problem with an example.</p>
 <p>Lets assume that we have a web app or a mobile client that wants to get information about coffee shops around the city. Also, lets assume also that we are going to have to support two languages, <em>English</em> and <em>Hebrew</em> (I know, right ?). </p>
 <p>So one client will like to get the information in English:</p>
@@ -140,14 +140,14 @@ The output would be:</p>
 <h2>Performance</h2>
 <p>Just to give a rough estimation, running 1 million entries of the above sample object through the <code>filter_language</code> function took 29 seconds on my MBA - throughput of 34.4 objects / ms.<br>Running on a much more complex object with around 100 keys and nested objects yielded throughput of 0.6 objects / ms. So if your data contains around 1K complex objects, the overhead of this  will be around 500 ms.</p>
 
-        </section>
-
+            </section>
+        </div>
         <footer class="post-footer">
 
             
                 <section class="author">
                     <h4>Michael Derazon</h4>
-                    <p>undefined</p>
+                    <!-- <p>undefined</p> -->
                 </section>
             
 

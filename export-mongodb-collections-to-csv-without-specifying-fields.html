@@ -76,23 +76,23 @@
         <!-- Everything below outputs content of the the post which has been published -->
         <span class="post-meta"><time datetime="Mon, 30 Dec 2013 22:00:00 GMT">31 Dec 2013</time> on mongodb,mongoexport,csv<!-- {{tags prefix="on " separator=" | "}} --></span>
 
-        <h1 class="post-title">Export mongodb collections to csv without specifying fields</h1>
-
-        <section class="post-content">
-            <p>Sometimes you might want to export your Mongodb database in <code>csv</code> format. If you have many collections, it can be a bit of a hassle since <a href="http://docs.mongodb.org/v2.2/reference/mongoexport/">mongoexport</a> requires you to specify each field you want to be exported with the <code>--fields</code> attribute and you have to do it for each collection seperately.</p>
+        <div id="content-holder" class="mongodb mongoexport csv">
+            <h1 class="post-title">Export mongodb collections to csv without specifying fields</h1>
+            <section class="post-content">
+                <p>Sometimes you might want to export your Mongodb database in <code>csv</code> format. If you have many collections, it can be a bit of a hassle since <a href="http://docs.mongodb.org/v2.2/reference/mongoexport/">mongoexport</a> requires you to specify each field you want to be exported with the <code>--fields</code> attribute and you have to do it for each collection seperately.</p>
 <p>Here&#39;s a little bash script that will do the work for you.</p>
 <script src="https://gist.github.com/mderazon/8201991.js"></script>
 
 <p>Result is a <code>.csv</code> file for each collection you have in your db.</p>
 
-        </section>
-
+            </section>
+        </div>
         <footer class="post-footer">
 
             
                 <section class="author">
                     <h4>Michael Derazon</h4>
-                    <p>undefined</p>
+                    <!-- <p>undefined</p> -->
                 </section>
             
 
