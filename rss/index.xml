@@ -73,7 +73,7 @@
 <li>We leveraged a 3rd party service like Gmail to do the authentication for us and thus making it more secure as we don&#39;t need to store any hashed passwords in the backend.</li>
 </ol>
 ]]></description>
-        <pubDate>Wed Oct 29 2014 23:54:44 GMT+0200 (IST)</pubDate>
+        <pubDate>Wed Oct 29 2014 23:56:33 GMT+0200 (IST)</pubDate>
         <link>/passwordless-login-in-mobile-apps</link>
         <guid isPermaLink="true">/passwordless-login-in-mobile-apps</guid>
       </item>
@@ -90,7 +90,7 @@
 <p>To use, click on tools --&gt; script editor. Then create a new blank script and paste the code there.</p>
 <p>Click on the play button (run) and go back to your spreadsheet. You should then see the csv in the spreadsheet menu</p>
 ]]></description>
-        <pubDate>Wed Oct 29 2014 23:54:44 GMT+0200 (IST)</pubDate>
+        <pubDate>Wed Oct 29 2014 23:56:33 GMT+0200 (IST)</pubDate>
         <link>/export-all-google-sheets-to-csv</link>
         <guid isPermaLink="true">/export-all-google-sheets-to-csv</guid>
       </item>
@@ -159,7 +159,7 @@ The output would be:</p>
 <h2>Performance</h2>
 <p>Just to give a rough estimation, running 1 million entries of the above sample object through the <code>filter_language</code> function took 29 seconds on my MBA - throughput of 34.4 objects / ms.<br>Running on a much more complex object with around 100 keys and nested objects yielded throughput of 0.6 objects / ms. So if your data contains around 1K complex objects, the overhead of this  will be around 500 ms.</p>
 ]]></description>
-        <pubDate>Wed Oct 29 2014 23:54:44 GMT+0200 (IST)</pubDate>
+        <pubDate>Wed Oct 29 2014 23:56:33 GMT+0200 (IST)</pubDate>
         <link>/approaches-to-json-internationalisation-i18n</link>
         <guid isPermaLink="true">/approaches-to-json-internationalisation-i18n</guid>
       </item>
@@ -173,7 +173,7 @@ The output would be:</p>
 
 <p>Result is a <code>.csv</code> file for each collection you have in your db.</p>
 ]]></description>
-        <pubDate>Wed Oct 29 2014 23:54:44 GMT+0200 (IST)</pubDate>
+        <pubDate>Wed Oct 29 2014 23:56:33 GMT+0200 (IST)</pubDate>
         <link>/export-mongodb-collections-to-csv-without-specifying-fields</link>
         <guid isPermaLink="true">/export-mongodb-collections-to-csv-without-specifying-fields</guid>
       </item>
@@ -232,7 +232,7 @@ The output would be:</p>
 </ul>
 <pre><code>res.local(&#39;__&#39;, res.__);</code></pre>
 ]]></description>
-        <pubDate>Wed Oct 29 2014 23:54:44 GMT+0200 (IST)</pubDate>
+        <pubDate>Wed Oct 29 2014 23:56:33 GMT+0200 (IST)</pubDate>
         <link>/i18n-for-node-express</link>
         <guid isPermaLink="true">/i18n-for-node-express</guid>
       </item>
@@ -291,16 +291,16 @@ The output would be:</p>
 זה הכל, חוץ מזה אין עוד עלויות ביום הטקס עצמו.</p>
 <h2>קצת תמונות</h2>
 <h3>בתור במשרד הפנים ב-Secretary Lane</h3>
-<p><img src="IMG_1247.JPG" alt="image"></p>
+<p><img src="assets/img/posts/חתונה-אזרחית-בגיברלטר/IMG_1247.JPG" alt="image"></p>
 <h3>אחרי הטקס עם ה-Registrar הג׳ינג׳י</h3>
-<p><img src="IMG_1357.JPG" alt="image"></p>
+<p><img src="assets/img/posts/חתונה-אזרחית-בגיברלטר/IMG_1357.JPG" alt="image"></p>
 <h2>קישורים לאתרים :</h2>
 <ol>
 <li>האתר הממשלתי להזמנת התעודות - <a href="http://www.gov.il/firstgov/">http://www.gov.il/firstgov/</a></li>
 <li>קישור לאתר הגיברלטרי שמסביר על כל התהליך - <a href="https://www.gibraltar.gov.gi/getting-married">https://www.gibraltar.gov.gi/getting-married</a></li>
 </ol>
 ]]></description>
-        <pubDate>Wed Oct 29 2014 23:54:44 GMT+0200 (IST)</pubDate>
+        <pubDate>Wed Oct 29 2014 23:56:33 GMT+0200 (IST)</pubDate>
         <link>/חתונה-אזרחית-בגיברלטר</link>
         <guid isPermaLink="true">/חתונה-אזרחית-בגיברלטר</guid>
       </item>
@@ -354,7 +354,7 @@ The output would be:</p>
 <h3>opened search box with autocomplete results</h3>
 <p><img src="assets/img/posts/how-to-create-a-clearable-autocomplete-dropdown-with-autocompletetextview/search_box_opened_ac.png" alt=""></p>
 ]]></description>
-        <pubDate>Wed Oct 29 2014 23:54:44 GMT+0200 (IST)</pubDate>
+        <pubDate>Wed Oct 29 2014 23:56:33 GMT+0200 (IST)</pubDate>
         <link>/how-to-create-a-clearable-autocomplete-dropdown-with-autocompletetextview</link>
         <guid isPermaLink="true">/how-to-create-a-clearable-autocomplete-dropdown-with-autocompletetextview</guid>
       </item>
