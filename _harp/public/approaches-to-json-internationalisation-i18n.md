@@ -1,4 +1,3 @@
-Approaches to JSON internationalisation (i18n)
 
 I needed to create an API that is capable of serving objects with strings in more than one language. Let me present the problem with an example.
 
