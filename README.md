@@ -1,4 +1,4 @@
 mderazon.github.io
 ==================
 
-Personal blog repo
+http://www.drzon.net
