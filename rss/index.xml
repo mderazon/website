@@ -4,7 +4,179 @@
     <title>Code and stuff</title>
     <link>/</link>
     <description>Just a static blog.</description>
-    <atom:link href="i18n-for-node-express/feed.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="how-to-create-a-clearable-autocomplete-dropdown-with-autocompletetextview/feed.xml" rel="self" type="application/rss+xml" />
+    
+    
+      <item>
+        <title>Passwordless login in mobile apps</title>
+        <description><![CDATA[<p>This post is not very technical. Other than occasionally mentioning &quot;client / server&quot; it doesn&#39;t talk about any specific framework / language. Instead, it tries to explain the overall flow and behaviour of passwordless login in mobile apps.</p>
+<p>I might add some additional framework specific code examples later but for now it&#39;s mostly ideas.</p>
+<h2>Traditional login</h2>
+<p>Our app has always had an option to sign up with a social account - Facebook and Google+.<br>We started with social sign up because we thought it would make the log in process easy on the user. We quickly found out that people don&#39;t like logging in with their social accounts, I think it&#39;s due to bad reputation of apps posting all kind of junk on behalf of the user. The situation has changed since and most of the login providers have given a lot of control back to the users but the trust was broken and it&#39;s not going to be easy to fix it again.</p>
+<p><strong>I was mostly tired of the usual email sign up flow which usually consists of the following separate flows</strong>:</p>
+<ol>
+<li>Show a page with input field for email and password. Since the password is masked, need to either add another &quot;validate password&quot; input field or give the user an option to unmask the password to make sure he got it right</li>
+<li>If you want to make sure the emails is real (not all apps need this step), you need to send a verification mail to the user.</li>
+<li>Need to supply a &quot;forgot my password&quot; flow.</li>
+<li>Need to enforce a password policy most of the times, so people won&#39;t put <code>1234</code> or <code>password</code> as their password (optional, but recommended).</li>
+</ol>
+<p>This is <strong>quite an overhead</strong> for just letting people use your app.</p>
+<h2>Passwordless login</h2>
+<p>I was looking for a simpler solution when I came across a <a href="https://hacks.mozilla.org/2014/10/passwordless-authentication-secure-simple-and-fast-to-deploy/">nice blog post</a> by Mozilla engineers. The idea is nice:<br>Why let people create crappy and insecure passwords to access your service when you can leverage other services that they have like gmail / outlook that already have a secure authentication system, probably better than what you can afford to build. The added value is that they won&#39;t need to remember a new password.</p>
+<h3>How does it work ?</h3>
+<p>Think of it as taking the &quot;Reset password&quot; mechanism and making it the main flow to authenticate. In an nutshell:</p>
+<ol>
+<li>User enters an email address</li>
+<li>An email with a one time token link is sent to the user.</li>
+<li>User clicks the link in the mail</li>
+<li>User is authenticated.</li>
+</ol>
+<p>Lets walk through the flow step by step</p>
+<h4>Step 1. Get the user&#39;s email address</h4>
+<p><img src="assets/img/posts/passwordless-login-in-mobile-apps/email_signup.png" alt=""></p>
+<p>Notice how we don&#39;t have any password field.</p>
+<p>Since it&#39;s a little bit unorthodox you can include a short link explaining why we don&#39;t need a password.</p>
+<p>What happens behind the scenes here ?
+- After hitting &quot;Continue&quot;, a call to the server is made with the name and the email address of the user. 
+- The server creates a one time token, saves it in some persistent storage (db / Redis etc). It&#39;s also a good practice to give an expiration to the token (one hour sounds like a good enough time).
+- It then sends an email to the user with an activation link</p>
+<p>After the email is sent, the call returns to the app saying and the user is presented with the following screen:</p>
+<p><img src="assets/img/posts/passwordless-login-in-mobile-apps/email_sent.png" alt=""></p>
+<h4>Step 2. User gets an email</h4>
+<p>User gets the email we sent on step 1 and opens it.</p>
+<p>The mail can say anything you like but it should contain a button </p>
+<p><img src="assets/img/posts/passwordless-login-in-mobile-apps/email.png" alt=""></p>
+<p>The &quot;Open app&quot; button contains a <em>deeplink</em> to the app with the token itself. Something like</p>
+<pre><code class="language-html">&lt;a href=&quot;myapp://login?token=...&quot;&gt;Open app&lt;/a&gt;</code></pre>
+<p>You can read about deeplinking on <a href="https://en.wikipedia.org/wiki/Mobile_deep_linking">Wikipedia</a> but basically almost all mobile platforms (Android / iOS included) let you link into your app from other apps by simply opening &quot;deep links&quot;. Intercepting and acting on these deep links is different on each platform and is out of the scope of this post.  </p>
+<h5>One important comment about this step:</h5>
+<p>Some email providers, Gmail most noticeably, don&#39;t let you put links with non standard schemas (like <code>myapp://</code>) in html anchor <code>&lt;a&gt;</code> elements.</p>
+<p>One easy way of circumventing this is to use the server as a proxy that redirects to the actual deep link url:<br>just create the following endpoint on the server:</p>
+<pre><code>GET /login</code></pre>
+<p>Then the link can point there:</p>
+<pre><code class="language-html">&lt;a href=&quot;https://api.myserver.com/login?token=...&quot;&gt;Open app&lt;/a&gt;</code></pre>
+<p>Which results in a <code>3xx</code> redirect from the server to <code>myapp://login?token=...</code></p>
+<p>For really short second the user&#39;s mobile browser is opened but immediately after that the app opens up.</p>
+<h4>Step 3. User clicked the link in the email</h4>
+<p>So, let&#39;s assme the user opened your app from the deep link and you extracted the token from that link url param.</p>
+<h5>What should I do with the token ?</h5>
+<p>Once you have a token, you use it to call the server and authenticate the user. On the server side you need to check that the token is valid and that it hadn&#39;t been used before and perhaps check that it&#39;s not expired.</p>
+<h4>Step 4. User is authenticated</h4>
+<p>At this point you validated the token and all looks well, it&#39;s a good time to create a session for the user for future calls so that the user won&#39;t have to authenticate again.</p>
+<p>You can use any method for handling sessions like cookies / headers etc. </p>
+<h2>Conclusion</h2>
+<p>From a user flow perspective, this system is much more smooth. Let&#39;s look at what we&#39;ve achieved:</p>
+<ol>
+<li>User only needs to put an email address in the sign up page. To make it even easier, we can pre-fill that email field for the user by extracting it from the device.</li>
+<li>User doesn&#39;t need to think of / remember a password for yet another service.</li>
+<li>With deep linking, the process can&#39;t get any simpler - put email address --&gt; open mail --&gt; click the activation link --&gt; back to the app, authenticated.</li>
+<li>We leveraged a 3rd party service like Gmail to do the authentication for us and thus making it more secure as we don&#39;t need to store any hashed passwords in the backend.</li>
+</ol>
+]]></description>
+        <pubDate>Wed Oct 29 2014 23:47:52 GMT+0200 (IST)</pubDate>
+        <link>/passwordless-login-in-mobile-apps</link>
+        <guid isPermaLink="true">/passwordless-login-in-mobile-apps</guid>
+      </item>
+    
+    
+      <item>
+        <title>Export all Google Sheets to csv</title>
+        <description><![CDATA[<p>I had a Google Apps spreadsheet with around 40 sheets. Wanted to export them to <code>csv</code>. Unfortunately Google only lets you export one sheet at a time.</p>
+<p>Here&#39;s a script that exports all sheets in a spreadsheet to <code>csv</code></p>
+<script src="https://gist.github.com/mderazon/9655893.js"></script>
+
+
+
+<p>To use, click on tools --&gt; script editor. Then create a new blank script and paste the code there.</p>
+<p>Click on the play button (run) and go back to your spreadsheet. You should then see the csv in the spreadsheet menu</p>
+]]></description>
+        <pubDate>Wed Oct 29 2014 23:47:52 GMT+0200 (IST)</pubDate>
+        <link>/export-all-google-sheets-to-csv</link>
+        <guid isPermaLink="true">/export-all-google-sheets-to-csv</guid>
+      </item>
+    
+    
+      <item>
+        <title>Approaches to JSON internationalisation (i18n)</title>
+        <description><![CDATA[<p>Approaches to JSON internationalisation (i18n)</p>
+<p>I needed to create an API that is capable of serving objects with strings in more than one language. Let me present the problem with an example.</p>
+<p>Lets assume that we have a web app or a mobile client that wants to get information about coffee shops around the city. Also, lets assume also that we are going to have to support two languages, <em>English</em> and <em>Hebrew</em> (I know, right ?). </p>
+<p>So one client will like to get the information in English:</p>
+<pre><code class="language-js">{
+  &quot;venue_id&quot;: &quot;C001&quot;,
+  &quot;venue_location&quot;: &quot;Baker St.&quot;
+  &quot;venue_name&quot;: &quot;Aroma Coffee&quot;
+}</code></pre>
+<p>And another client will like to get the information in Hebrew:</p>
+<pre><code class="language-js">{
+  &quot;venue_id&quot;: &quot;C001&quot;,
+  &quot;venue_location&quot;: &quot;רחוב האופה&quot;
+  &quot;venue_name&quot;: &quot;קפה ארומה&quot;
+}</code></pre>
+<p>The two main questions i&#39;m interested in are :</p>
+<ol>
+<li>How do I store the data in the db ?</li>
+<li>How will the API serve the data in the right language ?</li>
+</ol>
+<p>Lets talk about both of them</p>
+<h3>How to store the multilingual data</h3>
+<p>For the sake of the example, I will assume that you are using a document based database like Mongodb.</p>
+<p>You can approach the problem in couple of ways:</p>
+<h4>Separate languages into different collections</h4>
+<p>Create a collection for each language and query the appropriate collection according to what the client accepts.<br>We will have <code>venues_en</code> collection and also a <code>venues_he</code> collection.</p>
+<p>The obvious down side of this approach is that a lot of the data is being unnecessarily duplicated.</p>
+<h4>Embed the multilingual data in the same document</h4>
+<p>For each field that needs translation in a document (venue in our case), we will embed the multilingual data inside the field. For example :</p>
+<pre><code class="language-js">{
+  &quot;venue_id&quot;: &quot;C001&quot;,
+  &quot;venue_location&quot;: {
+    &quot;en&quot;: &quot;Baker St.&quot;,
+    &quot;he&quot;: &quot;רחוב האופה&quot;
+  }
+  &quot;venue_name&quot;: {
+    &quot;en&quot;: &quot;Aroma Coffee&quot;,
+    &quot;he&quot;: &quot;קפה ארומה&quot;
+  }
+}</code></pre>
+<p>This solves the duplication of fields from the previous approach but adds a little complexity to the object we&#39;re saving.</p>
+<p>I prefer the second method because I think it&#39;s much more scalable. Imagine we need to support 25 different languages. Maintaining all of the duplicate data in the first approach becomes a nightmare. In the second approach we added a single level of hierarchy to the object, not a big deal usually.</p>
+<h3>How will the API serve the data</h3>
+<p>Eventually, after we pull the relevant data that we want to save, we are left with a question of how to serve the data to the client. The easiest way for a bad API will be to just push the data &quot;as is&quot; to the client and let it worry about picking the language and parsing it to display to the user.</p>
+<p>A better API should do the heavy lifting on the server side and will serve the client with normalised data in the language that it requested in the <code>Accept-Language</code> header.</p>
+<h2>Easy implementation in Node.js</h2>
+<p>Here&#39;s a nice and clean way to strip the unnecessary languages from the response and serve only the relevant language to the client.</p>
+<p>I am using a nice node module to <a href="https://github.com/substack/js-traverse">traverse</a> the JSON object and strip it from other languages. Here&#39;s a simple example:</p>
+<p><script src="https://gist.github.com/mderazon/9729626.js"></script>
+The output would be:</p>
+<pre><code class="language-js">{
+  venue_id: &quot;C001&quot;,
+  venue_location: &quot;Baker St.&quot;,
+  venue_name: &quot;Aroma Coffee&quot;
+}</code></pre>
+<p>The <code>filter_language</code> function uses traverse module to go through the object tree and look for keys with the chosen <code>language</code>. If it finds one, it updates the parent&#39;s value to the chosen language value.</p>
+<p>This way, the client doesn&#39;t have to worry about choosing the right language and can focus on displaying the data.</p>
+<p>You can pass the function any json object you want as long as it&#39;s a valid json.</p>
+<h2>Performance</h2>
+<p>Just to give a rough estimation, running 1 million entries of the above sample object through the <code>filter_language</code> function took 29 seconds on my MBA - throughput of 34.4 objects / ms.<br>Running on a much more complex object with around 100 keys and nested objects yielded throughput of 0.6 objects / ms. So if your data contains around 1K complex objects, the overhead of this  will be around 500 ms.</p>
+]]></description>
+        <pubDate>Wed Oct 29 2014 23:47:52 GMT+0200 (IST)</pubDate>
+        <link>/approaches-to-json-internationalisation-i18n</link>
+        <guid isPermaLink="true">/approaches-to-json-internationalisation-i18n</guid>
+      </item>
+    
+    
+      <item>
+        <title>Export mongodb collections to csv without specifying fields</title>
+        <description><![CDATA[<p>Sometimes you might want to export your Mongodb database in <code>csv</code> format. If you have many collections, it can be a bit of a hassle since <a href="http://docs.mongodb.org/v2.2/reference/mongoexport/">mongoexport</a> requires you to specify each field you want to be exported with the <code>--fields</code> attribute and you have to do it for each collection seperately.</p>
+<p>Here&#39;s a little bash script that will do the work for you.</p>
+<script src="https://gist.github.com/mderazon/8201991.js"></script>
+
+<p>Result is a <code>.csv</code> file for each collection you have in your db.</p>
+]]></description>
+        <pubDate>Wed Oct 29 2014 23:47:52 GMT+0200 (IST)</pubDate>
+        <link>/export-mongodb-collections-to-csv-without-specifying-fields</link>
+        <guid isPermaLink="true">/export-mongodb-collections-to-csv-without-specifying-fields</guid>
+      </item>
     
     
       <item>
@@ -60,9 +232,131 @@
 </ul>
 <pre><code>res.local(&#39;__&#39;, res.__);</code></pre>
 ]]></description>
-        <pubDate>Wed Oct 29 2014 02:28:12 GMT+0200 (IST)</pubDate>
+        <pubDate>Wed Oct 29 2014 23:47:52 GMT+0200 (IST)</pubDate>
         <link>/i18n-for-node-express</link>
         <guid isPermaLink="true">/i18n-for-node-express</guid>
+      </item>
+    
+    
+      <item>
+        <title>חתונה אזרחית בגיברלטר</title>
+        <description><![CDATA[<h1>חתונה אזרחית בגיברלטר</h1>
+<p>התחתנו כמו רבים וטובים בטקס אזרחי בארץ. תיכננו ירח דבש בספרד ועל הדרך חשבנו שיהיה נחמד להתחתן בגיברלטר כדי שנוכל להירשם בארץ כנשואים.</p>
+<h2>למה גיברלטר ?</h2>
+<ul>
+<li>נמצא בדרום ספרד, באזור שבו רצינו לטייל.</li>
+<li>מאד מקלים על התהליך.</li>
+<li>לא יקר מדיי.</li>
+<li>טקס באנגלית, פחות בלאגן בתרגום.</li>
+<li>סה”כ היה קליי קלות, באמת. אז הנה הפרטים.</li>
+</ul>
+<h2>מסמכים דרושים</h2>
+<ol>
+<li>תמצית רישום של כל אחד מבני הזוג ממשרד הפנים להראות שאתם רווקים (אפשר להזמין באינרנט, לוקח בערך שבוע להגיע).</li>
+<li>תעודת לידה של כל אחד מבני הזוג, לא יודע למה, אבל מבקשים (אפשר גם להזמין באינטרנט, חשוב לבקש שם שזה יהיה באנגלית, פחות מסמך לתרגם אח”כ”).</li>
+<li>תרגום המסמך מסעיף 1 לאנגלית. אל תשקיעו בתרגום, מספיק להביא למתרגם ישראלי שיתרגם ויחתום על זה (תבקשו שיראה כמה שיותר פורמלי, אבל בת’כלס הם לא כאלה פדנטים).</li>
+<li>דרכונים.</li>
+</ol>
+<h2>מה עושים ?</h2>
+<p>שולחים להם לפני זה מייל וקובעים מועד שבו אתם תבואו להתחתן. אנחנו באנו בלי לקבוע מועד ובכל זאת הכניסו אותנו, אבל לכו תדעו על מי תיפלו ולכן תמיד עדיף לבוא עם פגישה.</p>
+<p>באים יום לפני הטקס, ניגשים למשרד הפנים שלהם שנפתח ב-9 בבוקר. המשרד הזה מרגיש כמו סניף הדואר בירוחם והוא בגודל פיצפון ונוטה להתמלא מהר מאד ולהתרוקן בקצב הופכי. ממליץ בחום להגיע מוקדם. אנחנו הגענו ב-10, היו 2 זוגות לפנינו בתור לנישואים וחיכינו שעה.
+משלמים לפקידה החביבה את כל מה שצריך (פרטים בהמשך). אחריה הולכים מעבר לכביש ל-commissioner of auth שזה בעצם שם מפונפן לעו”ד בן 18. משלמים גם לו מה שצריך והוא חותם על המסמכים שלכם. חוזרים לפקידה החביבה ומביאים לה את המסמכים החתומים. זה הכל, עבודה טובה, אפשר ללכת לשתות בירה.</p>
+<p>חוזרים למחרת לגיברלטר. כדאי להגיע מוקדם לפני השעה שקבעתם לטקס, הכניסה עם רכב בלתי צפוייה. ביום של החתונה היה תור כניסה עם רכב של 3 שעות. כדי לא להפסיד את הטקס החננו בצד הספרדי ועברנו את הגבול ברגל. תפסנו בפנים טרמפ עם אזרח חביב (אפשר גם לקחת אוטובוס). אגב מעבר גבול, זה אחד המעברים הפחות מחמירים שראיתי. מספיק להראות להם כרטיס דמוי דרכון עם תמונה והם כנראה יעבירו אתכם. לא צריך להחתים את הדרכון…</p>
+<h2>הטקס עצמו</h2>
+<p>מומלץ לארגן מראש 2 עדים, זה יחסוך לכם את ההסתובבות ברחוב בחיפוש אחר עדים לפני הטקס. אנחנו ביקשנו מהעדים של הזוג שהתחתן לפנינו שיעידו בטקס שלנו והם הסכימו בשמחה. עדים שעומדים בקריטריון הם כל אדם עם דופק מעל גיל 18 שמדבר אנגלית. גם משפחה עומדת בקריטריון הזה…</p>
+<p>כל הטקס לא לוקח יותר מחצי שעה ובמהלכו :</p>
+<ol>
+<li>נכנסים לחדר קטן ומהודר עם שולחן גדול, מחברת בגודל השולחן ותמונה של מלכת אנגליה.</li>
+<li>ה-Registrar הג’ינג’י החמוד מסביר מה הוא הולך לעשות ואיך הטקס יתבצע. חותמים על כמה דברים במחברת הגדולה.</li>
+<li>מכניסים את העדים ומבצעים את כל מה שהג’ינג’י אמר מקודם וחותמים שוב במחברת הגדולה.</li>
+<li>הג’ינג’י מסכם את מה שהיה לנו ומכריז עלינו כבעל ואישה (או בעל ובעל, אישה ואישה)
+זה הכל, אפשר לפתוח שמפניה, אתם נשואים :)</li>
+</ol>
+<h2>עלויות</h2>
+<h4>שלב הכנת המסמכים :</h4>
+<ul>
+<li>תעודת לידה + תמצית רישום - חינם.</li>
+<li>תרגום תמצית הרישום - 60 ש”ח לכל מסמך, סה”כ 120 (הלכתי למתרגמת בתל אביב).</li>
+</ul>
+<h4>אצל הפקידה החביבה, יום לפני הטקס:</h4>
+<ul>
+<li>רשיון נישואים מיוחד - 67.5 פאונד. לא יודע למה הם קוראים לזה special marriage license, נראה שזה מה שכולם לוקחים אז אני לא מבין למה הוא מיוחד. אבל זה מה שהם מבקשים…</li>
+<li>חותמת אפוסטיל - 15 פאונד. <strong>חשוב מאד</strong>, בלי זה אי אפשר אח”כ להירשם בארץ כנשואים.</li>
+<li>משלוח של התעודה 10 ימים אח”כ לארץ - 5 פאונד.</li>
+<li>טקס אצל הג’ינג’י - 40 פאונד.</li>
+<li>תעודה - 3.5 פאונד.</li>
+</ul>
+<h4>אצל ה-commissioner of auth</h4>
+<p>חתימה על המסמכים שלכם - 20 פאונד לכל אחד, סה”כ 40 פאונד.
+זה הכל, חוץ מזה אין עוד עלויות ביום הטקס עצמו.</p>
+<h2>קצת תמונות</h2>
+<h3>בתור במשרד הפנים ב-Secretary Lane</h3>
+<p><img src="IMG_1247.JPG" alt="image"></p>
+<h3>אחרי הטקס עם ה-Registrar הג׳ינג׳י</h3>
+<p><img src="IMG_1357.JPG" alt="image"></p>
+<h2>קישורים לאתרים :</h2>
+<ol>
+<li>האתר הממשלתי להזמנת התעודות - <a href="http://www.gov.il/firstgov/">http://www.gov.il/firstgov/</a></li>
+<li>קישור לאתר הגיברלטרי שמסביר על כל התהליך - <a href="https://www.gibraltar.gov.gi/getting-married">https://www.gibraltar.gov.gi/getting-married</a></li>
+</ol>
+]]></description>
+        <pubDate>Wed Oct 29 2014 23:47:52 GMT+0200 (IST)</pubDate>
+        <link>/חתונה-אזרחית-בגיברלטר</link>
+        <guid isPermaLink="true">/חתונה-אזרחית-בגיברלטר</guid>
+      </item>
+    
+    
+      <item>
+        <title>How to create a clearable autocomplete dropdown with AutoCompleteTextView</title>
+        <description><![CDATA[<p>I wanted to create a nice search box with autocomplete results dropdown in the ActionBar. I could have used the <code>SearchView</code> widget but I didn&#39;t want to create a <em>searchable activity</em> and all the necessary overhead. Instead I used a more lightweight approach with <a href="http://developer.android.com/reference/android/widget/AutoCompleteTextView.html">AutoCompleteTextView</a>. I&#39;ll explain here the steps needed to be done in order to make it work.</p>
+<p>My model app was the Gmail app which looks like this :</p>
+<p><img src="http://media.tumblr.com/d39b58c2c78601e7f4b923f556297e02/tumblr_inline_mthuwuMRnH1s1qo9o.png" alt=""></p>
+<h2>Creating the layouts</h2>
+<p>First, lets create the required layouts. Here&#39;s the layout for the search box :</p>
+<script src="https://gist.github.com/mderazon/6653926.js"></script>
+
+<p>And here is the layout for a single drop down entry : (You can design the layout as you want)</p>
+<script src="https://gist.github.com/mderazon/6653962.js"></script>
+
+<h2>Adding an adapter</h2>
+<p>Now, we need to create an adapter to bridge between our data and the list view that drops down from the search box. In my case, it&#39;s a <code>ArrayAdapter</code> of <code>JSONObject</code>s. The data that I want to display on the dropdown consists of <em>venue name</em> and <em>venue address</em> but obviously it can be anything that you want. </p>
+<p>It&#39;s important that our adapter will also be <a href="http://developer.android.com/reference/android/widget/Filterable.html"><code>Filterable</code></a> so the <code>AutoCompleteTextView</code> could call the <code>getFilter()</code> method to filter the list. </p>
+<p>Here&#39;s the adapter class :</p>
+<script src="https://gist.github.com/mderazon/6654314.js"></script>
+
+<p>As you can see we override two methods, the <code>getView()</code> method which is standard for any adapter. It gets called each time the adapter needs to populate another row in the view.<br>We also override <code>getFilter()</code> to return a filter that will take care of narrowing the list each time the user enters another character in the search box.<br>Here is the custom filter class we are using :</p>
+<script src="https://gist.github.com/mderazon/6654170.js"></script>
+
+<h2>Taking care of the action bar</h2>
+<p>Now, we want to put the AutoCompleteTextView inside the ActionBar. For backwards compatibility, I am using <a href="http://android-developers.blogspot.co.il/2013/08/actionbarcompat-and-io-2013-app-source.html">ActionBarCompat</a> but you can ActionBarSherlock or no backwards compatibility package at all. Actionbar supports a custom view that you can put in it. We are going to use it to put the AutoCompleteTextView in the action bar.</p>
+<script src="https://gist.github.com/mderazon/6654048.js"></script>
+
+<p>So by now we should have all the core functionality working.<br>There are some more stuff left to do. I&#39;d like the action bar to not show the edit text box all the time and instead appear only when I click on the <em>magnifier</em> icon (just like with the <code>SearchView</code>).</p>
+<h2>Creating a clearable AutoCompleteTextView</h2>
+<p>First, we&#39;re gonna have to create a mechanism for the user to close the search box. Something like this :</p>
+<p><img src="assets/img/posts/how-to-create-a-clearable-autocomplete-dropdown-with-autocompletetextview/clearable_autocompletetextview.png" alt=""></p>
+<p> <code>AutoCompleteTextView</code> doesn&#39;t come with a dismiss button so lets extend it and add the necessary code.</p>
+<script src="https://gist.github.com/mderazon/6700044.js"></script>
+
+<p>You can see that there&#39;s a default <code>OnClearListener</code> that just clears the text. We&#39;re not going to use it. Instead, we will set a custom clear listener that will toggle between the visibility of the search box and the search icon.</p>
+<p>Lets change <code>MainActivity</code> to use the new text view : </p>
+<script src="https://gist.github.com/mderazon/6749699.js"></script>
+
+<p>We replaced <code>AutoCompleteTextView</code> with our new custom <code>ClearableAutoCompleteTextView</code>. We&#39;ve also added listeners to handle clicks on the search icon and clicks on the clear button.</p>
+<p>Showing and hiding the search box requires a set of operations to be performed like showing and hiding the keyboard and requesting focus on the text view. This is all done in &#39;toggleSearch&#39; method.</p>
+<h2>Summary</h2>
+<p>The code is pretty straightforward, using well known and frequently used concepts from Android framework like list adapters, custom views etc.</p>
+<p>The end result looks something like this :</p>
+<h3>closed search box</h3>
+<p><img src="assets/img/posts/how-to-create-a-clearable-autocomplete-dropdown-with-autocompletetextview/search_box_closed.png" alt=""></p>
+<h3>opened search box</h3>
+<p><img src="assets/img/posts/how-to-create-a-clearable-autocomplete-dropdown-with-autocompletetextview/search_box_opened.png" alt=""></p>
+<h3>opened search box with autocomplete results</h3>
+<p><img src="assets/img/posts/how-to-create-a-clearable-autocomplete-dropdown-with-autocompletetextview/search_box_opened_ac.png" alt=""></p>
+]]></description>
+        <pubDate>Wed Oct 29 2014 23:47:52 GMT+0200 (IST)</pubDate>
+        <link>/how-to-create-a-clearable-autocomplete-dropdown-with-autocompletetextview</link>
+        <guid isPermaLink="true">/how-to-create-a-clearable-autocomplete-dropdown-with-autocompletetextview</guid>
       </item>
     
   </channel>

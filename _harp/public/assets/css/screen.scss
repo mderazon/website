@@ -24,6 +24,8 @@
 
 @import "normalize";
 @import "_bourbon/scss/bourbon";
+@import url(http://fonts.googleapis.com/earlyaccess/alefhebrew.css);
+
 
 
 /* ==========================================================================
@@ -73,6 +75,20 @@
 /* ==========================================================================
    2. General - Setting up some base styles
    ========================================================================== */
+.hebrew[id='content-holder'] {
+ font-family: "Alef Hebrew",
+            “Helvetica Neue”,
+            Helvetica,
+            Arial,
+            sans-serif;
+ direction:rtl;
+ text-align:right;
+}
+
+.rtl[id='content-holder'] {
+ direction:rtl;
+ text-align:right;
+}
 
 html {
     height: 100%;

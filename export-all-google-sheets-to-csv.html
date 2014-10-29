@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
     <!-- Page Meta -->
-    <title>Code and stuff</title>
+    <title>Export all Google Sheets to csv</title>
     <meta name="description" content="Just a static blog." />
 
     <meta name="HandheldFriendly" content="True" />
@@ -23,21 +23,23 @@
     <!-- Ghost outputs important style and meta data with this tag -->
     <!-- {{ghost_head}} -->
 </head>
-<body class="home-template"><!-- K: body_class variable, home page class is home-template, post is like: post-template tag-getting-started -->
+<body class="post-template"><!-- K: body_class variable, home page class is home-template, post is like: post-template tag-getting-started -->
 
     <!-- Everything else gets inserted here -->
     
-        <!-- The big featured header on the homepage, with the site logo and description  -->
-<header class="site-head" >
-    <div class="vertical">
-        <div class="site-head-content inner">
-            <a class="blog-logo" href="/"><img src="assets/img/avatar.png" alt="Blog Logo" /></a>
-            <h1 class="blog-title">Code and stuff</h1>
-            <h2 class="blog-description">Just a static blog.</h2>
-            <p class="post-meta"><a href="http://github.com/kennethormandy/hb-casper">Fork on GitHub</a> &bull; <a href="https://harp.io/apps/new?boilerplate=kennethormandy/hb-casper">Try it on harp.io for free</a></p>
+        <main class="content" role="main">
 
-        </div>
-        <ul id="social-menu">
+    <article class="post"><!-- K: {{post_class}}, tags- -->
+        <!-- Each post has the blog logo at the top, with a link back to the home page -->
+        <!-- Each post has the blog logo at the top, with a link back to the home page -->
+<header class="post-header">
+
+    <a class="blog-logo" href="/">
+        
+            <img src="assets/img/selfie.png" alt="Blog Logo" />
+        
+    </a>
+    <ul id="social-menu">
     <li class="content">
         <a class="cb-github fa-stack fa-lg" href="https://github.com/mderazon" title="Michael Derazon's Github" target="_blank">
             <i class="fa fa-circle fa-stack-2x"></i>
@@ -69,37 +71,53 @@
         </a>
     </li>
 </ul>
-    </div>
-
 </header>
 
-<!-- The main content area on the homepage  -->
-<main class="content" role="main">
-    <!-- Each post will be output using this markup  -->
-    
-    
+        <!-- Everything below outputs content of the the post which has been published -->
+        <span class="post-meta"><time datetime="Tue, 25 Mar 2014 22:00:00 GMT">26 Mar 2014</time> on google sheets,csv<!-- {{tags prefix="on " separator=" | "}} --></span>
 
-    <article class="post"><!-- K: also needs class tag- for each tag -->
-        <header class="post-header">
-            <span class="post-meta"><time datetime="Mon, 25 Nov 2013 22:00:00 GMT">26 Nov 2013</time> on Node.js,i18n<!-- {{tags prefix="on "}}--></span>
-            <h2 class="post-title"><a href="i18n-for-node-express">i18n for Node + Express</a></h2>
+        <h1 class="post-title">Export all Google Sheets to csv</h1>
 
-        </header>
-        <section class="post-excerpt">
-            <p>In this post i&#39;m going to demonstrate a simple way to add multi language support to a node + express project.
-Simple server
-Lets start with a simple server:
+        <section class="post-content">
+            <p>I had a Google Apps spreadsheet with around 40 sheets. Wanted to export them to <code>csv</code>. Unfortunately Google only lets you export one sheet at a time.</p>
+<p>Here&#39;s a script that exports all sheets in a spreadsheet to <code>csv</code></p>
+<script src="https://gist.github.com/mderazon/9655893.js"></script>
 
 
-We first require express, then we tell express where to look for our templates files. In this case I used ejs as the template&hellip;</p><!-- K: Exerpt isn’t cuttoff exactly the same yet, needs to be plaintext -->
+
+<p>To use, click on tools --&gt; script editor. Then create a new blank script and paste the code there.</p>
+<p>Click on the play button (run) and go back to your spreadsheet. You should then see the csv in the spreadsheet menu</p>
+
         </section>
+
+        <footer class="post-footer">
+
+            
+                <section class="author">
+                    <h4>Michael Derazon</h4>
+                    <p>undefined</p>
+                </section>
+            
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="http://twitter.com/share?text=Export all Google Sheets to csv&url=/export-all-google-sheets-to-csv"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=/export-all-google-sheets-to-csv"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=/export-all-google-sheets-to-csv"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+        </footer>
+
     </article>
-
-
-    
-
-    <!--! After all the posts, we have the previous/next pagination links  -->
-    <!-- {{pagination}} -->
 
 </main>
     

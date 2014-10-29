@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Document Settings -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Page Meta -->
+    <title>How to create a clearable autocomplete dropdown with AutoCompleteTextView</title>
+    <meta name="description" content="Just a static blog." />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="MobileOptimized" content="320" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><!-- K: Need assets variable , or something like basepath -->
+
+    <!-- <link rel="shortcut icon" href="favicon.ico">-->
+
+    <!-- Styles'n'Scripts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" /><!-- K: Need assets variable , or something like basepath -->
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic|Open+Sans:700,400" />
+
+    <!-- Ghost outputs important style and meta data with this tag -->
+    <!-- {{ghost_head}} -->
+</head>
+<body class="post-template"><!-- K: body_class variable, home page class is home-template, post is like: post-template tag-getting-started -->
+
+    <!-- Everything else gets inserted here -->
+    
+        <main class="content" role="main">
+
+    <article class="post"><!-- K: {{post_class}}, tags- -->
+        <!-- Each post has the blog logo at the top, with a link back to the home page -->
+        <!-- Each post has the blog logo at the top, with a link back to the home page -->
+<header class="post-header">
+
+    <a class="blog-logo" href="/">
+        
+            <img src="assets/img/selfie.png" alt="Blog Logo" />
+        
+    </a>
+    <ul id="social-menu">
+    <li class="content">
+        <a class="cb-github fa-stack fa-lg" href="https://github.com/mderazon" title="Michael Derazon's Github" target="_blank">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-github-alt fa-stack-1x fa-inverse"></i>
+        </a>
+    </li>
+    <li class="content">
+        <a class="cb-stackoverflow fa-stack fa-lg" href="http://stackoverflow.com/users/599912/michael" title="Michael Derazon's Stack Overflow" target="_blank">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-stack-overflow fa-stack-1x fa-inverse"></i>
+        </a>
+    </li>
+    <li class="content">
+        <a class="cb-twitter fa-stack fa-lg" href="http://twitter.com/mderazon" title="Michael Derazon's Twitter" target="_blank">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+        </a>
+    </li>
+    <li class="content">
+        <a class="cb-googleplus fa-stack fa-lg" href="https://plus.google.com/102134491169800656262" title="Michael Derazon's Google Plus" target="_blank">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+        </a>
+    </li>
+    <li class="content">
+        <a class="cb-linkedin fa-stack fa-lg" href="http://linkedin.com/in/mderazon" title="Michael Derazon's LinkedIn" target="_blank">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+        </a>
+    </li>
+</ul>
+</header>
+
+        <!-- Everything below outputs content of the the post which has been published -->
+        <span class="post-meta"><time datetime="Mon, 25 Nov 2013 22:00:00 GMT">26 Nov 2013</time> on android<!-- {{tags prefix="on " separator=" | "}} --></span>
+
+        <h1 class="post-title">How to create a clearable autocomplete dropdown with AutoCompleteTextView</h1>
+
+        <section class="post-content">
+            <p>I wanted to create a nice search box with autocomplete results dropdown in the ActionBar. I could have used the <code>SearchView</code> widget but I didn&#39;t want to create a <em>searchable activity</em> and all the necessary overhead. Instead I used a more lightweight approach with <a href="http://developer.android.com/reference/android/widget/AutoCompleteTextView.html">AutoCompleteTextView</a>. I&#39;ll explain here the steps needed to be done in order to make it work.</p>
+<p>My model app was the Gmail app which looks like this :</p>
+<p><img src="http://media.tumblr.com/d39b58c2c78601e7f4b923f556297e02/tumblr_inline_mthuwuMRnH1s1qo9o.png" alt=""></p>
+<h2>Creating the layouts</h2>
+<p>First, lets create the required layouts. Here&#39;s the layout for the search box :</p>
+<script src="https://gist.github.com/mderazon/6653926.js"></script>
+
+<p>And here is the layout for a single drop down entry : (You can design the layout as you want)</p>
+<script src="https://gist.github.com/mderazon/6653962.js"></script>
+
+<h2>Adding an adapter</h2>
+<p>Now, we need to create an adapter to bridge between our data and the list view that drops down from the search box. In my case, it&#39;s a <code>ArrayAdapter</code> of <code>JSONObject</code>s. The data that I want to display on the dropdown consists of <em>venue name</em> and <em>venue address</em> but obviously it can be anything that you want. </p>
+<p>It&#39;s important that our adapter will also be <a href="http://developer.android.com/reference/android/widget/Filterable.html"><code>Filterable</code></a> so the <code>AutoCompleteTextView</code> could call the <code>getFilter()</code> method to filter the list. </p>
+<p>Here&#39;s the adapter class :</p>
+<script src="https://gist.github.com/mderazon/6654314.js"></script>
+
+<p>As you can see we override two methods, the <code>getView()</code> method which is standard for any adapter. It gets called each time the adapter needs to populate another row in the view.<br>We also override <code>getFilter()</code> to return a filter that will take care of narrowing the list each time the user enters another character in the search box.<br>Here is the custom filter class we are using :</p>
+<script src="https://gist.github.com/mderazon/6654170.js"></script>
+
+<h2>Taking care of the action bar</h2>
+<p>Now, we want to put the AutoCompleteTextView inside the ActionBar. For backwards compatibility, I am using <a href="http://android-developers.blogspot.co.il/2013/08/actionbarcompat-and-io-2013-app-source.html">ActionBarCompat</a> but you can ActionBarSherlock or no backwards compatibility package at all. Actionbar supports a custom view that you can put in it. We are going to use it to put the AutoCompleteTextView in the action bar.</p>
+<script src="https://gist.github.com/mderazon/6654048.js"></script>
+
+<p>So by now we should have all the core functionality working.<br>There are some more stuff left to do. I&#39;d like the action bar to not show the edit text box all the time and instead appear only when I click on the <em>magnifier</em> icon (just like with the <code>SearchView</code>).</p>
+<h2>Creating a clearable AutoCompleteTextView</h2>
+<p>First, we&#39;re gonna have to create a mechanism for the user to close the search box. Something like this :</p>
+<p><img src="assets/img/posts/how-to-create-a-clearable-autocomplete-dropdown-with-autocompletetextview/clearable_autocompletetextview.png" alt=""></p>
+<p> <code>AutoCompleteTextView</code> doesn&#39;t come with a dismiss button so lets extend it and add the necessary code.</p>
+<script src="https://gist.github.com/mderazon/6700044.js"></script>
+
+<p>You can see that there&#39;s a default <code>OnClearListener</code> that just clears the text. We&#39;re not going to use it. Instead, we will set a custom clear listener that will toggle between the visibility of the search box and the search icon.</p>
+<p>Lets change <code>MainActivity</code> to use the new text view : </p>
+<script src="https://gist.github.com/mderazon/6749699.js"></script>
+
+<p>We replaced <code>AutoCompleteTextView</code> with our new custom <code>ClearableAutoCompleteTextView</code>. We&#39;ve also added listeners to handle clicks on the search icon and clicks on the clear button.</p>
+<p>Showing and hiding the search box requires a set of operations to be performed like showing and hiding the keyboard and requesting focus on the text view. This is all done in &#39;toggleSearch&#39; method.</p>
+<h2>Summary</h2>
+<p>The code is pretty straightforward, using well known and frequently used concepts from Android framework like list adapters, custom views etc.</p>
+<p>The end result looks something like this :</p>
+<h3>closed search box</h3>
+<p><img src="assets/img/posts/how-to-create-a-clearable-autocomplete-dropdown-with-autocompletetextview/search_box_closed.png" alt=""></p>
+<h3>opened search box</h3>
+<p><img src="assets/img/posts/how-to-create-a-clearable-autocomplete-dropdown-with-autocompletetextview/search_box_opened.png" alt=""></p>
+<h3>opened search box with autocomplete results</h3>
+<p><img src="assets/img/posts/how-to-create-a-clearable-autocomplete-dropdown-with-autocompletetextview/search_box_opened_ac.png" alt=""></p>
+
+        </section>
+
+        <footer class="post-footer">
+
+            
+                <section class="author">
+                    <h4>Michael Derazon</h4>
+                    <p>undefined</p>
+                </section>
+            
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="http://twitter.com/share?text=How to create a clearable autocomplete dropdown with AutoCompleteTextView&url=/how-to-create-a-clearable-autocomplete-dropdown-with-autocompletetextview"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=/how-to-create-a-clearable-autocomplete-dropdown-with-autocompletetextview"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=/how-to-create-a-clearable-autocomplete-dropdown-with-autocompletetextview"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+        </footer>
+
+    </article>
+
+</main>
+    
+
+    <footer class="site-footer">
+    <a class="subscribe icon-feed" href="/rss/index.xml"><span class="tooltip">Subscribe!</span></a>
+    <div class="inner">
+         <section class="copyright">All content copyright <a href="/">Code and stuff</a> &copy; 2014 &bull; All rights reserved.</section>
+         <section class="poweredby">Proudly published with <a class="" href="http://harpjs.com">Harp</a></section>
+    </div>
+</footer>
+
+    <!-- Ghost outputs important scripts and data with this tag -->
+    <!-- {{ghost_foot}} -->
+
+    <!-- The main JavaScript file for Casper -->
+    <script type="text/javascript" src="/asset/js/jquery.fitvids.js"></script><!-- K: Change back to relative links -->
+    <script type="text/javascript" src="/asset/js/index.js"></script>
+
+</body>
+</html>

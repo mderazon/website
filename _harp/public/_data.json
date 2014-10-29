@@ -1,8 +1,44 @@
 {
+  "passwordless-login-in-mobile-apps": {
+    "title": "Passwordless login in mobile apps",
+    "date": "29 Oct 2014",
+    "tags": ["mobile login", "authentication"],
+    "published": true
+  },
+  "export-all-google-sheets-to-csv": {
+    "title": "Export all Google Sheets to csv",
+    "date": "26 Mar 2014",
+    "tags": ["google sheets", "csv"],
+    "published": true
+  },
+  "approaches-to-json-internationalisation-i18n": {
+    "title": "Approaches to JSON internationalisation (i18n)",
+    "date": "23 Mar 2014",
+    "tags": ["json", "api", "i18n"],
+    "published": true
+  },
+  "export-mongodb-collections-to-csv-without-specifying-fields": {
+    "title": "Export mongodb collections to csv without specifying fields",
+    "date": "31 Dec 2013",
+    "tags": ["mongodb", "mongoexport", "csv"],
+    "published": true
+  },
   "i18n-for-node-express": {
     "title": "i18n for Node + Express",
     "date": "26 Nov 2013",
-    "tags": ["Node.js", "i18n"],
+    "tags": ["node.js", "i18n", "express"],
+    "published": true
+  },
+  "חתונה-אזרחית-בגיברלטר": {
+    "title": "חתונה אזרחית בגיברלטר",
+    "date": "26 Nov 2013",
+    "tags": ["civil-wedding", "marriage", "hebrew"],
+    "published": true
+  },
+  "how-to-create-a-clearable-autocomplete-dropdown-with-autocompletetextview": {
+    "title": "How to create a clearable autocomplete dropdown with AutoCompleteTextView",
+    "date": "26 Nov 2013",
+    "tags": ["android"],
     "published": true
   }
 }

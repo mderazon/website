@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
     <!-- Page Meta -->
-    <title>i18n for Node + Express</title>
+    <title>Export mongodb collections to csv without specifying fields</title>
     <meta name="description" content="Just a static blog." />
 
     <meta name="HandheldFriendly" content="True" />
@@ -74,61 +74,16 @@
 </header>
 
         <!-- Everything below outputs content of the the post which has been published -->
-        <span class="post-meta"><time datetime="Mon, 25 Nov 2013 22:00:00 GMT">26 Nov 2013</time> on node.js,i18n,express<!-- {{tags prefix="on " separator=" | "}} --></span>
+        <span class="post-meta"><time datetime="Mon, 30 Dec 2013 22:00:00 GMT">31 Dec 2013</time> on mongodb,mongoexport,csv<!-- {{tags prefix="on " separator=" | "}} --></span>
 
-        <h1 class="post-title">i18n for Node + Express</h1>
+        <h1 class="post-title">Export mongodb collections to csv without specifying fields</h1>
 
         <section class="post-content">
-            <p>In this post i&#39;m going to demonstrate a simple way to add multi language support to a node + express project.</p>
-<h3>Simple server</h3>
-<p>Lets start with a simple server:</p>
-<script src="https://gist.github.com/mderazon/7229439.js"></script>
+            <p>Sometimes you might want to export your Mongodb database in <code>csv</code> format. If you have many collections, it can be a bit of a hassle since <a href="http://docs.mongodb.org/v2.2/reference/mongoexport/">mongoexport</a> requires you to specify each field you want to be exported with the <code>--fields</code> attribute and you have to do it for each collection seperately.</p>
+<p>Here&#39;s a little bash script that will do the work for you.</p>
+<script src="https://gist.github.com/mderazon/8201991.js"></script>
 
-<p>We first require <code>express</code>, then we tell express where to look for our templates files. In this case I used <code>ejs</code> as the template engine. I like it because it&#39;s syntax is basically html with special <code>&lt;% ... %&gt;</code> syntax for embedding code from the server. There are other (and more popular) template engines you can chose from.</p>
-<p>In line 7 we add a route for <code>/</code> and tell it to render <code>index.ejs</code>. </p>
-<p>Lets create our <code>index.ejs</code> file under <code>/views</code> dir.</p>
-<script src="https://gist.github.com/mderazon/7229648.js"></script>
-
-<p>Nothing special here, just plain html page. Express guesses what type of template to render by the extension. So when it sees <code>index.ejs</code> it knows it should first pass it through the <code>ejs</code> module to render.</p>
-<h3>Adding translation module</h3>
-<p>Now lets add the i18n functionality. I use <a href="https://github.com/mashpie/i18n-node">i18n-node</a> module. Create another file <code>i18n.js</code> :</p>
-<script src="https://gist.github.com/mderazon/7229824.js"></script>
-
-<p>First we set up some configurations. By default, i18n module uses <code>accept-language</code> request header to guess language settings. You can tell it to look for a cookie that contains the language if you want. In this case I used a cookie named <code>lang</code>.</p>
-<p>Now lets import our newly created module in our server file:</p>
-<script src="https://gist.github.com/mderazon/7230558.js"></script>
-
-<p>In line 7 we add the i18n module as middleware. Make sure you put it before any route is defined. What i18n module does is add a special function called <code>__()</code> to the response object. This function takes care of the translation. </p>
-<p>We need to add the translation <code>__()</code> method to the view file as well :</p>
-<script src="https://gist.github.com/mderazon/7230774.js"></script>
-
-
-
-<h3>Translation files</h3>
-<p>Now when you run the app, notice that i18n creates a folder in a location we previously defined in <code>i18n.js</code>. This folder will contain the translation files. In my case, I have two locales : <code>en</code> and <code>iw</code> so i18n will create two files :</p>
-<ul>
-<li><code>locales/en.json</code></li>
-<li><code>locales/iw.json</code></li>
-</ul>
-<p>The format is very simple. A valid JSON file that contains <code>&quot;sentence&quot; : &quot;translation&quot;</code> pairs. The first time we try to GET <code>/</code> i18n will automatically populate the files. Since I am using English in my code, i18n will populate <code>en.json</code> with:</p>
-<pre><code>{
-    &quot;Hello i18n&quot;: &quot;Hello i18n&quot;
-}</code></pre>
-<p>I will have to edit <code>iw.json</code> with the translation :</p>
-<pre><code>{
-    &quot;Hello i18n&quot;: &quot;שלום i18n&quot;
-}</code></pre>
-<h3>Results</h3>
-<p>Lets test that everything is working okay. I am using <a href="https://chrome.google.com/webstore/detail/postman-rest-client/fdmmgilgnpjigdojojpjoooidkmcomcm/details?hl=en">Postman</a> (which kicks ass) to call the server. First lets make a call with <code>Accept-Language=en</code> header to see the english version :</p>
-<p><img src="assets/img/posts/i18n-for-node-express/postman-en.png" alt="image"></p>
-<p>Now lets change the header for <code>Accept-Language=iw</code> (iw = Hebrew in case you wondered) :</p>
-<p><img src="assets/img/posts/i18n-for-node-express/postman-iw.png" alt="image"></p>
-<h3>Some notes</h3>
-<ul>
-<li>Use escape <code>\</code> character if you want insert problematic characters : <code>__(&quot;can\&#39;t do that&quot;)</code>. Otherwise nasty things will happen.</li>
-<li>In express <code>2.x</code> you need to specifically add <code>__()</code> function to the locals object. Do it by adding the following line just after <code>i18n.init()</code> in the i18n module :</li>
-</ul>
-<pre><code>res.local(&#39;__&#39;, res.__);</code></pre>
+<p>Result is a <code>.csv</code> file for each collection you have in your db.</p>
 
         </section>
 
@@ -143,15 +98,15 @@
 
             <section class="share">
                 <h4>Share this post</h4>
-                <a class="icon-twitter" href="http://twitter.com/share?text=i18n for Node + Express&url=/i18n-for-node-express"
+                <a class="icon-twitter" href="http://twitter.com/share?text=Export mongodb collections to csv without specifying fields&url=/export-mongodb-collections-to-csv-without-specifying-fields"
                     onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
                     <span class="hidden">Twitter</span>
                 </a>
-                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=/i18n-for-node-express"
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=/export-mongodb-collections-to-csv-without-specifying-fields"
                     onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
                     <span class="hidden">Facebook</span>
                 </a>
-                <a class="icon-google-plus" href="https://plus.google.com/share?url=/i18n-for-node-express"
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=/export-mongodb-collections-to-csv-without-specifying-fields"
                    onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
                     <span class="hidden">Google+</span>
                 </a>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Document Settings -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Page Meta -->
+    <title>Approaches to JSON internationalisation (i18n)</title>
+    <meta name="description" content="Just a static blog." />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="MobileOptimized" content="320" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><!-- K: Need assets variable , or something like basepath -->
+
+    <!-- <link rel="shortcut icon" href="favicon.ico">-->
+
+    <!-- Styles'n'Scripts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" /><!-- K: Need assets variable , or something like basepath -->
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic|Open+Sans:700,400" />
+
+    <!-- Ghost outputs important style and meta data with this tag -->
+    <!-- {{ghost_head}} -->
+</head>
+<body class="post-template"><!-- K: body_class variable, home page class is home-template, post is like: post-template tag-getting-started -->
+
+    <!-- Everything else gets inserted here -->
+    
+        <main class="content" role="main">
+
+    <article class="post"><!-- K: {{post_class}}, tags- -->
+        <!-- Each post has the blog logo at the top, with a link back to the home page -->
+        <!-- Each post has the blog logo at the top, with a link back to the home page -->
+<header class="post-header">
+
+    <a class="blog-logo" href="/">
+        
+            <img src="assets/img/selfie.png" alt="Blog Logo" />
+        
+    </a>
+    <ul id="social-menu">
+    <li class="content">
+        <a class="cb-github fa-stack fa-lg" href="https://github.com/mderazon" title="Michael Derazon's Github" target="_blank">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-github-alt fa-stack-1x fa-inverse"></i>
+        </a>
+    </li>
+    <li class="content">
+        <a class="cb-stackoverflow fa-stack fa-lg" href="http://stackoverflow.com/users/599912/michael" title="Michael Derazon's Stack Overflow" target="_blank">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-stack-overflow fa-stack-1x fa-inverse"></i>
+        </a>
+    </li>
+    <li class="content">
+        <a class="cb-twitter fa-stack fa-lg" href="http://twitter.com/mderazon" title="Michael Derazon's Twitter" target="_blank">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+        </a>
+    </li>
+    <li class="content">
+        <a class="cb-googleplus fa-stack fa-lg" href="https://plus.google.com/102134491169800656262" title="Michael Derazon's Google Plus" target="_blank">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+        </a>
+    </li>
+    <li class="content">
+        <a class="cb-linkedin fa-stack fa-lg" href="http://linkedin.com/in/mderazon" title="Michael Derazon's LinkedIn" target="_blank">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+        </a>
+    </li>
+</ul>
+</header>
+
+        <!-- Everything below outputs content of the the post which has been published -->
+        <span class="post-meta"><time datetime="Sat, 22 Mar 2014 22:00:00 GMT">23 Mar 2014</time> on json,api,i18n<!-- {{tags prefix="on " separator=" | "}} --></span>
+
+        <h1 class="post-title">Approaches to JSON internationalisation (i18n)</h1>
+
+        <section class="post-content">
+            <p>Approaches to JSON internationalisation (i18n)</p>
+<p>I needed to create an API that is capable of serving objects with strings in more than one language. Let me present the problem with an example.</p>
+<p>Lets assume that we have a web app or a mobile client that wants to get information about coffee shops around the city. Also, lets assume also that we are going to have to support two languages, <em>English</em> and <em>Hebrew</em> (I know, right ?). </p>
+<p>So one client will like to get the information in English:</p>
+<pre><code class="language-js">{
+  &quot;venue_id&quot;: &quot;C001&quot;,
+  &quot;venue_location&quot;: &quot;Baker St.&quot;
+  &quot;venue_name&quot;: &quot;Aroma Coffee&quot;
+}</code></pre>
+<p>And another client will like to get the information in Hebrew:</p>
+<pre><code class="language-js">{
+  &quot;venue_id&quot;: &quot;C001&quot;,
+  &quot;venue_location&quot;: &quot;רחוב האופה&quot;
+  &quot;venue_name&quot;: &quot;קפה ארומה&quot;
+}</code></pre>
+<p>The two main questions i&#39;m interested in are :</p>
+<ol>
+<li>How do I store the data in the db ?</li>
+<li>How will the API serve the data in the right language ?</li>
+</ol>
+<p>Lets talk about both of them</p>
+<h3>How to store the multilingual data</h3>
+<p>For the sake of the example, I will assume that you are using a document based database like Mongodb.</p>
+<p>You can approach the problem in couple of ways:</p>
+<h4>Separate languages into different collections</h4>
+<p>Create a collection for each language and query the appropriate collection according to what the client accepts.<br>We will have <code>venues_en</code> collection and also a <code>venues_he</code> collection.</p>
+<p>The obvious down side of this approach is that a lot of the data is being unnecessarily duplicated.</p>
+<h4>Embed the multilingual data in the same document</h4>
+<p>For each field that needs translation in a document (venue in our case), we will embed the multilingual data inside the field. For example :</p>
+<pre><code class="language-js">{
+  &quot;venue_id&quot;: &quot;C001&quot;,
+  &quot;venue_location&quot;: {
+    &quot;en&quot;: &quot;Baker St.&quot;,
+    &quot;he&quot;: &quot;רחוב האופה&quot;
+  }
+  &quot;venue_name&quot;: {
+    &quot;en&quot;: &quot;Aroma Coffee&quot;,
+    &quot;he&quot;: &quot;קפה ארומה&quot;
+  }
+}</code></pre>
+<p>This solves the duplication of fields from the previous approach but adds a little complexity to the object we&#39;re saving.</p>
+<p>I prefer the second method because I think it&#39;s much more scalable. Imagine we need to support 25 different languages. Maintaining all of the duplicate data in the first approach becomes a nightmare. In the second approach we added a single level of hierarchy to the object, not a big deal usually.</p>
+<h3>How will the API serve the data</h3>
+<p>Eventually, after we pull the relevant data that we want to save, we are left with a question of how to serve the data to the client. The easiest way for a bad API will be to just push the data &quot;as is&quot; to the client and let it worry about picking the language and parsing it to display to the user.</p>
+<p>A better API should do the heavy lifting on the server side and will serve the client with normalised data in the language that it requested in the <code>Accept-Language</code> header.</p>
+<h2>Easy implementation in Node.js</h2>
+<p>Here&#39;s a nice and clean way to strip the unnecessary languages from the response and serve only the relevant language to the client.</p>
+<p>I am using a nice node module to <a href="https://github.com/substack/js-traverse">traverse</a> the JSON object and strip it from other languages. Here&#39;s a simple example:</p>
+<p><script src="https://gist.github.com/mderazon/9729626.js"></script>
+The output would be:</p>
+<pre><code class="language-js">{
+  venue_id: &quot;C001&quot;,
+  venue_location: &quot;Baker St.&quot;,
+  venue_name: &quot;Aroma Coffee&quot;
+}</code></pre>
+<p>The <code>filter_language</code> function uses traverse module to go through the object tree and look for keys with the chosen <code>language</code>. If it finds one, it updates the parent&#39;s value to the chosen language value.</p>
+<p>This way, the client doesn&#39;t have to worry about choosing the right language and can focus on displaying the data.</p>
+<p>You can pass the function any json object you want as long as it&#39;s a valid json.</p>
+<h2>Performance</h2>
+<p>Just to give a rough estimation, running 1 million entries of the above sample object through the <code>filter_language</code> function took 29 seconds on my MBA - throughput of 34.4 objects / ms.<br>Running on a much more complex object with around 100 keys and nested objects yielded throughput of 0.6 objects / ms. So if your data contains around 1K complex objects, the overhead of this  will be around 500 ms.</p>
+
+        </section>
+
+        <footer class="post-footer">
+
+            
+                <section class="author">
+                    <h4>Michael Derazon</h4>
+                    <p>undefined</p>
+                </section>
+            
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="http://twitter.com/share?text=Approaches to JSON internationalisation (i18n)&url=/approaches-to-json-internationalisation-i18n"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=/approaches-to-json-internationalisation-i18n"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=/approaches-to-json-internationalisation-i18n"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+        </footer>
+
+    </article>
+
+</main>
+    
+
+    <footer class="site-footer">
+    <a class="subscribe icon-feed" href="/rss/index.xml"><span class="tooltip">Subscribe!</span></a>
+    <div class="inner">
+         <section class="copyright">All content copyright <a href="/">Code and stuff</a> &copy; 2014 &bull; All rights reserved.</section>
+         <section class="poweredby">Proudly published with <a class="" href="http://harpjs.com">Harp</a></section>
+    </div>
+</footer>
+
+    <!-- Ghost outputs important scripts and data with this tag -->
+    <!-- {{ghost_foot}} -->
+
+    <!-- The main JavaScript file for Casper -->
+    <script type="text/javascript" src="/asset/js/jquery.fitvids.js"></script><!-- K: Change back to relative links -->
+    <script type="text/javascript" src="/asset/js/index.js"></script>
+
+</body>
+</html>
