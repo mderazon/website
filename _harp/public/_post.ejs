@@ -7,18 +7,18 @@
         <!-- Everything below outputs content of the the post which has been published -->
         <span class="post-meta"><time datetime="<%- new Date(date).toUTCString() %>"><%- date %></time> on <%- tags %><!-- {{tags prefix="on " separator=" | "}} --></span>
 
-        <h1 class="post-title"><%= title %></h1>
-
-        <section class="post-content">
-            <%- yield %>
-        </section>
-
+        <div id="content-holder" class="<%- tags.toString().replace(/,/g, ' ') %>">
+            <h1 class="post-title"><%= title %></h1>
+            <section class="post-content">
+                <%- yield %>
+            </section>
+        </div>
         <footer class="post-footer">
 
             <% if(author) { %>
                 <section class="author">
                     <h4><%= author.name %></h4>
-                    <p><%= author.bio %></p>
+                    <!-- <p><%= author.bio %></p> -->
                 </section>
             <% } %>
 
