@@ -53,10 +53,10 @@
 
 ##קצת תמונות
 ### בתור במשרד הפנים ב-Secretary Lane
-![image](assets/img/posts/חתונה-אזרחית-בגיברלטר/IMG_1247.JPG)
+![image](IMG_1247.JPG)
 
 ### אחרי הטקס עם ה-Registrar הג׳ינג׳י
-![image](assets/img/posts/חתונה-אזרחית-בגיברלטר/IMG_1357.JPG)
+![image](IMG_1357.JPG)
 
 ##קישורים לאתרים :
 1. האתר הממשלתי להזמנת התעודות - http://www.gov.il/firstgov/

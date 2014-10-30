@@ -3,7 +3,7 @@
     "blog": {
       "title": "Code and stuff",
       "description": "Just a static blog.",
-      "logo": "assets/img/selfie.png",
+      "logo": "/assets/img/selfie.png",
       "cover": false,
       "url": "/"
     },

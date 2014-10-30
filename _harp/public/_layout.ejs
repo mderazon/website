@@ -39,13 +39,13 @@
     <!-- Everything else gets inserted here -->
     <% if(current.source == 'index' && current.path.length == 1) { %>
         <%- yield %>
-    <% } else if(typeof(public._data[current.source])!=='undefined') { %>
-        <%- partial("_post") %>
+    <% } else if(typeof(public._data[current.path[0]])!=='undefined') { %>
+        <%- partial("/_post") %>
     <% } else { %>
-        <%- partial("_page") %>
+        <%- partial("/_page") %>
     <% } %>
 
-    <%- partial("_shared/footer") %>
+    <%- partial("/_shared/footer") %>
     <!-- Ghost outputs important scripts and data with this tag -->
     <!-- {{ghost_foot}} -->
 

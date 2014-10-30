@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
     <!-- Page Meta -->
-    <title>i18n for Node + Express</title>
+    <title>Code and stuff</title>
     <meta name="description" content="Just a static blog." />
 
     <meta name="HandheldFriendly" content="True" />
@@ -34,12 +34,11 @@
 
     </script>
 </head>
-<body class="post-template"><!-- K: body_class variable, home page class is home-template, post is like: post-template tag-getting-started -->
+<body class="home-template"><!-- K: body_class variable, home page class is home-template, post is like: post-template tag-getting-started -->
 
     <!-- Everything else gets inserted here -->
     
         <main class="content" role="main">
-
     <article class="post"><!-- K: {{post_class}}, tags- -->
         <!-- Each post has the blog logo at the top, with a link back to the home page -->
         <!-- Each post has the blog logo at the top, with a link back to the home page -->
@@ -47,7 +46,7 @@
 
     <a class="blog-logo" href="/">
         
-            <img src="assets/img/selfie.png" alt="Blog Logo" />
+            <img src="/assets/img/selfie.png" alt="Blog Logo" />
         
     </a>
     <ul id="social-menu">
@@ -85,61 +84,57 @@
 </header>
 
         <!-- Everything below outputs content of the the post which has been published -->
-        <span class="post-meta"><time datetime="Mon, 25 Nov 2013 22:00:00 GMT">26 Nov 2013</time> on node.js,i18n,express<!-- {{tags prefix="on " separator=" | "}} --></span>
+        
+        <span class="post-meta"><time datetime="Mon, 25 Nov 2013 22:00:00 GMT">26 Nov 2013</time> on android<!-- {{tags prefix="on " separator=" | "}} --></span>
 
-        <div id="content-holder" class="node.js i18n express">
-            <h1 class="post-title">i18n for Node + Express</h1>
+        <div id="content-holder" class="android">
+            <h1 class="post-title">How to create a clearable autocomplete dropdown with AutoCompleteTextView</h1>
             <section class="post-content">
-                <p>In this post i&#39;m going to demonstrate a simple way to add multi language support to a node + express project.</p>
-<h3>Simple server</h3>
-<p>Lets start with a simple server:</p>
-<script src="https://gist.github.com/mderazon/7229439.js"></script>
+                <p>I wanted to create a nice search box with autocomplete results dropdown in the ActionBar. I could have used the <code>SearchView</code> widget but I didn&#39;t want to create a <em>searchable activity</em> and all the necessary overhead. Instead I used a more lightweight approach with <a href="http://developer.android.com/reference/android/widget/AutoCompleteTextView.html">AutoCompleteTextView</a>. I&#39;ll explain here the steps needed to be done in order to make it work.</p>
+<p>My model app was the Gmail app which looks like this :</p>
+<p><img src="http://media.tumblr.com/d39b58c2c78601e7f4b923f556297e02/tumblr_inline_mthuwuMRnH1s1qo9o.png" alt=""></p>
+<h2>Creating the layouts</h2>
+<p>First, lets create the required layouts. Here&#39;s the layout for the search box :</p>
+<script src="https://gist.github.com/mderazon/6653926.js"></script>
 
-<p>We first require <code>express</code>, then we tell express where to look for our templates files. In this case I used <code>ejs</code> as the template engine. I like it because it&#39;s syntax is basically html with special <code>&lt;% ... %&gt;</code> syntax for embedding code from the server. There are other (and more popular) template engines you can chose from.</p>
-<p>In line 7 we add a route for <code>/</code> and tell it to render <code>index.ejs</code>. </p>
-<p>Lets create our <code>index.ejs</code> file under <code>/views</code> dir.</p>
-<script src="https://gist.github.com/mderazon/7229648.js"></script>
+<p>And here is the layout for a single drop down entry : (You can design the layout as you want)</p>
+<script src="https://gist.github.com/mderazon/6653962.js"></script>
 
-<p>Nothing special here, just plain html page. Express guesses what type of template to render by the extension. So when it sees <code>index.ejs</code> it knows it should first pass it through the <code>ejs</code> module to render.</p>
-<h3>Adding translation module</h3>
-<p>Now lets add the i18n functionality. I use <a href="https://github.com/mashpie/i18n-node">i18n-node</a> module. Create another file <code>i18n.js</code> :</p>
-<script src="https://gist.github.com/mderazon/7229824.js"></script>
+<h2>Adding an adapter</h2>
+<p>Now, we need to create an adapter to bridge between our data and the list view that drops down from the search box. In my case, it&#39;s a <code>ArrayAdapter</code> of <code>JSONObject</code>s. The data that I want to display on the dropdown consists of <em>venue name</em> and <em>venue address</em> but obviously it can be anything that you want. </p>
+<p>It&#39;s important that our adapter will also be <a href="http://developer.android.com/reference/android/widget/Filterable.html"><code>Filterable</code></a> so the <code>AutoCompleteTextView</code> could call the <code>getFilter()</code> method to filter the list. </p>
+<p>Here&#39;s the adapter class :</p>
+<script src="https://gist.github.com/mderazon/6654314.js"></script>
 
-<p>First we set up some configurations. By default, i18n module uses <code>accept-language</code> request header to guess language settings. You can tell it to look for a cookie that contains the language if you want. In this case I used a cookie named <code>lang</code>.</p>
-<p>Now lets import our newly created module in our server file:</p>
-<script src="https://gist.github.com/mderazon/7230558.js"></script>
+<p>As you can see we override two methods, the <code>getView()</code> method which is standard for any adapter. It gets called each time the adapter needs to populate another row in the view.<br>We also override <code>getFilter()</code> to return a filter that will take care of narrowing the list each time the user enters another character in the search box.<br>Here is the custom filter class we are using :</p>
+<script src="https://gist.github.com/mderazon/6654170.js"></script>
 
-<p>In line 7 we add the i18n module as middleware. Make sure you put it before any route is defined. What i18n module does is add a special function called <code>__()</code> to the response object. This function takes care of the translation. </p>
-<p>We need to add the translation <code>__()</code> method to the view file as well :</p>
-<script src="https://gist.github.com/mderazon/7230774.js"></script>
+<h2>Taking care of the action bar</h2>
+<p>Now, we want to put the AutoCompleteTextView inside the ActionBar. For backwards compatibility, I am using <a href="http://android-developers.blogspot.co.il/2013/08/actionbarcompat-and-io-2013-app-source.html">ActionBarCompat</a> but you can ActionBarSherlock or no backwards compatibility package at all. Actionbar supports a custom view that you can put in it. We are going to use it to put the AutoCompleteTextView in the action bar.</p>
+<script src="https://gist.github.com/mderazon/6654048.js"></script>
 
+<p>So by now we should have all the core functionality working.<br>There are some more stuff left to do. I&#39;d like the action bar to not show the edit text box all the time and instead appear only when I click on the <em>magnifier</em> icon (just like with the <code>SearchView</code>).</p>
+<h2>Creating a clearable AutoCompleteTextView</h2>
+<p>First, we&#39;re gonna have to create a mechanism for the user to close the search box. Something like this :</p>
+<p><img src="clearable_autocompletetextview.png" alt=""></p>
+<p> <code>AutoCompleteTextView</code> doesn&#39;t come with a dismiss button so lets extend it and add the necessary code.</p>
+<script src="https://gist.github.com/mderazon/6700044.js"></script>
 
+<p>You can see that there&#39;s a default <code>OnClearListener</code> that just clears the text. We&#39;re not going to use it. Instead, we will set a custom clear listener that will toggle between the visibility of the search box and the search icon.</p>
+<p>Lets change <code>MainActivity</code> to use the new text view : </p>
+<script src="https://gist.github.com/mderazon/6749699.js"></script>
 
-<h3>Translation files</h3>
-<p>Now when you run the app, notice that i18n creates a folder in a location we previously defined in <code>i18n.js</code>. This folder will contain the translation files. In my case, I have two locales : <code>en</code> and <code>iw</code> so i18n will create two files :</p>
-<ul>
-<li><code>locales/en.json</code></li>
-<li><code>locales/iw.json</code></li>
-</ul>
-<p>The format is very simple. A valid JSON file that contains <code>&quot;sentence&quot; : &quot;translation&quot;</code> pairs. The first time we try to GET <code>/</code> i18n will automatically populate the files. Since I am using English in my code, i18n will populate <code>en.json</code> with:</p>
-<pre><code>{
-    &quot;Hello i18n&quot;: &quot;Hello i18n&quot;
-}</code></pre>
-<p>I will have to edit <code>iw.json</code> with the translation :</p>
-<pre><code>{
-    &quot;Hello i18n&quot;: &quot;שלום i18n&quot;
-}</code></pre>
-<h3>Results</h3>
-<p>Lets test that everything is working okay. I am using <a href="https://chrome.google.com/webstore/detail/postman-rest-client/fdmmgilgnpjigdojojpjoooidkmcomcm/details?hl=en">Postman</a> (which kicks ass) to call the server. First lets make a call with <code>Accept-Language=en</code> header to see the english version :</p>
-<p><img src="assets/img/posts/i18n-for-node-express/postman-en.png" alt="image"></p>
-<p>Now lets change the header for <code>Accept-Language=iw</code> (iw = Hebrew in case you wondered) :</p>
-<p><img src="assets/img/posts/i18n-for-node-express/postman-iw.png" alt="image"></p>
-<h3>Some notes</h3>
-<ul>
-<li>Use escape <code>\</code> character if you want insert problematic characters : <code>__(&quot;can\&#39;t do that&quot;)</code>. Otherwise nasty things will happen.</li>
-<li>In express <code>2.x</code> you need to specifically add <code>__()</code> function to the locals object. Do it by adding the following line just after <code>i18n.init()</code> in the i18n module :</li>
-</ul>
-<pre><code>res.local(&#39;__&#39;, res.__);</code></pre>
+<p>We replaced <code>AutoCompleteTextView</code> with our new custom <code>ClearableAutoCompleteTextView</code>. We&#39;ve also added listeners to handle clicks on the search icon and clicks on the clear button.</p>
+<p>Showing and hiding the search box requires a set of operations to be performed like showing and hiding the keyboard and requesting focus on the text view. This is all done in &#39;toggleSearch&#39; method.</p>
+<h2>Summary</h2>
+<p>The code is pretty straightforward, using well known and frequently used concepts from Android framework like list adapters, custom views etc.</p>
+<p>The end result looks something like this :</p>
+<h3>closed search box</h3>
+<p><img src="search_box_closed.png" alt=""></p>
+<h3>opened search box</h3>
+<p><img src="search_box_opened.png" alt=""></p>
+<h3>opened search box with autocomplete results</h3>
+<p><img src="search_box_opened_ac.png" alt=""></p>
 
             </section>
         </div>
@@ -154,15 +149,15 @@
 
             <section class="share">
                 <h4>Share this post</h4>
-                <a class="icon-twitter" href="http://twitter.com/share?text=i18n for Node + Express&url=/i18n-for-node-express"
+                <a class="icon-twitter" href="http://twitter.com/share?text=How to create a clearable autocomplete dropdown with AutoCompleteTextView&url=/index"
                     onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
                     <span class="hidden">Twitter</span>
                 </a>
-                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=/i18n-for-node-express"
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=/index"
                     onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
                     <span class="hidden">Facebook</span>
                 </a>
-                <a class="icon-google-plus" href="https://plus.google.com/share?url=/i18n-for-node-express"
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=/index"
                    onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
                     <span class="hidden">Google+</span>
                 </a>

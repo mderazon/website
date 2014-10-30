@@ -59,11 +59,11 @@ I will have to edit `iw.json` with the translation :
 ### Results
 Lets test that everything is working okay. I am using [Postman](https://chrome.google.com/webstore/detail/postman-rest-client/fdmmgilgnpjigdojojpjoooidkmcomcm/details?hl=en) (which kicks ass) to call the server. First lets make a call with `Accept-Language=en` header to see the english version :
 
-![image](assets/img/posts/i18n-for-node-express/postman-en.png)
+![image](postman-en.png)
 
 Now lets change the header for `Accept-Language=iw` (iw = Hebrew in case you wondered) :
 
-![image](assets/img/posts/i18n-for-node-express/postman-iw.png)
+![image](postman-iw.png)
 
 
 

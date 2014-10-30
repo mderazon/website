@@ -42,7 +42,7 @@ There are some more stuff left to do. I'd like the action bar to not show the ed
 ## Creating a clearable AutoCompleteTextView
 First, we're gonna have to create a mechanism for the user to close the search box. Something like this :
 
-![](assets/img/posts/how-to-create-a-clearable-autocomplete-dropdown-with-autocompletetextview/clearable_autocompletetextview.png)
+![](clearable_autocompletetextview.png)
 
  `AutoCompleteTextView` doesn't come with a dismiss button so lets extend it and add the necessary code.
 
@@ -65,14 +65,14 @@ The code is pretty straightforward, using well known and frequently used concept
 The end result looks something like this :
 ### closed search box
 
-![](assets/img/posts/how-to-create-a-clearable-autocomplete-dropdown-with-autocompletetextview/search_box_closed.png)
+![](search_box_closed.png)
 
 ### opened search box
 
-![](assets/img/posts/how-to-create-a-clearable-autocomplete-dropdown-with-autocompletetextview/search_box_opened.png)
+![](search_box_opened.png)
 
 ### opened search box with autocomplete results
 
-![](assets/img/posts/how-to-create-a-clearable-autocomplete-dropdown-with-autocompletetextview/search_box_opened_ac.png)
+![](search_box_opened_ac.png)
 
 

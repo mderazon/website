@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
     <!-- Page Meta -->
-    <title>Passwordless login in mobile apps</title>
+    <title>Code and stuff</title>
     <meta name="description" content="Just a static blog." />
 
     <meta name="HandheldFriendly" content="True" />
@@ -34,12 +34,11 @@
 
     </script>
 </head>
-<body class="post-template"><!-- K: body_class variable, home page class is home-template, post is like: post-template tag-getting-started -->
+<body class="home-template"><!-- K: body_class variable, home page class is home-template, post is like: post-template tag-getting-started -->
 
     <!-- Everything else gets inserted here -->
     
         <main class="content" role="main">
-
     <article class="post"><!-- K: {{post_class}}, tags- -->
         <!-- Each post has the blog logo at the top, with a link back to the home page -->
         <!-- Each post has the blog logo at the top, with a link back to the home page -->
@@ -47,7 +46,7 @@
 
     <a class="blog-logo" href="/">
         
-            <img src="assets/img/selfie.png" alt="Blog Logo" />
+            <img src="/assets/img/selfie.png" alt="Blog Logo" />
         
     </a>
     <ul id="social-menu">
@@ -85,6 +84,7 @@
 </header>
 
         <!-- Everything below outputs content of the the post which has been published -->
+        
         <span class="post-meta"><time datetime="Tue, 28 Oct 2014 22:00:00 GMT">29 Oct 2014</time> on mobile login,authentication<!-- {{tags prefix="on " separator=" | "}} --></span>
 
         <div id="content-holder" class="mobile login authentication">
@@ -114,7 +114,7 @@
 </ol>
 <p>Lets walk through the flow step by step</p>
 <h4>Step 1. Get the user&#39;s email address</h4>
-<p><img src="assets/img/posts/passwordless-login-in-mobile-apps/email_signup.png" alt=""></p>
+<p><img src="email_signup.png" alt=""></p>
 <p>Notice how we don&#39;t have any password field.</p>
 <p>Since it&#39;s a little bit unorthodox you can include a short link explaining why we don&#39;t need a password.</p>
 <p>What happens behind the scenes here ?
@@ -122,11 +122,11 @@
 - The server creates a one time token, saves it in some persistent storage (db / Redis etc). It&#39;s also a good practice to give an expiration to the token (one hour sounds like a good enough time).
 - It then sends an email to the user with an activation link</p>
 <p>After the email is sent, the call returns to the app saying and the user is presented with the following screen:</p>
-<p><img src="assets/img/posts/passwordless-login-in-mobile-apps/email_sent.png" alt=""></p>
+<p><img src="email_sent.png" alt=""></p>
 <h4>Step 2. User gets an email</h4>
 <p>User gets the email we sent on step 1 and opens it.</p>
 <p>The mail can say anything you like but it should contain a button </p>
-<p><img src="assets/img/posts/passwordless-login-in-mobile-apps/email.png" alt=""></p>
+<p><img src="email.png" alt=""></p>
 <p>The &quot;Open app&quot; button contains a <em>deeplink</em> to the app with the token itself. Something like</p>
 <pre><code class="language-html">&lt;a href=&quot;myapp://login?token=...&quot;&gt;Open app&lt;/a&gt;</code></pre>
 <p>You can read about deeplinking on <a href="https://en.wikipedia.org/wiki/Mobile_deep_linking">Wikipedia</a> but basically almost all mobile platforms (Android / iOS included) let you link into your app from other apps by simply opening &quot;deep links&quot;. Intercepting and acting on these deep links is different on each platform and is out of the scope of this post.  </p>
@@ -167,15 +167,15 @@
 
             <section class="share">
                 <h4>Share this post</h4>
-                <a class="icon-twitter" href="http://twitter.com/share?text=Passwordless login in mobile apps&url=/passwordless-login-in-mobile-apps"
+                <a class="icon-twitter" href="http://twitter.com/share?text=Passwordless login in mobile apps&url=/index"
                     onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
                     <span class="hidden">Twitter</span>
                 </a>
-                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=/passwordless-login-in-mobile-apps"
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=/index"
                     onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
                     <span class="hidden">Facebook</span>
                 </a>
-                <a class="icon-google-plus" href="https://plus.google.com/share?url=/passwordless-login-in-mobile-apps"
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=/index"
                    onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
                     <span class="hidden">Google+</span>
                 </a>

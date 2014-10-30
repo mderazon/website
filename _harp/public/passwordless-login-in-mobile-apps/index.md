@@ -31,7 +31,7 @@ Think of it as taking the "Reset password" mechanism and making it the main flow
 Lets walk through the flow step by step
 
 #### Step 1. Get the user's email address
-![](assets/img/posts/passwordless-login-in-mobile-apps/email_signup.png)
+![](email_signup.png)
 
 Notice how we don't have any password field.
 
@@ -44,14 +44,14 @@ What happens behind the scenes here ?
 
 After the email is sent, the call returns to the app saying and the user is presented with the following screen:
 
-![](assets/img/posts/passwordless-login-in-mobile-apps/email_sent.png)
+![](email_sent.png)
 
 #### Step 2. User gets an email
 User gets the email we sent on step 1 and opens it.
 
 The mail can say anything you like but it should contain a button 
 
-![](assets/img/posts/passwordless-login-in-mobile-apps/email.png)
+![](email.png)
 
 The "Open app" button contains a *deeplink* to the app with the token itself. Something like
 ``` html
