@@ -34,7 +34,8 @@
 
     </script>
 </head>
-<body class="<% if(current.source == 'index') { %>home-template<% } else { %>post-template<% } %>"><!-- K: body_class variable, home page class is home-template, post is like: post-template tag-getting-started -->
+
+<body class="<% if(current.path.length === 1 && current.source == 'index') { %>home-template<% } else { %>post-template<% } %>"><!-- K: body_class variable, home page class is home-template, post is like: post-template tag-getting-started -->
 
     <!-- Everything else gets inserted here -->
     <% if(current.source == 'index' && current.path.length == 1) { %>
