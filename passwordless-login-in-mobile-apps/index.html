@@ -94,19 +94,20 @@
                 <p>This post is not very technical. Other than occasionally mentioning &quot;client / server&quot; it doesn&#39;t talk about any specific framework / language. Instead, it tries to explain the overall flow and behaviour of passwordless login in mobile apps.</p>
 <p>I might add some additional framework specific code examples later but for now it&#39;s mostly ideas.</p>
 <h2>Traditional login</h2>
-<p>Our app has always had an option to sign up with a social account - Facebook and Google+.<br>We started with social sign up because we thought it would make the log in process easy on the user. We quickly found out that people don&#39;t like logging in with their social accounts, I think it&#39;s due to bad reputation of apps posting all kind of junk on behalf of the user. The situation has changed since and most of the login providers have given a lot of control back to the users but the trust was broken and it&#39;s not going to be easy to fix it again.</p>
+<p>Our app has always had an option to sign up with a social account - Facebook and Google+.<br>We started with social sign up because we thought it would make the log in process easy for the user. We quickly found out that people don&#39;t like logging in with their social accounts, I think it&#39;s due to bad reputation of apps posting all kind of junk on behalf of the user. The situation has changed since and most of the login providers have given a lot of privacy control back to the users but the bad rep is still there.</p>
 <p><strong>I was mostly tired of the usual email sign up flow which usually consists of the following separate flows</strong>:</p>
 <ol>
-<li>Show a page with input field for email and password. Since the password is masked, need to either add another &quot;validate password&quot; input field or give the user an option to unmask the password to make sure he got it right</li>
-<li>If you want to make sure the emails is real (not all apps need this step), you need to send a verification mail to the user.</li>
-<li>Need to supply a &quot;forgot my password&quot; flow.</li>
-<li>Need to enforce a password policy most of the times, so people won&#39;t put <code>1234</code> or <code>password</code> as their password (optional, but recommended).</li>
+<li>Show a page with input field for email and password. Since the password is masked, need to either add another &quot;validate password&quot; input field or give the users an option to unmask the password to make sure they got it right.</li>
+<li>If you want to make sure the email address is real (not all apps need this step), you need to send a verification email to the user.</li>
+<li>Need to build a &quot;forgot my password&quot; flow.</li>
+<li>Need to enforce some kind of password policy, so people won&#39;t put <code>1234</code> or <code>password</code> as their password (optional, but recommended).</li>
 </ol>
 <p>This is <strong>quite an overhead</strong> for just letting people use your app.</p>
 <h2>Passwordless login</h2>
-<p>I was looking for a simpler solution when I came across a <a href="https://hacks.mozilla.org/2014/10/passwordless-authentication-secure-simple-and-fast-to-deploy/">nice blog post</a> by Mozilla engineers. The idea is nice:<br>Why let people create crappy and insecure passwords to access your service when you can leverage other services that they have like gmail / outlook that already have a secure authentication system, probably better than what you can afford to build. The added value is that they won&#39;t need to remember a new password.</p>
+<p>I was looking for a simpler solution when I came across a <a href="https://hacks.mozilla.org/2014/10/passwordless-authentication-secure-simple-and-fast-to-deploy/">nice blog post</a> by Mozilla engineers. The idea is this:<br>Why let people create crappy and insecure passwords to access your service when you can leverage other services that they have like gmail / outlook that already have a secure authentication system, probably better than what you can afford to build. The added value is that they won&#39;t need to remember a new password.</p>
+<p>I took the idea in the blog and added a little twist to adjust it to mobile apps</p>
 <h3>How does it work ?</h3>
-<p>Think of it as taking the &quot;Reset password&quot; mechanism and making it the main flow to authenticate. In an nutshell:</p>
+<p>Think of it as taking the &quot;Reset password&quot; flow and making it the main flow to authenticate. In an nutshell:</p>
 <ol>
 <li>User enters an email address</li>
 <li>An email with a one time token link is sent to the user.</li>
@@ -130,9 +131,9 @@
 <p><img src="email.png" alt=""></p>
 <p>The &quot;Open app&quot; button contains a <em>deeplink</em> to the app with the token itself. Something like</p>
 <pre><code class="language-html">&lt;a href=&quot;myapp://login?token=...&quot;&gt;Open app&lt;/a&gt;</code></pre>
-<p>You can read about deeplinking on <a href="https://en.wikipedia.org/wiki/Mobile_deep_linking">Wikipedia</a> but basically almost all mobile platforms (Android / iOS included) let you link into your app from other apps by simply opening &quot;deep links&quot;. Intercepting and acting on these deep links is different on each platform and is out of the scope of this post.  </p>
+<p>You can learn about deeplinking on <a href="https://en.wikipedia.org/wiki/Mobile_deep_linking">Wikipedia</a>. Basically, almost all mobile platforms (Android / iOS included) let you link into your app from other apps by simply opening &quot;deep links&quot;. Intercepting and acting on these deep links is different on each platform and is out of the scope of this post.  </p>
 <h5>One important comment about this step:</h5>
-<p>Some email providers, Gmail most noticeably, don&#39;t let you put links with non standard schemas (like <code>myapp://</code>) in html anchor <code>&lt;a&gt;</code> elements.</p>
+<p>Some email providers, Gmail most noticeably, don&#39;t let you put links with non standard url schemes (like <code>myapp://</code>) in html anchor <code>&lt;a&gt;</code> elements.</p>
 <p>One easy way of circumventing this is to use the server as a proxy that redirects to the actual deep link url:<br>just create the following endpoint on the server:</p>
 <pre><code>GET /login</code></pre>
 <p>Then the link can point there:</p>
@@ -140,20 +141,21 @@
 <p>Which results in a <code>3xx</code> redirect from the server to <code>myapp://login?token=...</code></p>
 <p>For really short second the user&#39;s mobile browser is opened but immediately after that the app opens up.</p>
 <h4>Step 3. User clicked the link in the email</h4>
-<p>So, let&#39;s assme the user opened your app from the deep link and you extracted the token from that link url param.</p>
+<p>So, let&#39;s assume the user opened your app from the deep link and you extracted the token from that link url param.</p>
 <h5>What should I do with the token ?</h5>
 <p>Once you have a token, you use it to call the server and authenticate the user. On the server side you need to check that the token is valid and that it hadn&#39;t been used before and perhaps check that it&#39;s not expired.</p>
 <h4>Step 4. User is authenticated</h4>
 <p>At this point you validated the token and all looks well, it&#39;s a good time to create a session for the user for future calls so that the user won&#39;t have to authenticate again.</p>
 <p>You can use any method for handling sessions like cookies / headers etc. </p>
 <h2>Conclusion</h2>
-<p>From a user flow perspective, this system is much more smooth. Let&#39;s look at what we&#39;ve achieved:</p>
+<p>From a user flow perspective, this method is much more smooth. Let&#39;s look at what we&#39;ve achieved:</p>
 <ol>
 <li>User only needs to put an email address in the sign up page. To make it even easier, we can pre-fill that email field for the user by extracting it from the device.</li>
 <li>User doesn&#39;t need to think of / remember a password for yet another service.</li>
-<li>With deep linking, the process can&#39;t get any simpler - put email address --&gt; open mail --&gt; click the activation link --&gt; back to the app, authenticated.</li>
+<li>In mobile apps, with deep linking, the process can&#39;t get any easier for the user - put email address --&gt; open mail --&gt; click the activation link --&gt; authenticated.</li>
 <li>We leveraged a 3rd party service like Gmail to do the authentication for us and thus making it more secure as we don&#39;t need to store any hashed passwords in the backend.</li>
 </ol>
+<p>If you want to check out how it works in a real app, download CUPS - Unlimited coffee for <a href="https://play.google.com/store/apps/details?id=com.citylifeapps.cups&amp;hl=en">Android</a> / <a href="https://itunes.apple.com/us/app/cups-unlimited-coffee/id556462755?mt=8">iOS</a> (shameless plug :)  </p>
 
             </section>
         </div>
