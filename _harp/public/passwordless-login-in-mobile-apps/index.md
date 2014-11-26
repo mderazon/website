@@ -63,7 +63,7 @@ The "Open app" button contains a *deeplink* to the app with the token itself. So
 You can learn about deeplinking on [Wikipedia](https://en.wikipedia.org/wiki/Mobile_deep_linking). Basically, almost all mobile platforms (Android / iOS included) let you link into your app from other apps by simply opening "deep links". Intercepting and acting on these deep links is different on each platform and is out of the scope of this post.  
 
 ##### One important comment about this step:
-Some email providers, Gmail most noticeably, don't let you put links with non standard url schemes (like `myapp://`) in html anchor `<a>` elements.
+Some email providers, Gmail most notably, don't let you put links with non standard url schemes (like `myapp://`) in html anchor `<a>` elements.
 
 One easy way of circumventing this is to use the server as a proxy that redirects to the actual deep link url:  
 just create the following endpoint on the server:
@@ -103,5 +103,5 @@ From a user flow perspective, this method is much more smooth. Let's look at wha
 4. We leveraged a 3rd party service like Gmail to do the authentication for us and thus making it more secure as we don't need to store any hashed passwords in the backend.
 
 
-If you want to check out how it works in a real app, download CUPS - Unlimited coffee for [Android](https://play.google.com/store/apps/details?id=com.citylifeapps.cups&hl=en) / [iOS](https://itunes.apple.com/us/app/cups-unlimited-coffee/id556462755?mt=8) (shameless plug :)  
+If you want to check out how it works in a real app, download CUPS - Unlimited Coffee for [Android](https://play.google.com/store/apps/details?id=com.citylifeapps.cups&hl=en) / [iOS](https://itunes.apple.com/us/app/cups-unlimited-coffee/id556462755?mt=8) (shameless plug :)  
 

@@ -133,7 +133,7 @@
 <pre><code class="language-html">&lt;a href=&quot;myapp://login?token=...&quot;&gt;Open app&lt;/a&gt;</code></pre>
 <p>You can learn about deeplinking on <a href="https://en.wikipedia.org/wiki/Mobile_deep_linking">Wikipedia</a>. Basically, almost all mobile platforms (Android / iOS included) let you link into your app from other apps by simply opening &quot;deep links&quot;. Intercepting and acting on these deep links is different on each platform and is out of the scope of this post.  </p>
 <h5>One important comment about this step:</h5>
-<p>Some email providers, Gmail most noticeably, don&#39;t let you put links with non standard url schemes (like <code>myapp://</code>) in html anchor <code>&lt;a&gt;</code> elements.</p>
+<p>Some email providers, Gmail most notably, don&#39;t let you put links with non standard url schemes (like <code>myapp://</code>) in html anchor <code>&lt;a&gt;</code> elements.</p>
 <p>One easy way of circumventing this is to use the server as a proxy that redirects to the actual deep link url:<br>just create the following endpoint on the server:</p>
 <pre><code>GET /login</code></pre>
 <p>Then the link can point there:</p>
@@ -155,7 +155,7 @@
 <li>In mobile apps, with deep linking, the process can&#39;t get any easier for the user - put email address --&gt; open mail --&gt; click the activation link --&gt; authenticated.</li>
 <li>We leveraged a 3rd party service like Gmail to do the authentication for us and thus making it more secure as we don&#39;t need to store any hashed passwords in the backend.</li>
 </ol>
-<p>If you want to check out how it works in a real app, download CUPS - Unlimited coffee for <a href="https://play.google.com/store/apps/details?id=com.citylifeapps.cups&amp;hl=en">Android</a> / <a href="https://itunes.apple.com/us/app/cups-unlimited-coffee/id556462755?mt=8">iOS</a> (shameless plug :)  </p>
+<p>If you want to check out how it works in a real app, download CUPS - Unlimited Coffee for <a href="https://play.google.com/store/apps/details?id=com.citylifeapps.cups&amp;hl=en">Android</a> / <a href="https://itunes.apple.com/us/app/cups-unlimited-coffee/id556462755?mt=8">iOS</a> (shameless plug :)  </p>
 
             </section>
         </div>
