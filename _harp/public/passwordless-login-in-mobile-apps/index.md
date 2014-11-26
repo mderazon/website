@@ -7,7 +7,7 @@ I might add some additional framework specific code examples later but for now i
 Our app has always had an option to sign up with a social account - Facebook and Google+.   
 We started with social sign up because we thought it would make the log in process easy for the user. We quickly found out that people don't like logging in with their social accounts, I think it's due to bad reputation of apps posting all kind of junk on behalf of the user. The situation has changed since and most of the login providers have given a lot of privacy control back to the users but the bad rep is still there.
 
-**I was mostly tired of the usual email sign up flow which usually consists of the following separate flows**:
+**I was mostly tired of the worn out email sign up flow which usually consists of the following separate flows**:
 
 1. Show a page with input field for email and password. Since the password is masked, need to either add another "validate password" input field or give the users an option to unmask the password to make sure they got it right.
 2. If you want to make sure the email address is real (not all apps need this step), you need to send a verification email to the user.
