@@ -91,11 +91,12 @@
         <div id="content-holder" class="mobile login authentication">
             <h1 class="post-title">Passwordless login in mobile apps</h1>
             <section class="post-content">
-                <p>This post is not very technical. Other than occasionally mentioning &quot;client / server&quot; it doesn&#39;t talk about any specific framework / language. Instead, it tries to explain the overall flow and behaviour of passwordless login in mobile apps.</p>
+                <p>This post touches some problems with traditional email logins in mobile apps and suggests a different approach to handle login without requiring the user to enter any password.</p>
+<p>The post is not very technical. Other than occasionally mentioning &quot;client / server&quot; it doesn&#39;t talk about any specific framework / language. Instead, it tries to explain the overall flow and behaviour of passwordless login in mobile apps.</p>
 <p>I might add some additional framework specific code examples later but for now it&#39;s mostly ideas.</p>
 <h2>Traditional login</h2>
 <p>Our app has always had an option to sign up with a social account - Facebook and Google+.<br>We started with social sign up because we thought it would make the log in process easy for the user. We quickly found out that people don&#39;t like logging in with their social accounts, I think it&#39;s due to bad reputation of apps posting all kind of junk on behalf of the user. The situation has changed since and most of the login providers have given a lot of privacy control back to the users but the bad rep is still there.</p>
-<p><strong>I was mostly tired of the worn out email sign up flow which usually consists of the following separate flows</strong>:</p>
+<p><strong>I was mostly tired of the worn out email sign up flow which usually consists of the following separate requirements</strong>:</p>
 <ol>
 <li>Show a page with input field for email and password. Since the password is masked, need to either add another &quot;validate password&quot; input field or give the users an option to unmask the password to make sure they got it right.</li>
 <li>If you want to make sure the email address is real (not all apps need this step), you need to send a verification email to the user.</li>
@@ -117,8 +118,8 @@
 <p>Lets walk through the flow step by step</p>
 <h4>Step 1. Get the user&#39;s email address</h4>
 <p><img src="email_signup.png" alt=""></p>
-<p>Notice how we don&#39;t have any password field.</p>
-<p>Since it&#39;s a little bit unorthodox you can include a short link explaining why we don&#39;t need a password.</p>
+<p>Notice the absence of a password field.</p>
+<p>Since it&#39;s a little bit unorthodox I&#39;ve included a short link explaining why we don&#39;t need a password.</p>
 <p>What happens behind the scenes here ?
 - After hitting &quot;Continue&quot;, a call to the server is made with the name and the email address of the user. 
 - The server creates a one time token, saves it in some persistent storage (db / Redis etc). It&#39;s also a good practice to give an expiration to the token (one hour sounds like a good enough time).
