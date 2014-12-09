@@ -52,7 +52,7 @@ After the email is sent, the call returns to the app saying and the user is pres
 #### Step 2. User gets an email
 User gets the email we sent on step 1 and opens it.
 
-The mail can say anything you like but it should contain a button 
+The mail can say anything you like but it should have a clear call to action, like this button.
 
 ![](email.png)
 
