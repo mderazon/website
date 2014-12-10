@@ -38,14 +38,12 @@ Lets walk through the flow step by step
 
 Notice the absence of a password field.
 
-Since it's a little bit unorthodox I've included a short link explaining why we don't need a password.
-
 What happens behind the scenes here ?
 - After hitting "Continue", a call to the server is made with the name and the email address of the user. 
 - The server creates a one time token, saves it in some persistent storage (db / Redis etc). It's also a good practice to give an expiration to the token (one hour sounds like a good enough time).
 - It then sends an email to the user with an activation link
 
-After the email is sent, the call returns to the app saying and the user is presented with the following screen:
+After the email is sent, the call from the server returns back and the user is presented with the following screen:
 
 ![](email_sent.png)
 

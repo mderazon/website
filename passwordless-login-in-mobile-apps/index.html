@@ -119,12 +119,11 @@
 <h4>Step 1. Get the user&#39;s email address</h4>
 <p><img src="email_signup.png" alt=""></p>
 <p>Notice the absence of a password field.</p>
-<p>Since it&#39;s a little bit unorthodox I&#39;ve included a short link explaining why we don&#39;t need a password.</p>
 <p>What happens behind the scenes here ?
 - After hitting &quot;Continue&quot;, a call to the server is made with the name and the email address of the user. 
 - The server creates a one time token, saves it in some persistent storage (db / Redis etc). It&#39;s also a good practice to give an expiration to the token (one hour sounds like a good enough time).
 - It then sends an email to the user with an activation link</p>
-<p>After the email is sent, the call returns to the app saying and the user is presented with the following screen:</p>
+<p>After the email is sent, the call from the server returns back and the user is presented with the following screen:</p>
 <p><img src="email_sent.png" alt=""></p>
 <h4>Step 2. User gets an email</h4>
 <p>User gets the email we sent on step 1 and opens it.</p>
