@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Node.Js on Code and stuff</title>
+    <link>https://drzon.net/tags/node.js/index.xml</link>
+    <description>Recent content in Node.Js on Code and stuff</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>All rights reserved - 2017</copyright>
+    <atom:link href="https://drzon.net/tags/node.js/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>i18n for Node &#43; Express</title>
+      <link>https://drzon.net/posts/i18n-for-node-express</link>
+      <pubDate>Tue, 26 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://drzon.net/posts/i18n-for-node-express</guid>
+      <description>
+
+&lt;p&gt;In this post i&amp;rsquo;m going to demonstrate a simple way to add multi language support to a node + express project.&lt;/p&gt;
+
+&lt;h3 id=&#34;simple-server&#34;&gt;Simple server&lt;/h3&gt;
+
+&lt;p&gt;Lets start with a simple server:&lt;/p&gt;
+
+&lt;script src=&#34;https://gist.github.com/mderazon/7229439.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;We first require &lt;code&gt;express&lt;/code&gt;, then we tell express where to look for our templates files. In this case I used &lt;code&gt;ejs&lt;/code&gt; as the template engine. I like it because it&amp;rsquo;s syntax is basically html with special &lt;code&gt;&amp;lt;% ... %&amp;gt;&lt;/code&gt; syntax for embedding code from the server. There are other (and more popular) template engines you can chose from.&lt;/p&gt;
+
+&lt;p&gt;In line 7 we add a route for &lt;code&gt;/&lt;/code&gt; and tell it to render &lt;code&gt;index.ejs&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Lets create our &lt;code&gt;index.ejs&lt;/code&gt; file under &lt;code&gt;/views&lt;/code&gt; dir.&lt;/p&gt;
+
+&lt;script src=&#34;https://gist.github.com/mderazon/7229648.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;Nothing special here, just plain html page. Express guesses what type of template to render by the extension. So when it sees &lt;code&gt;index.ejs&lt;/code&gt; it knows it should first pass it through the &lt;code&gt;ejs&lt;/code&gt; module to render.&lt;/p&gt;
+
+&lt;h3 id=&#34;adding-translation-module&#34;&gt;Adding translation module&lt;/h3&gt;
+
+&lt;p&gt;Now lets add the i18n functionality. I use &lt;a href=&#34;https://github.com/mashpie/i18n-node&#34;&gt;i18n-node&lt;/a&gt; module. Create another file &lt;code&gt;i18n.js&lt;/code&gt; :&lt;/p&gt;
+
+&lt;script src=&#34;https://gist.github.com/mderazon/7229824.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;First we set up some configurations. By default, i18n module uses &lt;code&gt;accept-language&lt;/code&gt; request header to guess language settings. You can tell it to look for a cookie that contains the language if you want. In this case I used a cookie named &lt;code&gt;lang&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Now lets import our newly created module in our server file:&lt;/p&gt;
+
+&lt;script src=&#34;https://gist.github.com/mderazon/7230558.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;In line 7 we add the i18n module as middleware. Make sure you put it before any route is defined. What i18n module does is add a special function called &lt;code&gt;__()&lt;/code&gt; to the response object. This function takes care of the translation.&lt;/p&gt;
+
+&lt;p&gt;We need to add the translation &lt;code&gt;__()&lt;/code&gt; method to the view file as well :
+&lt;script src=&#34;https://gist.github.com/mderazon/7230774.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;translation-files&#34;&gt;Translation files&lt;/h3&gt;
+
+&lt;p&gt;Now when you run the app, notice that i18n creates a folder in a location we previously defined in &lt;code&gt;i18n.js&lt;/code&gt;. This folder will contain the translation files. In my case, I have two locales : &lt;code&gt;en&lt;/code&gt; and &lt;code&gt;iw&lt;/code&gt; so i18n will create two files :&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;locales/en.json&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;locales/iw.json&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The format is very simple. A valid JSON file that contains &lt;code&gt;&amp;quot;sentence&amp;quot; : &amp;quot;translation&amp;quot;&lt;/code&gt; pairs. The first time we try to GET &lt;code&gt;/&lt;/code&gt; i18n will automatically populate the files. Since I am using English in my code, i18n will populate &lt;code&gt;en.json&lt;/code&gt; with:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+	&amp;quot;Hello i18n&amp;quot;: &amp;quot;Hello i18n&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I will have to edit &lt;code&gt;iw.json&lt;/code&gt; with the translation :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+	&amp;quot;Hello i18n&amp;quot;: &amp;quot;שלום i18n&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;results&#34;&gt;Results&lt;/h3&gt;
+
+&lt;p&gt;Lets test that everything is working okay. I am using &lt;a href=&#34;https://chrome.google.com/webstore/detail/postman-rest-client/fdmmgilgnpjigdojojpjoooidkmcomcm/details?hl=en&#34;&gt;Postman&lt;/a&gt; (which kicks ass) to call the server. First lets make a call with &lt;code&gt;Accept-Language=en&lt;/code&gt; header to see the english version :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/postman-en.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now lets change the header for &lt;code&gt;Accept-Language=iw&lt;/code&gt; (iw = Hebrew in case you wondered) :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/postman-iw.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;###Some notes&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Use escape &lt;code&gt;\&lt;/code&gt; character if you want insert problematic characters : &lt;code&gt;__(&amp;quot;can\&#39;t do that&amp;quot;)&lt;/code&gt;. Otherwise nasty things will happen.&lt;/li&gt;
+&lt;li&gt;In express &lt;code&gt;2.x&lt;/code&gt; you need to specifically add &lt;code&gt;__()&lt;/code&gt; function to the locals object. Do it by adding the following line just after &lt;code&gt;i18n.init()&lt;/code&gt; in the i18n module :&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;res.local(&#39;__&#39;, res.__);
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

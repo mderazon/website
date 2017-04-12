@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Android on Code and stuff</title>
+    <link>https://drzon.net/tags/android/index.xml</link>
+    <description>Recent content in Android on Code and stuff</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>All rights reserved - 2017</copyright>
+    <atom:link href="https://drzon.net/tags/android/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>How to create a clearable autocomplete dropdown with AutoCompleteTextView</title>
+      <link>https://drzon.net/posts/how-to-create-a-clearable-autocomplete-dropdown-with-autocompletetextview</link>
+      <pubDate>Tue, 26 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://drzon.net/posts/how-to-create-a-clearable-autocomplete-dropdown-with-autocompletetextview</guid>
+      <description>
+
+&lt;p&gt;I wanted to create a nice search box with autocomplete results dropdown in the ActionBar. I could have used the &lt;code&gt;SearchView&lt;/code&gt; widget but I didn&amp;rsquo;t want to create a &lt;em&gt;searchable activity&lt;/em&gt; and all the necessary overhead. Instead I used a more lightweight approach with &lt;a href=&#34;http://developer.android.com/reference/android/widget/AutoCompleteTextView.html&#34;&gt;AutoCompleteTextView&lt;/a&gt;. I&amp;rsquo;ll explain here the steps needed to be done in order to make it work.&lt;/p&gt;
+
+&lt;p&gt;My model app was the Gmail app which looks like this :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/final.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;creating-the-layouts&#34;&gt;Creating the layouts&lt;/h2&gt;
+
+&lt;p&gt;First, lets create the required layouts. Here&amp;rsquo;s the layout for the search box :&lt;/p&gt;
+
+&lt;script src=&#34;https://gist.github.com/mderazon/6653926.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;And here is the layout for a single drop down entry : (You can design the layout as you want)&lt;/p&gt;
+
+&lt;script src=&#34;https://gist.github.com/mderazon/6653962.js&#34;&gt;&lt;/script&gt;
+
+&lt;h2 id=&#34;adding-an-adapter&#34;&gt;Adding an adapter&lt;/h2&gt;
+
+&lt;p&gt;Now, we need to create an adapter to bridge between our data and the list view that drops down from the search box. In my case, it&amp;rsquo;s a &lt;code&gt;ArrayAdapter&lt;/code&gt; of &lt;code&gt;JSONObject&lt;/code&gt;s. The data that I want to display on the dropdown consists of &lt;em&gt;venue name&lt;/em&gt; and &lt;em&gt;venue address&lt;/em&gt; but obviously it can be anything that you want.&lt;/p&gt;
+
+&lt;p&gt;It&amp;rsquo;s important that our adapter will also be &lt;a href=&#34;http://developer.android.com/reference/android/widget/Filterable.html&#34;&gt;&lt;code&gt;Filterable&lt;/code&gt;&lt;/a&gt; so the &lt;code&gt;AutoCompleteTextView&lt;/code&gt; could call the &lt;code&gt;getFilter()&lt;/code&gt; method to filter the list.&lt;/p&gt;
+
+&lt;p&gt;Here&amp;rsquo;s the adapter class :&lt;/p&gt;
+
+&lt;script src=&#34;https://gist.github.com/mderazon/6654314.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;As you can see we override two methods, the &lt;code&gt;getView()&lt;/code&gt; method which is standard for any adapter. It gets called each time the adapter needs to populate another row in the view.
+We also override &lt;code&gt;getFilter()&lt;/code&gt; to return a filter that will take care of narrowing the list each time the user enters another character in the search box.
+Here is the custom filter class we are using :&lt;/p&gt;
+
+&lt;script src=&#34;https://gist.github.com/mderazon/6654170.js&#34;&gt;&lt;/script&gt;
+
+&lt;h2 id=&#34;taking-care-of-the-action-bar&#34;&gt;Taking care of the action bar&lt;/h2&gt;
+
+&lt;p&gt;Now, we want to put the AutoCompleteTextView inside the ActionBar. For backwards compatibility, I am using &lt;a href=&#34;http://android-developers.blogspot.co.il/2013/08/actionbarcompat-and-io-2013-app-source.html&#34;&gt;ActionBarCompat&lt;/a&gt; but you can ActionBarSherlock or no backwards compatibility package at all. Actionbar supports a custom view that you can put in it. We are going to use it to put the AutoCompleteTextView in the action bar.&lt;/p&gt;
+
+&lt;script src=&#34;https://gist.github.com/mderazon/6654048.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;So by now we should have all the core functionality working.
+There are some more stuff left to do. I&amp;rsquo;d like the action bar to not show the edit text box all the time and instead appear only when I click on the &lt;em&gt;magnifier&lt;/em&gt; icon (just like with the &lt;code&gt;SearchView&lt;/code&gt;).&lt;/p&gt;
+
+&lt;h2 id=&#34;creating-a-clearable-autocompletetextview&#34;&gt;Creating a clearable AutoCompleteTextView&lt;/h2&gt;
+
+&lt;p&gt;First, we&amp;rsquo;re gonna have to create a mechanism for the user to close the search box. Something like this :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/clearable-autocompletetextview.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;AutoCompleteTextView&lt;/code&gt; doesn&amp;rsquo;t come with a dismiss button so lets extend it and add the necessary code.&lt;/p&gt;
+
+&lt;script src=&#34;https://gist.github.com/mderazon/6700044.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;You can see that there&amp;rsquo;s a default &lt;code&gt;OnClearListener&lt;/code&gt; that just clears the text. We&amp;rsquo;re not going to use it. Instead, we will set a custom clear listener that will toggle between the visibility of the search box and the search icon.&lt;/p&gt;
+
+&lt;p&gt;Lets change &lt;code&gt;MainActivity&lt;/code&gt; to use the new text view :&lt;/p&gt;
+
+&lt;script src=&#34;https://gist.github.com/mderazon/6749699.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;We replaced &lt;code&gt;AutoCompleteTextView&lt;/code&gt; with our new custom &lt;code&gt;ClearableAutoCompleteTextView&lt;/code&gt;. We&amp;rsquo;ve also added listeners to handle clicks on the search icon and clicks on the clear button.&lt;/p&gt;
+
+&lt;p&gt;Showing and hiding the search box requires a set of operations to be performed like showing and hiding the keyboard and requesting focus on the text view. This is all done in &amp;lsquo;toggleSearch&amp;rsquo; method.&lt;/p&gt;
+
+&lt;h2 id=&#34;summary&#34;&gt;Summary&lt;/h2&gt;
+
+&lt;p&gt;The code is pretty straightforward, using well known and frequently used concepts from Android framework like list adapters, custom views etc.&lt;/p&gt;
+
+&lt;p&gt;The end result looks something like this :&lt;/p&gt;
+
+&lt;h3 id=&#34;closed-search-box&#34;&gt;closed search box&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/search-box-closed.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;opened-search-box&#34;&gt;opened search box&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/search-box-opened.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;opened-search-box-with-autocomplete-results&#34;&gt;opened search box with autocomplete results&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/search-box-opened-ac.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Api on Code and stuff</title>
+    <link>https://drzon.net/tags/api/index.xml</link>
+    <description>Recent content in Api on Code and stuff</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>All rights reserved - 2017</copyright>
+    <atom:link href="https://drzon.net/tags/api/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Approaches to JSON internationalisation (i18n)</title>
+      <link>https://drzon.net/posts/approaches-to-json-internationalisation-i18n</link>
+      <pubDate>Sun, 23 Mar 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://drzon.net/posts/approaches-to-json-internationalisation-i18n</guid>
+      <description>
+
+&lt;p&gt;I needed to create an API that is capable of serving objects with strings in more than one language. Let me present the problem with an example.&lt;/p&gt;
+
+&lt;p&gt;Lets assume that we have a web app or a mobile client that wants to get information about coffee shops around the city. Also, lets assume also that we are going to have to support two languages, &lt;em&gt;English&lt;/em&gt; and &lt;em&gt;Hebrew&lt;/em&gt; (I know, right ?).&lt;/p&gt;
+
+&lt;p&gt;So one client will like to get the information in English:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-js&#34;&gt;{
+  &amp;quot;venue_id&amp;quot;: &amp;quot;C001&amp;quot;,
+  &amp;quot;venue_location&amp;quot;: &amp;quot;Baker St.&amp;quot;
+  &amp;quot;venue_name&amp;quot;: &amp;quot;Aroma Coffee&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And another client will like to get the information in Hebrew:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-js&#34;&gt;{
+  &amp;quot;venue_id&amp;quot;: &amp;quot;C001&amp;quot;,
+  &amp;quot;venue_location&amp;quot;: &amp;quot;רחוב האופה&amp;quot;
+  &amp;quot;venue_name&amp;quot;: &amp;quot;קפה ארומה&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The two main questions i&amp;rsquo;m interested in are :&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;How do I store the data in the db ?&lt;/li&gt;
+&lt;li&gt;How will the API serve the data in the right language ?&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Lets talk about both of them&lt;/p&gt;
+
+&lt;h3 id=&#34;how-to-store-the-multilingual-data&#34;&gt;How to store the multilingual data&lt;/h3&gt;
+
+&lt;p&gt;For the sake of the example, I will assume that you are using a document based database like Mongodb.&lt;/p&gt;
+
+&lt;p&gt;You can approach the problem in couple of ways:&lt;/p&gt;
+
+&lt;h4 id=&#34;separate-languages-into-different-collections&#34;&gt;Separate languages into different collections&lt;/h4&gt;
+
+&lt;p&gt;Create a collection for each language and query the appropriate collection according to what the client accepts.
+We will have &lt;code&gt;venues_en&lt;/code&gt; collection and also a &lt;code&gt;venues_he&lt;/code&gt; collection.&lt;/p&gt;
+
+&lt;p&gt;The obvious down side of this approach is that a lot of the data is being unnecessarily duplicated.&lt;/p&gt;
+
+&lt;h4 id=&#34;embed-the-multilingual-data-in-the-same-document&#34;&gt;Embed the multilingual data in the same document&lt;/h4&gt;
+
+&lt;p&gt;For each field that needs translation in a document (venue in our case), we will embed the multilingual data inside the field. For example :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-js&#34;&gt;{
+  &amp;quot;venue_id&amp;quot;: &amp;quot;C001&amp;quot;,
+  &amp;quot;venue_location&amp;quot;: {
+    &amp;quot;en&amp;quot;: &amp;quot;Baker St.&amp;quot;,
+    &amp;quot;he&amp;quot;: &amp;quot;רחוב האופה&amp;quot;
+  }
+  &amp;quot;venue_name&amp;quot;: {
+    &amp;quot;en&amp;quot;: &amp;quot;Aroma Coffee&amp;quot;,
+    &amp;quot;he&amp;quot;: &amp;quot;קפה ארומה&amp;quot;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This solves the duplication of fields from the previous approach but adds a little complexity to the object we&amp;rsquo;re saving.&lt;/p&gt;
+
+&lt;p&gt;I prefer the second method because I think it&amp;rsquo;s much more scalable. Imagine we need to support 25 different languages. Maintaining all of the duplicate data in the first approach becomes a nightmare. In the second approach we added a single level of hierarchy to the object, not a big deal usually.&lt;/p&gt;
+
+&lt;h3 id=&#34;how-will-the-api-serve-the-data&#34;&gt;How will the API serve the data&lt;/h3&gt;
+
+&lt;p&gt;Eventually, after we pull the relevant data that we want to save, we are left with a question of how to serve the data to the client. The easiest way for a bad API will be to just push the data &amp;ldquo;as is&amp;rdquo; to the client and let it worry about picking the language and parsing it to display to the user.&lt;/p&gt;
+
+&lt;p&gt;A better API should do the heavy lifting on the server side and will serve the client with normalised data in the language that it requested in the &lt;code&gt;Accept-Language&lt;/code&gt; header.&lt;/p&gt;
+
+&lt;h2 id=&#34;easy-implementation-in-node-js&#34;&gt;Easy implementation in Node.js&lt;/h2&gt;
+
+&lt;p&gt;Here&amp;rsquo;s a nice and clean way to strip the unnecessary languages from the response and serve only the relevant language to the client.&lt;/p&gt;
+
+&lt;p&gt;I am using a nice node module to &lt;a href=&#34;https://github.com/substack/js-traverse&#34;&gt;traverse&lt;/a&gt; the JSON object and strip it from other languages. Here&amp;rsquo;s a simple example:&lt;/p&gt;
+
+&lt;p&gt;&lt;script src=&#34;https://gist.github.com/mderazon/9729626.js&#34;&gt;&lt;/script&gt;
+The output would be:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-js&#34;&gt;{
+  venue_id: &amp;quot;C001&amp;quot;,
+  venue_location: &amp;quot;Baker St.&amp;quot;,
+  venue_name: &amp;quot;Aroma Coffee&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The &lt;code&gt;filter_language&lt;/code&gt; function uses traverse module to go through the object tree and look for keys with the chosen &lt;code&gt;language&lt;/code&gt;. If it finds one, it updates the parent&amp;rsquo;s value to the chosen language value.&lt;/p&gt;
+
+&lt;p&gt;This way, the client doesn&amp;rsquo;t have to worry about choosing the right language and can focus on displaying the data.&lt;/p&gt;
+
+&lt;p&gt;You can pass the function any json object you want as long as it&amp;rsquo;s a valid json.&lt;/p&gt;
+
+&lt;h2 id=&#34;performance&#34;&gt;Performance&lt;/h2&gt;
+
+&lt;p&gt;Just to give a rough estimation, running 1 million entries of the above sample object through the &lt;code&gt;filter_language&lt;/code&gt; function took 29 seconds on my MBA - throughput of 34.4 objects / ms.
+Running on a much more complex object with around 100 keys and nested objects yielded throughput of 0.6 objects / ms. So if your data contains around 1K complex objects, the overhead of this  will be around 500 ms.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

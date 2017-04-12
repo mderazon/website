@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Google Sheets on Code and stuff</title>
+    <link>https://drzon.net/tags/google-sheets/index.xml</link>
+    <description>Recent content in Google Sheets on Code and stuff</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>All rights reserved - 2017</copyright>
+    <atom:link href="https://drzon.net/tags/google-sheets/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Export all Google Sheets to csv</title>
+      <link>https://drzon.net/posts/export-all-google-sheets-to-csv</link>
+      <pubDate>Wed, 26 Mar 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://drzon.net/posts/export-all-google-sheets-to-csv</guid>
+      <description>&lt;p&gt;I had a Google Apps spreadsheet with around 40 sheets. Wanted to export them to &lt;code&gt;csv&lt;/code&gt;. Unfortunately Google only lets you export one sheet at a time.&lt;/p&gt;
+
+&lt;p&gt;Here&amp;rsquo;s a script that exports all sheets in a spreadsheet to &lt;code&gt;csv&lt;/code&gt;&lt;/p&gt;
+
+&lt;script src=&#34;https://gist.github.com/mderazon/9655893.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;To use, click on tools &amp;ndash;&amp;gt; script editor. Then create a new blank script and paste the code there.&lt;/p&gt;
+
+&lt;p&gt;Click on the play button (run) and go back to your spreadsheet. You should then see the csv in the spreadsheet menu&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

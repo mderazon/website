@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mobile Login on Code and stuff</title>
+    <link>https://drzon.net/tags/mobile-login/index.xml</link>
+    <description>Recent content in Mobile Login on Code and stuff</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>All rights reserved - 2017</copyright>
+    <atom:link href="https://drzon.net/tags/mobile-login/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Passwordless login in mobile apps</title>
+      <link>https://drzon.net/posts/passwordless-login-in-mobile-apps</link>
+      <pubDate>Wed, 29 Oct 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://drzon.net/posts/passwordless-login-in-mobile-apps</guid>
+      <description>
+
+&lt;p&gt;This post touches some problems with traditional email logins in mobile apps and suggests a different approach to handle login without requiring the user to enter any password.&lt;/p&gt;
+
+&lt;p&gt;The post is not very technical. Other than occasionally mentioning &amp;ldquo;client / server&amp;rdquo; it doesn&amp;rsquo;t talk about any specific framework / language. Instead, it tries to explain the overall flow and behaviour of passwordless login in mobile apps.&lt;/p&gt;
+
+&lt;p&gt;I might add some additional framework specific code examples later but for now it&amp;rsquo;s mostly ideas.&lt;/p&gt;
+
+&lt;h2 id=&#34;traditional-login&#34;&gt;Traditional login&lt;/h2&gt;
+
+&lt;p&gt;Our app has always had an option to sign up with a social account - Facebook and Google+.
+We started with social sign up because we thought it would make the log in process easy for the user. We quickly found out that people don&amp;rsquo;t like logging in with their social accounts, I think it&amp;rsquo;s due to bad reputation of apps posting all kind of junk on behalf of the user. The situation has changed since and most of the login providers have given a lot of privacy control back to the users but the bad rep is still there.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;I was mostly tired of the worn out email sign up flow which usually consists of the following separate requirements&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Show a page with input field for email and password. Since the password is masked, need to either add another &amp;ldquo;validate password&amp;rdquo; input field or give the users an option to unmask the password to make sure they got it right.&lt;/li&gt;
+&lt;li&gt;If you want to make sure the email address is real (not all apps need this step), you need to send a verification email to the user.&lt;/li&gt;
+&lt;li&gt;Need to build a &amp;ldquo;forgot my password&amp;rdquo; flow.&lt;/li&gt;
+&lt;li&gt;Need to enforce some kind of password policy, so people won&amp;rsquo;t put &lt;code&gt;1234&lt;/code&gt; or &lt;code&gt;password&lt;/code&gt; as their password (optional, but recommended).&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;This is &lt;strong&gt;quite an overhead&lt;/strong&gt; for just letting people use your app.&lt;/p&gt;
+
+&lt;h2 id=&#34;passwordless-login&#34;&gt;Passwordless login&lt;/h2&gt;
+
+&lt;p&gt;I was looking for a simpler solution when I came across a &lt;a href=&#34;https://hacks.mozilla.org/2014/10/passwordless-authentication-secure-simple-and-fast-to-deploy/&#34;&gt;nice blog post&lt;/a&gt; by Mozilla engineers. The idea is this:
+Why let people create crappy and insecure passwords to access your service when you can leverage other services that they have like gmail / outlook that already have a secure authentication system, probably better than what you can afford to build. The added value is that they won&amp;rsquo;t need to remember a new password.&lt;/p&gt;
+
+&lt;p&gt;I took the idea in the blog and added a little twist to adjust it to mobile apps&lt;/p&gt;
+
+&lt;h3 id=&#34;how-does-it-work&#34;&gt;How does it work ?&lt;/h3&gt;
+
+&lt;p&gt;Think of it as taking the &amp;ldquo;Reset password&amp;rdquo; flow and making it the main flow to authenticate. In an nutshell:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;User enters an email address&lt;/li&gt;
+&lt;li&gt;An email with a one time token link is sent to the user.&lt;/li&gt;
+&lt;li&gt;User clicks the link in the mail&lt;/li&gt;
+&lt;li&gt;User is authenticated.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Lets walk through the flow step by step&lt;/p&gt;
+
+&lt;h4 id=&#34;step-1-get-the-user-s-email-address&#34;&gt;Step 1. Get the user&amp;rsquo;s email address&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/email-signup.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Notice the absence of a password field.&lt;/p&gt;
+
+&lt;p&gt;What happens behind the scenes here ?
+- After hitting &amp;ldquo;Continue&amp;rdquo;, a call to the server is made with the name and the email address of the user.
+- The server creates a one time token, saves it in some persistent storage (db / Redis etc). It&amp;rsquo;s also a good practice to give an expiration to the token (one hour sounds like a good enough time).
+- It then sends an email to the user with an activation link&lt;/p&gt;
+
+&lt;p&gt;After the email is sent, the call from the server returns back and the user is presented with the following screen:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/email-sent.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;step-2-user-gets-an-email&#34;&gt;Step 2. User gets an email&lt;/h4&gt;
+
+&lt;p&gt;User gets the email we sent on step 1 and opens it.&lt;/p&gt;
+
+&lt;p&gt;The mail can say anything you like but it should have a clear call to action, like this button.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/email.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The &amp;ldquo;Open app&amp;rdquo; button contains a &lt;em&gt;deeplink&lt;/em&gt; to the app with the token itself. Something like&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;a href=&amp;quot;myapp://login?token=...&amp;quot;&amp;gt;Open app&amp;lt;/a&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can learn about deeplinking on &lt;a href=&#34;https://en.wikipedia.org/wiki/Mobile_deep_linking&#34;&gt;Wikipedia&lt;/a&gt;. Basically, almost all mobile platforms (Android / iOS included) let you link into your app from other apps by simply opening &amp;ldquo;deep links&amp;rdquo;. Intercepting and acting on these deep links is different on each platform and is out of the scope of this post.&lt;/p&gt;
+
+&lt;h5 id=&#34;one-important-comment-about-this-step&#34;&gt;One important comment about this step:&lt;/h5&gt;
+
+&lt;p&gt;Some email providers, Gmail most notably, don&amp;rsquo;t let you put links with non standard url schemes (like &lt;code&gt;myapp://&lt;/code&gt;) in html anchor &lt;code&gt;&amp;lt;a&amp;gt;&lt;/code&gt; elements.&lt;/p&gt;
+
+&lt;p&gt;One easy way of circumventing this is to use the server as a proxy that redirects to the actual deep link url:
+just create the following endpoint on the server:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;GET /login
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Then the link can point there:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;a href=&amp;quot;https://api.myserver.com/login?token=...&amp;quot;&amp;gt;Open app&amp;lt;/a&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Which results in a &lt;code&gt;3xx&lt;/code&gt; redirect from the server to &lt;code&gt;myapp://login?token=...&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;For really short second the user&amp;rsquo;s mobile browser is opened but immediately after that the app opens up.&lt;/p&gt;
+
+&lt;h4 id=&#34;step-3-user-clicked-the-link-in-the-email&#34;&gt;Step 3. User clicked the link in the email&lt;/h4&gt;
+
+&lt;p&gt;So, let&amp;rsquo;s assume the user opened your app from the deep link and you extracted the token from that link url param.&lt;/p&gt;
+
+&lt;h5 id=&#34;what-should-i-do-with-the-token&#34;&gt;What should I do with the token ?&lt;/h5&gt;
+
+&lt;p&gt;Once you have a token, you use it to call the server and authenticate the user. On the server side you need to check that the token is valid and that it hadn&amp;rsquo;t been used before and perhaps check that it&amp;rsquo;s not expired.&lt;/p&gt;
+
+&lt;h4 id=&#34;step-4-user-is-authenticated&#34;&gt;Step 4. User is authenticated&lt;/h4&gt;
+
+&lt;p&gt;At this point you validated the token and all looks well, it&amp;rsquo;s a good time to create a session for the user for future calls so that the user won&amp;rsquo;t have to authenticate again.&lt;/p&gt;
+
+&lt;p&gt;You can use any method for handling sessions like cookies / headers etc.&lt;/p&gt;
+
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;From a user flow perspective, this method is much more smooth. Let&amp;rsquo;s look at what we&amp;rsquo;ve achieved:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;User only needs to put an email address in the sign up page. To make it even easier, we can pre-fill that email field for the user by extracting it from the device.&lt;/li&gt;
+&lt;li&gt;User doesn&amp;rsquo;t need to think of / remember a password for yet another service.&lt;/li&gt;
+&lt;li&gt;In mobile apps, with deep linking, the process can&amp;rsquo;t get any easier for the user - put email address &amp;ndash;&amp;gt; open mail &amp;ndash;&amp;gt; click the activation link &amp;ndash;&amp;gt; authenticated.&lt;/li&gt;
+&lt;li&gt;We leveraged a 3rd party service like Gmail to do the authentication for us and thus making it more secure as we don&amp;rsquo;t need to store any hashed passwords in the backend.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;If you want to check out how it works in a real app, download CUPS - Unlimited Coffee for &lt;a href=&#34;https://play.google.com/store/apps/details?id=com.citylifeapps.cups&amp;amp;hl=en&#34;&gt;Android&lt;/a&gt; / &lt;a href=&#34;https://itunes.apple.com/us/app/cups-unlimited-coffee/id556462755?mt=8&#34;&gt;iOS&lt;/a&gt; (shameless plug :)&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

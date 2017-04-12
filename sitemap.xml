@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <url>
+    <loc>https://drzon.net/posts/passwordless-login-in-mobile-apps</loc>
+    <lastmod>2014-10-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://drzon.net/posts/export-all-google-sheets-to-csv</loc>
+    <lastmod>2014-03-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://drzon.net/posts/approaches-to-json-internationalisation-i18n</loc>
+    <lastmod>2014-03-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://drzon.net/posts/export-mongodb-collections-to-csv-without-specifying-fields</loc>
+    <lastmod>2013-12-31T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://drzon.net/posts/how-to-create-a-clearable-autocomplete-dropdown-with-autocompletetextview</loc>
+    <lastmod>2013-11-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://drzon.net/posts/i18n-for-node-express</loc>
+    <lastmod>2013-11-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://drzon.net/posts/%D7%97%D7%AA%D7%95%D7%A0%D7%94-%D7%90%D7%96%D7%A8%D7%97%D7%99%D7%AA-%D7%91%D7%92%D7%99%D7%91%D7%A8%D7%9C%D7%98%D7%A8</loc>
+    <lastmod>2013-11-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://drzon.net/tags/android/</loc>
+    <lastmod>2013-11-26T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://drzon.net/tags/api/</loc>
+    <lastmod>2014-03-23T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://drzon.net/tags/authentication/</loc>
+    <lastmod>2014-10-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://drzon.net/tags/civil-wedding/</loc>
+    <lastmod>2013-11-26T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://drzon.net/</loc>
+    <lastmod>2014-10-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://drzon.net/tags/csv/</loc>
+    <lastmod>2014-03-26T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://drzon.net/tags/express/</loc>
+    <lastmod>2013-11-26T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://drzon.net/tags/google-sheets/</loc>
+    <lastmod>2014-03-26T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://drzon.net/tags/hebrew/</loc>
+    <lastmod>2013-11-26T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://drzon.net/tags/i18n/</loc>
+    <lastmod>2014-03-23T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://drzon.net/tags/json/</loc>
+    <lastmod>2014-03-23T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://drzon.net/tags/marriage/</loc>
+    <lastmod>2013-11-26T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://drzon.net/tags/mobile-login/</loc>
+    <lastmod>2014-10-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://drzon.net/tags/mongodb/</loc>
+    <lastmod>2013-12-31T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://drzon.net/tags/mongoexport/</loc>
+    <lastmod>2013-12-31T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://drzon.net/tags/node/index.js/</loc>
+    <lastmod>2013-11-26T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://drzon.net/post/</loc>
+    <lastmod>2014-10-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://drzon.net/tags/</loc>
+    <priority>0</priority>
+  </url>
+  
+</urlset>

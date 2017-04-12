@@ -1,0 +1,556 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Code and stuff</title>
+    <link>https://drzon.net/index.xml</link>
+    <description>Recent content on Code and stuff</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>All rights reserved - 2017</copyright>
+    <lastBuildDate>Wed, 29 Oct 2014 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://drzon.net/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Passwordless login in mobile apps</title>
+      <link>https://drzon.net/posts/passwordless-login-in-mobile-apps</link>
+      <pubDate>Wed, 29 Oct 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://drzon.net/posts/passwordless-login-in-mobile-apps</guid>
+      <description>
+
+&lt;p&gt;This post touches some problems with traditional email logins in mobile apps and suggests a different approach to handle login without requiring the user to enter any password.&lt;/p&gt;
+
+&lt;p&gt;The post is not very technical. Other than occasionally mentioning &amp;ldquo;client / server&amp;rdquo; it doesn&amp;rsquo;t talk about any specific framework / language. Instead, it tries to explain the overall flow and behaviour of passwordless login in mobile apps.&lt;/p&gt;
+
+&lt;p&gt;I might add some additional framework specific code examples later but for now it&amp;rsquo;s mostly ideas.&lt;/p&gt;
+
+&lt;h2 id=&#34;traditional-login&#34;&gt;Traditional login&lt;/h2&gt;
+
+&lt;p&gt;Our app has always had an option to sign up with a social account - Facebook and Google+.
+We started with social sign up because we thought it would make the log in process easy for the user. We quickly found out that people don&amp;rsquo;t like logging in with their social accounts, I think it&amp;rsquo;s due to bad reputation of apps posting all kind of junk on behalf of the user. The situation has changed since and most of the login providers have given a lot of privacy control back to the users but the bad rep is still there.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;I was mostly tired of the worn out email sign up flow which usually consists of the following separate requirements&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Show a page with input field for email and password. Since the password is masked, need to either add another &amp;ldquo;validate password&amp;rdquo; input field or give the users an option to unmask the password to make sure they got it right.&lt;/li&gt;
+&lt;li&gt;If you want to make sure the email address is real (not all apps need this step), you need to send a verification email to the user.&lt;/li&gt;
+&lt;li&gt;Need to build a &amp;ldquo;forgot my password&amp;rdquo; flow.&lt;/li&gt;
+&lt;li&gt;Need to enforce some kind of password policy, so people won&amp;rsquo;t put &lt;code&gt;1234&lt;/code&gt; or &lt;code&gt;password&lt;/code&gt; as their password (optional, but recommended).&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;This is &lt;strong&gt;quite an overhead&lt;/strong&gt; for just letting people use your app.&lt;/p&gt;
+
+&lt;h2 id=&#34;passwordless-login&#34;&gt;Passwordless login&lt;/h2&gt;
+
+&lt;p&gt;I was looking for a simpler solution when I came across a &lt;a href=&#34;https://hacks.mozilla.org/2014/10/passwordless-authentication-secure-simple-and-fast-to-deploy/&#34;&gt;nice blog post&lt;/a&gt; by Mozilla engineers. The idea is this:
+Why let people create crappy and insecure passwords to access your service when you can leverage other services that they have like gmail / outlook that already have a secure authentication system, probably better than what you can afford to build. The added value is that they won&amp;rsquo;t need to remember a new password.&lt;/p&gt;
+
+&lt;p&gt;I took the idea in the blog and added a little twist to adjust it to mobile apps&lt;/p&gt;
+
+&lt;h3 id=&#34;how-does-it-work&#34;&gt;How does it work ?&lt;/h3&gt;
+
+&lt;p&gt;Think of it as taking the &amp;ldquo;Reset password&amp;rdquo; flow and making it the main flow to authenticate. In an nutshell:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;User enters an email address&lt;/li&gt;
+&lt;li&gt;An email with a one time token link is sent to the user.&lt;/li&gt;
+&lt;li&gt;User clicks the link in the mail&lt;/li&gt;
+&lt;li&gt;User is authenticated.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Lets walk through the flow step by step&lt;/p&gt;
+
+&lt;h4 id=&#34;step-1-get-the-user-s-email-address&#34;&gt;Step 1. Get the user&amp;rsquo;s email address&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/email-signup.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Notice the absence of a password field.&lt;/p&gt;
+
+&lt;p&gt;What happens behind the scenes here ?
+- After hitting &amp;ldquo;Continue&amp;rdquo;, a call to the server is made with the name and the email address of the user.
+- The server creates a one time token, saves it in some persistent storage (db / Redis etc). It&amp;rsquo;s also a good practice to give an expiration to the token (one hour sounds like a good enough time).
+- It then sends an email to the user with an activation link&lt;/p&gt;
+
+&lt;p&gt;After the email is sent, the call from the server returns back and the user is presented with the following screen:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/email-sent.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;step-2-user-gets-an-email&#34;&gt;Step 2. User gets an email&lt;/h4&gt;
+
+&lt;p&gt;User gets the email we sent on step 1 and opens it.&lt;/p&gt;
+
+&lt;p&gt;The mail can say anything you like but it should have a clear call to action, like this button.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/email.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The &amp;ldquo;Open app&amp;rdquo; button contains a &lt;em&gt;deeplink&lt;/em&gt; to the app with the token itself. Something like&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;a href=&amp;quot;myapp://login?token=...&amp;quot;&amp;gt;Open app&amp;lt;/a&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can learn about deeplinking on &lt;a href=&#34;https://en.wikipedia.org/wiki/Mobile_deep_linking&#34;&gt;Wikipedia&lt;/a&gt;. Basically, almost all mobile platforms (Android / iOS included) let you link into your app from other apps by simply opening &amp;ldquo;deep links&amp;rdquo;. Intercepting and acting on these deep links is different on each platform and is out of the scope of this post.&lt;/p&gt;
+
+&lt;h5 id=&#34;one-important-comment-about-this-step&#34;&gt;One important comment about this step:&lt;/h5&gt;
+
+&lt;p&gt;Some email providers, Gmail most notably, don&amp;rsquo;t let you put links with non standard url schemes (like &lt;code&gt;myapp://&lt;/code&gt;) in html anchor &lt;code&gt;&amp;lt;a&amp;gt;&lt;/code&gt; elements.&lt;/p&gt;
+
+&lt;p&gt;One easy way of circumventing this is to use the server as a proxy that redirects to the actual deep link url:
+just create the following endpoint on the server:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;GET /login
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Then the link can point there:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;a href=&amp;quot;https://api.myserver.com/login?token=...&amp;quot;&amp;gt;Open app&amp;lt;/a&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Which results in a &lt;code&gt;3xx&lt;/code&gt; redirect from the server to &lt;code&gt;myapp://login?token=...&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;For really short second the user&amp;rsquo;s mobile browser is opened but immediately after that the app opens up.&lt;/p&gt;
+
+&lt;h4 id=&#34;step-3-user-clicked-the-link-in-the-email&#34;&gt;Step 3. User clicked the link in the email&lt;/h4&gt;
+
+&lt;p&gt;So, let&amp;rsquo;s assume the user opened your app from the deep link and you extracted the token from that link url param.&lt;/p&gt;
+
+&lt;h5 id=&#34;what-should-i-do-with-the-token&#34;&gt;What should I do with the token ?&lt;/h5&gt;
+
+&lt;p&gt;Once you have a token, you use it to call the server and authenticate the user. On the server side you need to check that the token is valid and that it hadn&amp;rsquo;t been used before and perhaps check that it&amp;rsquo;s not expired.&lt;/p&gt;
+
+&lt;h4 id=&#34;step-4-user-is-authenticated&#34;&gt;Step 4. User is authenticated&lt;/h4&gt;
+
+&lt;p&gt;At this point you validated the token and all looks well, it&amp;rsquo;s a good time to create a session for the user for future calls so that the user won&amp;rsquo;t have to authenticate again.&lt;/p&gt;
+
+&lt;p&gt;You can use any method for handling sessions like cookies / headers etc.&lt;/p&gt;
+
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;From a user flow perspective, this method is much more smooth. Let&amp;rsquo;s look at what we&amp;rsquo;ve achieved:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;User only needs to put an email address in the sign up page. To make it even easier, we can pre-fill that email field for the user by extracting it from the device.&lt;/li&gt;
+&lt;li&gt;User doesn&amp;rsquo;t need to think of / remember a password for yet another service.&lt;/li&gt;
+&lt;li&gt;In mobile apps, with deep linking, the process can&amp;rsquo;t get any easier for the user - put email address &amp;ndash;&amp;gt; open mail &amp;ndash;&amp;gt; click the activation link &amp;ndash;&amp;gt; authenticated.&lt;/li&gt;
+&lt;li&gt;We leveraged a 3rd party service like Gmail to do the authentication for us and thus making it more secure as we don&amp;rsquo;t need to store any hashed passwords in the backend.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;If you want to check out how it works in a real app, download CUPS - Unlimited Coffee for &lt;a href=&#34;https://play.google.com/store/apps/details?id=com.citylifeapps.cups&amp;amp;hl=en&#34;&gt;Android&lt;/a&gt; / &lt;a href=&#34;https://itunes.apple.com/us/app/cups-unlimited-coffee/id556462755?mt=8&#34;&gt;iOS&lt;/a&gt; (shameless plug :)&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Export all Google Sheets to csv</title>
+      <link>https://drzon.net/posts/export-all-google-sheets-to-csv</link>
+      <pubDate>Wed, 26 Mar 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://drzon.net/posts/export-all-google-sheets-to-csv</guid>
+      <description>&lt;p&gt;I had a Google Apps spreadsheet with around 40 sheets. Wanted to export them to &lt;code&gt;csv&lt;/code&gt;. Unfortunately Google only lets you export one sheet at a time.&lt;/p&gt;
+
+&lt;p&gt;Here&amp;rsquo;s a script that exports all sheets in a spreadsheet to &lt;code&gt;csv&lt;/code&gt;&lt;/p&gt;
+
+&lt;script src=&#34;https://gist.github.com/mderazon/9655893.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;To use, click on tools &amp;ndash;&amp;gt; script editor. Then create a new blank script and paste the code there.&lt;/p&gt;
+
+&lt;p&gt;Click on the play button (run) and go back to your spreadsheet. You should then see the csv in the spreadsheet menu&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Approaches to JSON internationalisation (i18n)</title>
+      <link>https://drzon.net/posts/approaches-to-json-internationalisation-i18n</link>
+      <pubDate>Sun, 23 Mar 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://drzon.net/posts/approaches-to-json-internationalisation-i18n</guid>
+      <description>
+
+&lt;p&gt;I needed to create an API that is capable of serving objects with strings in more than one language. Let me present the problem with an example.&lt;/p&gt;
+
+&lt;p&gt;Lets assume that we have a web app or a mobile client that wants to get information about coffee shops around the city. Also, lets assume also that we are going to have to support two languages, &lt;em&gt;English&lt;/em&gt; and &lt;em&gt;Hebrew&lt;/em&gt; (I know, right ?).&lt;/p&gt;
+
+&lt;p&gt;So one client will like to get the information in English:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-js&#34;&gt;{
+  &amp;quot;venue_id&amp;quot;: &amp;quot;C001&amp;quot;,
+  &amp;quot;venue_location&amp;quot;: &amp;quot;Baker St.&amp;quot;
+  &amp;quot;venue_name&amp;quot;: &amp;quot;Aroma Coffee&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And another client will like to get the information in Hebrew:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-js&#34;&gt;{
+  &amp;quot;venue_id&amp;quot;: &amp;quot;C001&amp;quot;,
+  &amp;quot;venue_location&amp;quot;: &amp;quot;רחוב האופה&amp;quot;
+  &amp;quot;venue_name&amp;quot;: &amp;quot;קפה ארומה&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The two main questions i&amp;rsquo;m interested in are :&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;How do I store the data in the db ?&lt;/li&gt;
+&lt;li&gt;How will the API serve the data in the right language ?&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Lets talk about both of them&lt;/p&gt;
+
+&lt;h3 id=&#34;how-to-store-the-multilingual-data&#34;&gt;How to store the multilingual data&lt;/h3&gt;
+
+&lt;p&gt;For the sake of the example, I will assume that you are using a document based database like Mongodb.&lt;/p&gt;
+
+&lt;p&gt;You can approach the problem in couple of ways:&lt;/p&gt;
+
+&lt;h4 id=&#34;separate-languages-into-different-collections&#34;&gt;Separate languages into different collections&lt;/h4&gt;
+
+&lt;p&gt;Create a collection for each language and query the appropriate collection according to what the client accepts.
+We will have &lt;code&gt;venues_en&lt;/code&gt; collection and also a &lt;code&gt;venues_he&lt;/code&gt; collection.&lt;/p&gt;
+
+&lt;p&gt;The obvious down side of this approach is that a lot of the data is being unnecessarily duplicated.&lt;/p&gt;
+
+&lt;h4 id=&#34;embed-the-multilingual-data-in-the-same-document&#34;&gt;Embed the multilingual data in the same document&lt;/h4&gt;
+
+&lt;p&gt;For each field that needs translation in a document (venue in our case), we will embed the multilingual data inside the field. For example :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-js&#34;&gt;{
+  &amp;quot;venue_id&amp;quot;: &amp;quot;C001&amp;quot;,
+  &amp;quot;venue_location&amp;quot;: {
+    &amp;quot;en&amp;quot;: &amp;quot;Baker St.&amp;quot;,
+    &amp;quot;he&amp;quot;: &amp;quot;רחוב האופה&amp;quot;
+  }
+  &amp;quot;venue_name&amp;quot;: {
+    &amp;quot;en&amp;quot;: &amp;quot;Aroma Coffee&amp;quot;,
+    &amp;quot;he&amp;quot;: &amp;quot;קפה ארומה&amp;quot;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This solves the duplication of fields from the previous approach but adds a little complexity to the object we&amp;rsquo;re saving.&lt;/p&gt;
+
+&lt;p&gt;I prefer the second method because I think it&amp;rsquo;s much more scalable. Imagine we need to support 25 different languages. Maintaining all of the duplicate data in the first approach becomes a nightmare. In the second approach we added a single level of hierarchy to the object, not a big deal usually.&lt;/p&gt;
+
+&lt;h3 id=&#34;how-will-the-api-serve-the-data&#34;&gt;How will the API serve the data&lt;/h3&gt;
+
+&lt;p&gt;Eventually, after we pull the relevant data that we want to save, we are left with a question of how to serve the data to the client. The easiest way for a bad API will be to just push the data &amp;ldquo;as is&amp;rdquo; to the client and let it worry about picking the language and parsing it to display to the user.&lt;/p&gt;
+
+&lt;p&gt;A better API should do the heavy lifting on the server side and will serve the client with normalised data in the language that it requested in the &lt;code&gt;Accept-Language&lt;/code&gt; header.&lt;/p&gt;
+
+&lt;h2 id=&#34;easy-implementation-in-node-js&#34;&gt;Easy implementation in Node.js&lt;/h2&gt;
+
+&lt;p&gt;Here&amp;rsquo;s a nice and clean way to strip the unnecessary languages from the response and serve only the relevant language to the client.&lt;/p&gt;
+
+&lt;p&gt;I am using a nice node module to &lt;a href=&#34;https://github.com/substack/js-traverse&#34;&gt;traverse&lt;/a&gt; the JSON object and strip it from other languages. Here&amp;rsquo;s a simple example:&lt;/p&gt;
+
+&lt;p&gt;&lt;script src=&#34;https://gist.github.com/mderazon/9729626.js&#34;&gt;&lt;/script&gt;
+The output would be:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-js&#34;&gt;{
+  venue_id: &amp;quot;C001&amp;quot;,
+  venue_location: &amp;quot;Baker St.&amp;quot;,
+  venue_name: &amp;quot;Aroma Coffee&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The &lt;code&gt;filter_language&lt;/code&gt; function uses traverse module to go through the object tree and look for keys with the chosen &lt;code&gt;language&lt;/code&gt;. If it finds one, it updates the parent&amp;rsquo;s value to the chosen language value.&lt;/p&gt;
+
+&lt;p&gt;This way, the client doesn&amp;rsquo;t have to worry about choosing the right language and can focus on displaying the data.&lt;/p&gt;
+
+&lt;p&gt;You can pass the function any json object you want as long as it&amp;rsquo;s a valid json.&lt;/p&gt;
+
+&lt;h2 id=&#34;performance&#34;&gt;Performance&lt;/h2&gt;
+
+&lt;p&gt;Just to give a rough estimation, running 1 million entries of the above sample object through the &lt;code&gt;filter_language&lt;/code&gt; function took 29 seconds on my MBA - throughput of 34.4 objects / ms.
+Running on a much more complex object with around 100 keys and nested objects yielded throughput of 0.6 objects / ms. So if your data contains around 1K complex objects, the overhead of this  will be around 500 ms.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Export mongodb collections to csv without specifying fields</title>
+      <link>https://drzon.net/posts/export-mongodb-collections-to-csv-without-specifying-fields</link>
+      <pubDate>Tue, 31 Dec 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://drzon.net/posts/export-mongodb-collections-to-csv-without-specifying-fields</guid>
+      <description>&lt;p&gt;Sometimes you might want to export your Mongodb database in &lt;code&gt;csv&lt;/code&gt; format. If you have many collections, it can be a bit of a hassle since &lt;a href=&#34;http://docs.mongodb.org/v2.2/reference/mongoexport/&#34;&gt;mongoexport&lt;/a&gt; requires you to specify each field you want to be exported with the &lt;code&gt;--fields&lt;/code&gt; attribute and you have to do it for each collection seperately.&lt;/p&gt;
+
+&lt;p&gt;Here&amp;rsquo;s a little bash script that will do the work for you.&lt;/p&gt;
+
+&lt;script src=&#34;https://gist.github.com/mderazon/8201991.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;Result is a &lt;code&gt;.csv&lt;/code&gt; file for each collection you have in your db.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>How to create a clearable autocomplete dropdown with AutoCompleteTextView</title>
+      <link>https://drzon.net/posts/how-to-create-a-clearable-autocomplete-dropdown-with-autocompletetextview</link>
+      <pubDate>Tue, 26 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://drzon.net/posts/how-to-create-a-clearable-autocomplete-dropdown-with-autocompletetextview</guid>
+      <description>
+
+&lt;p&gt;I wanted to create a nice search box with autocomplete results dropdown in the ActionBar. I could have used the &lt;code&gt;SearchView&lt;/code&gt; widget but I didn&amp;rsquo;t want to create a &lt;em&gt;searchable activity&lt;/em&gt; and all the necessary overhead. Instead I used a more lightweight approach with &lt;a href=&#34;http://developer.android.com/reference/android/widget/AutoCompleteTextView.html&#34;&gt;AutoCompleteTextView&lt;/a&gt;. I&amp;rsquo;ll explain here the steps needed to be done in order to make it work.&lt;/p&gt;
+
+&lt;p&gt;My model app was the Gmail app which looks like this :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/final.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;creating-the-layouts&#34;&gt;Creating the layouts&lt;/h2&gt;
+
+&lt;p&gt;First, lets create the required layouts. Here&amp;rsquo;s the layout for the search box :&lt;/p&gt;
+
+&lt;script src=&#34;https://gist.github.com/mderazon/6653926.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;And here is the layout for a single drop down entry : (You can design the layout as you want)&lt;/p&gt;
+
+&lt;script src=&#34;https://gist.github.com/mderazon/6653962.js&#34;&gt;&lt;/script&gt;
+
+&lt;h2 id=&#34;adding-an-adapter&#34;&gt;Adding an adapter&lt;/h2&gt;
+
+&lt;p&gt;Now, we need to create an adapter to bridge between our data and the list view that drops down from the search box. In my case, it&amp;rsquo;s a &lt;code&gt;ArrayAdapter&lt;/code&gt; of &lt;code&gt;JSONObject&lt;/code&gt;s. The data that I want to display on the dropdown consists of &lt;em&gt;venue name&lt;/em&gt; and &lt;em&gt;venue address&lt;/em&gt; but obviously it can be anything that you want.&lt;/p&gt;
+
+&lt;p&gt;It&amp;rsquo;s important that our adapter will also be &lt;a href=&#34;http://developer.android.com/reference/android/widget/Filterable.html&#34;&gt;&lt;code&gt;Filterable&lt;/code&gt;&lt;/a&gt; so the &lt;code&gt;AutoCompleteTextView&lt;/code&gt; could call the &lt;code&gt;getFilter()&lt;/code&gt; method to filter the list.&lt;/p&gt;
+
+&lt;p&gt;Here&amp;rsquo;s the adapter class :&lt;/p&gt;
+
+&lt;script src=&#34;https://gist.github.com/mderazon/6654314.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;As you can see we override two methods, the &lt;code&gt;getView()&lt;/code&gt; method which is standard for any adapter. It gets called each time the adapter needs to populate another row in the view.
+We also override &lt;code&gt;getFilter()&lt;/code&gt; to return a filter that will take care of narrowing the list each time the user enters another character in the search box.
+Here is the custom filter class we are using :&lt;/p&gt;
+
+&lt;script src=&#34;https://gist.github.com/mderazon/6654170.js&#34;&gt;&lt;/script&gt;
+
+&lt;h2 id=&#34;taking-care-of-the-action-bar&#34;&gt;Taking care of the action bar&lt;/h2&gt;
+
+&lt;p&gt;Now, we want to put the AutoCompleteTextView inside the ActionBar. For backwards compatibility, I am using &lt;a href=&#34;http://android-developers.blogspot.co.il/2013/08/actionbarcompat-and-io-2013-app-source.html&#34;&gt;ActionBarCompat&lt;/a&gt; but you can ActionBarSherlock or no backwards compatibility package at all. Actionbar supports a custom view that you can put in it. We are going to use it to put the AutoCompleteTextView in the action bar.&lt;/p&gt;
+
+&lt;script src=&#34;https://gist.github.com/mderazon/6654048.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;So by now we should have all the core functionality working.
+There are some more stuff left to do. I&amp;rsquo;d like the action bar to not show the edit text box all the time and instead appear only when I click on the &lt;em&gt;magnifier&lt;/em&gt; icon (just like with the &lt;code&gt;SearchView&lt;/code&gt;).&lt;/p&gt;
+
+&lt;h2 id=&#34;creating-a-clearable-autocompletetextview&#34;&gt;Creating a clearable AutoCompleteTextView&lt;/h2&gt;
+
+&lt;p&gt;First, we&amp;rsquo;re gonna have to create a mechanism for the user to close the search box. Something like this :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/clearable-autocompletetextview.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;AutoCompleteTextView&lt;/code&gt; doesn&amp;rsquo;t come with a dismiss button so lets extend it and add the necessary code.&lt;/p&gt;
+
+&lt;script src=&#34;https://gist.github.com/mderazon/6700044.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;You can see that there&amp;rsquo;s a default &lt;code&gt;OnClearListener&lt;/code&gt; that just clears the text. We&amp;rsquo;re not going to use it. Instead, we will set a custom clear listener that will toggle between the visibility of the search box and the search icon.&lt;/p&gt;
+
+&lt;p&gt;Lets change &lt;code&gt;MainActivity&lt;/code&gt; to use the new text view :&lt;/p&gt;
+
+&lt;script src=&#34;https://gist.github.com/mderazon/6749699.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;We replaced &lt;code&gt;AutoCompleteTextView&lt;/code&gt; with our new custom &lt;code&gt;ClearableAutoCompleteTextView&lt;/code&gt;. We&amp;rsquo;ve also added listeners to handle clicks on the search icon and clicks on the clear button.&lt;/p&gt;
+
+&lt;p&gt;Showing and hiding the search box requires a set of operations to be performed like showing and hiding the keyboard and requesting focus on the text view. This is all done in &amp;lsquo;toggleSearch&amp;rsquo; method.&lt;/p&gt;
+
+&lt;h2 id=&#34;summary&#34;&gt;Summary&lt;/h2&gt;
+
+&lt;p&gt;The code is pretty straightforward, using well known and frequently used concepts from Android framework like list adapters, custom views etc.&lt;/p&gt;
+
+&lt;p&gt;The end result looks something like this :&lt;/p&gt;
+
+&lt;h3 id=&#34;closed-search-box&#34;&gt;closed search box&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/search-box-closed.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;opened-search-box&#34;&gt;opened search box&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/search-box-opened.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;opened-search-box-with-autocomplete-results&#34;&gt;opened search box with autocomplete results&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/search-box-opened-ac.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>i18n for Node &#43; Express</title>
+      <link>https://drzon.net/posts/i18n-for-node-express</link>
+      <pubDate>Tue, 26 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://drzon.net/posts/i18n-for-node-express</guid>
+      <description>
+
+&lt;p&gt;In this post i&amp;rsquo;m going to demonstrate a simple way to add multi language support to a node + express project.&lt;/p&gt;
+
+&lt;h3 id=&#34;simple-server&#34;&gt;Simple server&lt;/h3&gt;
+
+&lt;p&gt;Lets start with a simple server:&lt;/p&gt;
+
+&lt;script src=&#34;https://gist.github.com/mderazon/7229439.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;We first require &lt;code&gt;express&lt;/code&gt;, then we tell express where to look for our templates files. In this case I used &lt;code&gt;ejs&lt;/code&gt; as the template engine. I like it because it&amp;rsquo;s syntax is basically html with special &lt;code&gt;&amp;lt;% ... %&amp;gt;&lt;/code&gt; syntax for embedding code from the server. There are other (and more popular) template engines you can chose from.&lt;/p&gt;
+
+&lt;p&gt;In line 7 we add a route for &lt;code&gt;/&lt;/code&gt; and tell it to render &lt;code&gt;index.ejs&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Lets create our &lt;code&gt;index.ejs&lt;/code&gt; file under &lt;code&gt;/views&lt;/code&gt; dir.&lt;/p&gt;
+
+&lt;script src=&#34;https://gist.github.com/mderazon/7229648.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;Nothing special here, just plain html page. Express guesses what type of template to render by the extension. So when it sees &lt;code&gt;index.ejs&lt;/code&gt; it knows it should first pass it through the &lt;code&gt;ejs&lt;/code&gt; module to render.&lt;/p&gt;
+
+&lt;h3 id=&#34;adding-translation-module&#34;&gt;Adding translation module&lt;/h3&gt;
+
+&lt;p&gt;Now lets add the i18n functionality. I use &lt;a href=&#34;https://github.com/mashpie/i18n-node&#34;&gt;i18n-node&lt;/a&gt; module. Create another file &lt;code&gt;i18n.js&lt;/code&gt; :&lt;/p&gt;
+
+&lt;script src=&#34;https://gist.github.com/mderazon/7229824.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;First we set up some configurations. By default, i18n module uses &lt;code&gt;accept-language&lt;/code&gt; request header to guess language settings. You can tell it to look for a cookie that contains the language if you want. In this case I used a cookie named &lt;code&gt;lang&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Now lets import our newly created module in our server file:&lt;/p&gt;
+
+&lt;script src=&#34;https://gist.github.com/mderazon/7230558.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;In line 7 we add the i18n module as middleware. Make sure you put it before any route is defined. What i18n module does is add a special function called &lt;code&gt;__()&lt;/code&gt; to the response object. This function takes care of the translation.&lt;/p&gt;
+
+&lt;p&gt;We need to add the translation &lt;code&gt;__()&lt;/code&gt; method to the view file as well :
+&lt;script src=&#34;https://gist.github.com/mderazon/7230774.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;translation-files&#34;&gt;Translation files&lt;/h3&gt;
+
+&lt;p&gt;Now when you run the app, notice that i18n creates a folder in a location we previously defined in &lt;code&gt;i18n.js&lt;/code&gt;. This folder will contain the translation files. In my case, I have two locales : &lt;code&gt;en&lt;/code&gt; and &lt;code&gt;iw&lt;/code&gt; so i18n will create two files :&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;locales/en.json&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;locales/iw.json&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The format is very simple. A valid JSON file that contains &lt;code&gt;&amp;quot;sentence&amp;quot; : &amp;quot;translation&amp;quot;&lt;/code&gt; pairs. The first time we try to GET &lt;code&gt;/&lt;/code&gt; i18n will automatically populate the files. Since I am using English in my code, i18n will populate &lt;code&gt;en.json&lt;/code&gt; with:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+	&amp;quot;Hello i18n&amp;quot;: &amp;quot;Hello i18n&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I will have to edit &lt;code&gt;iw.json&lt;/code&gt; with the translation :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+	&amp;quot;Hello i18n&amp;quot;: &amp;quot;שלום i18n&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;results&#34;&gt;Results&lt;/h3&gt;
+
+&lt;p&gt;Lets test that everything is working okay. I am using &lt;a href=&#34;https://chrome.google.com/webstore/detail/postman-rest-client/fdmmgilgnpjigdojojpjoooidkmcomcm/details?hl=en&#34;&gt;Postman&lt;/a&gt; (which kicks ass) to call the server. First lets make a call with &lt;code&gt;Accept-Language=en&lt;/code&gt; header to see the english version :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/postman-en.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now lets change the header for &lt;code&gt;Accept-Language=iw&lt;/code&gt; (iw = Hebrew in case you wondered) :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/postman-iw.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;###Some notes&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Use escape &lt;code&gt;\&lt;/code&gt; character if you want insert problematic characters : &lt;code&gt;__(&amp;quot;can\&#39;t do that&amp;quot;)&lt;/code&gt;. Otherwise nasty things will happen.&lt;/li&gt;
+&lt;li&gt;In express &lt;code&gt;2.x&lt;/code&gt; you need to specifically add &lt;code&gt;__()&lt;/code&gt; function to the locals object. Do it by adding the following line just after &lt;code&gt;i18n.init()&lt;/code&gt; in the i18n module :&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;res.local(&#39;__&#39;, res.__);
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>חתונה אזרחית בגיברלטר</title>
+      <link>https://drzon.net/posts/%D7%97%D7%AA%D7%95%D7%A0%D7%94-%D7%90%D7%96%D7%A8%D7%97%D7%99%D7%AA-%D7%91%D7%92%D7%99%D7%91%D7%A8%D7%9C%D7%98%D7%A8</link>
+      <pubDate>Tue, 26 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://drzon.net/posts/%D7%97%D7%AA%D7%95%D7%A0%D7%94-%D7%90%D7%96%D7%A8%D7%97%D7%99%D7%AA-%D7%91%D7%92%D7%99%D7%91%D7%A8%D7%9C%D7%98%D7%A8</guid>
+      <description>
+
+&lt;p&gt;התחתנו כמו רבים וטובים בטקס אזרחי בארץ. תיכננו ירח דבש בספרד ועל הדרך חשבנו שיהיה נחמד להתחתן בגיברלטר כדי שנוכל להירשם בארץ כנשואים.&lt;/p&gt;
+
+&lt;h2 id=&#34;למה-גיברלטר&#34;&gt;למה גיברלטר ?&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;נמצא בדרום ספרד, באזור שבו רצינו לטייל.&lt;/li&gt;
+&lt;li&gt;מאד מקלים על התהליך.&lt;/li&gt;
+&lt;li&gt;לא יקר מדיי.&lt;/li&gt;
+&lt;li&gt;טקס באנגלית, פחות בלאגן בתרגום.&lt;/li&gt;
+&lt;li&gt;סה”כ היה קליי קלות, באמת. אז הנה הפרטים.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;מסמכים-דרושים&#34;&gt;מסמכים דרושים&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;תמצית רישום של כל אחד מבני הזוג ממשרד הפנים להראות שאתם רווקים (אפשר להזמין באינרנט, לוקח בערך שבוע להגיע).&lt;/li&gt;
+&lt;li&gt;תעודת לידה של כל אחד מבני הזוג, לא יודע למה, אבל מבקשים (אפשר גם להזמין באינטרנט, חשוב לבקש שם שזה יהיה באנגלית, פחות מסמך לתרגם אח”כ”).&lt;/li&gt;
+&lt;li&gt;תרגום המסמך מסעיף 1 לאנגלית. אל תשקיעו בתרגום, מספיק להביא למתרגם ישראלי שיתרגם ויחתום על זה (תבקשו שיראה כמה שיותר פורמלי, אבל בת’כלס הם לא כאלה פדנטים).&lt;/li&gt;
+&lt;li&gt;דרכונים.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;מה-עושים&#34;&gt;מה עושים ?&lt;/h2&gt;
+
+&lt;p&gt;שולחים להם לפני זה מייל וקובעים מועד שבו אתם תבואו להתחתן. אנחנו באנו בלי לקבוע מועד ובכל זאת הכניסו אותנו, אבל לכו תדעו על מי תיפלו ולכן תמיד עדיף לבוא עם פגישה.&lt;/p&gt;
+
+&lt;p&gt;באים יום לפני הטקס, ניגשים למשרד הפנים שלהם שנפתח ב-9 בבוקר. המשרד הזה מרגיש כמו סניף הדואר בירוחם והוא בגודל פיצפון ונוטה להתמלא מהר מאד ולהתרוקן בקצב הופכי. ממליץ בחום להגיע מוקדם. אנחנו הגענו ב-10, היו 2 זוגות לפנינו בתור לנישואים וחיכינו שעה.
+משלמים לפקידה החביבה את כל מה שצריך (פרטים בהמשך). אחריה הולכים מעבר לכביש ל-commissioner of auth שזה בעצם שם מפונפן לעו”ד בן 18. משלמים גם לו מה שצריך והוא חותם על המסמכים שלכם. חוזרים לפקידה החביבה ומביאים לה את המסמכים החתומים. זה הכל, עבודה טובה, אפשר ללכת לשתות בירה.&lt;/p&gt;
+
+&lt;p&gt;חוזרים למחרת לגיברלטר. כדאי להגיע מוקדם לפני השעה שקבעתם לטקס, הכניסה עם רכב בלתי צפוייה. ביום של החתונה היה תור כניסה עם רכב של 3 שעות. כדי לא להפסיד את הטקס החננו בצד הספרדי ועברנו את הגבול ברגל. תפסנו בפנים טרמפ עם אזרח חביב (אפשר גם לקחת אוטובוס). אגב מעבר גבול, זה אחד המעברים הפחות מחמירים שראיתי. מספיק להראות להם כרטיס דמוי דרכון עם תמונה והם כנראה יעבירו אתכם. לא צריך להחתים את הדרכון…&lt;/p&gt;
+
+&lt;h2 id=&#34;הטקס-עצמו&#34;&gt;הטקס עצמו&lt;/h2&gt;
+
+&lt;p&gt;מומלץ לארגן מראש 2 עדים, זה יחסוך לכם את ההסתובבות ברחוב בחיפוש אחר עדים לפני הטקס. אנחנו ביקשנו מהעדים של הזוג שהתחתן לפנינו שיעידו בטקס שלנו והם הסכימו בשמחה. עדים שעומדים בקריטריון הם כל אדם עם דופק מעל גיל 18 שמדבר אנגלית. גם משפחה עומדת בקריטריון הזה…&lt;/p&gt;
+
+&lt;p&gt;כל הטקס לא לוקח יותר מחצי שעה ובמהלכו :&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;נכנסים לחדר קטן ומהודר עם שולחן גדול, מחברת בגודל השולחן ותמונה של מלכת אנגליה.&lt;/li&gt;
+&lt;li&gt;ה-Registrar הג’ינג’י החמוד מסביר מה הוא הולך לעשות ואיך הטקס יתבצע. חותמים על כמה דברים במחברת הגדולה.&lt;/li&gt;
+&lt;li&gt;מכניסים את העדים ומבצעים את כל מה שהג’ינג’י אמר מקודם וחותמים שוב במחברת הגדולה.&lt;/li&gt;
+&lt;li&gt;הג’ינג’י מסכם את מה שהיה לנו ומכריז עלינו כבעל ואישה (או בעל ובעל, אישה ואישה)
+זה הכל, אפשר לפתוח שמפניה, אתם נשואים :)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;עלויות&#34;&gt;עלויות&lt;/h2&gt;
+
+&lt;h4 id=&#34;שלב-הכנת-המסמכים&#34;&gt;שלב הכנת המסמכים :&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;תעודת לידה + תמצית רישום - חינם.&lt;/li&gt;
+&lt;li&gt;תרגום תמצית הרישום - 60 ש”ח לכל מסמך, סה”כ 120 (הלכתי למתרגמת בתל אביב).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;אצל-הפקידה-החביבה-יום-לפני-הטקס&#34;&gt;אצל הפקידה החביבה, יום לפני הטקס:&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;רשיון נישואים מיוחד - 67.5 פאונד. לא יודע למה הם קוראים לזה special marriage license, נראה שזה מה שכולם לוקחים אז אני לא מבין למה הוא מיוחד. אבל זה מה שהם מבקשים…&lt;/li&gt;
+&lt;li&gt;חותמת אפוסטיל - 15 פאונד. &lt;strong&gt;חשוב מאד&lt;/strong&gt;, בלי זה אי אפשר אח”כ להירשם בארץ כנשואים.&lt;/li&gt;
+&lt;li&gt;משלוח של התעודה 10 ימים אח”כ לארץ - 5 פאונד.&lt;/li&gt;
+&lt;li&gt;טקס אצל הג’ינג’י - 40 פאונד.&lt;/li&gt;
+&lt;li&gt;תעודה - 3.5 פאונד.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;אצל-ה-commissioner-of-auth&#34;&gt;אצל ה-commissioner of auth&lt;/h4&gt;
+
+&lt;p&gt;חתימה על המסמכים שלכם - 20 פאונד לכל אחד, סה”כ 40 פאונד.
+זה הכל, חוץ מזה אין עוד עלויות ביום הטקס עצמו.&lt;/p&gt;
+
+&lt;h2 id=&#34;קצת-תמונות&#34;&gt;קצת תמונות&lt;/h2&gt;
+
+&lt;h3 id=&#34;בתור-במשרד-הפנים-ב-secretary-lane&#34;&gt;בתור במשרד הפנים ב-Secretary Lane&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/img-1247.jpg&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;אחרי-הטקס-עם-ה-registrar-הג-ינג-י&#34;&gt;אחרי הטקס עם ה-Registrar הג׳ינג׳י&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/img-1357.jpg&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;קישורים-לאתרים&#34;&gt;קישורים לאתרים :&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;האתר הממשלתי להזמנת התעודות - &lt;a href=&#34;http://www.gov.il/firstgov/&#34;&gt;http://www.gov.il/firstgov/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;קישור לאתר הגיברלטרי שמסביר על כל התהליך - &lt;a href=&#34;https://www.gibraltar.gov.gi/getting-married&#34;&gt;https://www.gibraltar.gov.gi/getting-married&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
