@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Code and stuff</title>
-    <link>https://drzon.net/index.xml</link>
+    <link>https://www.drzon.net/index.xml</link>
     <description>Recent content on Code and stuff</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>All rights reserved - 2017</copyright>
     <lastBuildDate>Wed, 29 Oct 2014 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://drzon.net/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://www.drzon.net/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Passwordless login in mobile apps</title>
-      <link>https://drzon.net/posts/passwordless-login-in-mobile-apps</link>
+      <link>https://www.drzon.net/posts/passwordless-login-in-mobile-apps</link>
       <pubDate>Wed, 29 Oct 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://drzon.net/posts/passwordless-login-in-mobile-apps</guid>
+      <guid>https://www.drzon.net/posts/passwordless-login-in-mobile-apps</guid>
       <description>
 
 &lt;p&gt;This post touches some problems with traditional email logins in mobile apps and suggests a different approach to handle login without requiring the user to enter any password.&lt;/p&gt;
@@ -62,7 +62,7 @@ Why let people create crappy and insecure passwords to access your service when 
 
 &lt;h4 id=&#34;step-1-get-the-user-s-email-address&#34;&gt;Step 1. Get the user&amp;rsquo;s email address&lt;/h4&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/email-signup.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://www.drzon.net/images/posts/email-signup.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Notice the absence of a password field.&lt;/p&gt;
 
@@ -73,7 +73,7 @@ Why let people create crappy and insecure passwords to access your service when 
 
 &lt;p&gt;After the email is sent, the call from the server returns back and the user is presented with the following screen:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/email-sent.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://www.drzon.net/images/posts/email-sent.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&#34;step-2-user-gets-an-email&#34;&gt;Step 2. User gets an email&lt;/h4&gt;
 
@@ -81,7 +81,7 @@ Why let people create crappy and insecure passwords to access your service when 
 
 &lt;p&gt;The mail can say anything you like but it should have a clear call to action, like this button.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/email.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://www.drzon.net/images/posts/email.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;The &amp;ldquo;Open app&amp;rdquo; button contains a &lt;em&gt;deeplink&lt;/em&gt; to the app with the token itself. Something like&lt;/p&gt;
 
@@ -140,10 +140,10 @@ just create the following endpoint on the server:&lt;/p&gt;
     
     <item>
       <title>Export all Google Sheets to csv</title>
-      <link>https://drzon.net/posts/export-all-google-sheets-to-csv</link>
+      <link>https://www.drzon.net/posts/export-all-google-sheets-to-csv</link>
       <pubDate>Wed, 26 Mar 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://drzon.net/posts/export-all-google-sheets-to-csv</guid>
+      <guid>https://www.drzon.net/posts/export-all-google-sheets-to-csv</guid>
       <description>&lt;p&gt;I had a Google Apps spreadsheet with around 40 sheets. Wanted to export them to &lt;code&gt;csv&lt;/code&gt;. Unfortunately Google only lets you export one sheet at a time.&lt;/p&gt;
 
 &lt;p&gt;Here&amp;rsquo;s a script that exports all sheets in a spreadsheet to &lt;code&gt;csv&lt;/code&gt;&lt;/p&gt;
@@ -158,10 +158,10 @@ just create the following endpoint on the server:&lt;/p&gt;
     
     <item>
       <title>Approaches to JSON internationalisation (i18n)</title>
-      <link>https://drzon.net/posts/approaches-to-json-internationalisation-i18n</link>
+      <link>https://www.drzon.net/posts/approaches-to-json-internationalisation-i18n</link>
       <pubDate>Sun, 23 Mar 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://drzon.net/posts/approaches-to-json-internationalisation-i18n</guid>
+      <guid>https://www.drzon.net/posts/approaches-to-json-internationalisation-i18n</guid>
       <description>
 
 &lt;p&gt;I needed to create an API that is capable of serving objects with strings in more than one language. Let me present the problem with an example.&lt;/p&gt;
@@ -266,10 +266,10 @@ Running on a much more complex object with around 100 keys and nested objects yi
     
     <item>
       <title>Export mongodb collections to csv without specifying fields</title>
-      <link>https://drzon.net/posts/export-mongodb-collections-to-csv-without-specifying-fields</link>
+      <link>https://www.drzon.net/posts/export-mongodb-collections-to-csv-without-specifying-fields</link>
       <pubDate>Tue, 31 Dec 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://drzon.net/posts/export-mongodb-collections-to-csv-without-specifying-fields</guid>
+      <guid>https://www.drzon.net/posts/export-mongodb-collections-to-csv-without-specifying-fields</guid>
       <description>&lt;p&gt;Sometimes you might want to export your Mongodb database in &lt;code&gt;csv&lt;/code&gt; format. If you have many collections, it can be a bit of a hassle since &lt;a href=&#34;http://docs.mongodb.org/v2.2/reference/mongoexport/&#34;&gt;mongoexport&lt;/a&gt; requires you to specify each field you want to be exported with the &lt;code&gt;--fields&lt;/code&gt; attribute and you have to do it for each collection seperately.&lt;/p&gt;
 
 &lt;p&gt;Here&amp;rsquo;s a little bash script that will do the work for you.&lt;/p&gt;
@@ -282,17 +282,17 @@ Running on a much more complex object with around 100 keys and nested objects yi
     
     <item>
       <title>How to create a clearable autocomplete dropdown with AutoCompleteTextView</title>
-      <link>https://drzon.net/posts/how-to-create-a-clearable-autocomplete-dropdown-with-autocompletetextview</link>
+      <link>https://www.drzon.net/posts/how-to-create-a-clearable-autocomplete-dropdown-with-autocompletetextview</link>
       <pubDate>Tue, 26 Nov 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://drzon.net/posts/how-to-create-a-clearable-autocomplete-dropdown-with-autocompletetextview</guid>
+      <guid>https://www.drzon.net/posts/how-to-create-a-clearable-autocomplete-dropdown-with-autocompletetextview</guid>
       <description>
 
 &lt;p&gt;I wanted to create a nice search box with autocomplete results dropdown in the ActionBar. I could have used the &lt;code&gt;SearchView&lt;/code&gt; widget but I didn&amp;rsquo;t want to create a &lt;em&gt;searchable activity&lt;/em&gt; and all the necessary overhead. Instead I used a more lightweight approach with &lt;a href=&#34;http://developer.android.com/reference/android/widget/AutoCompleteTextView.html&#34;&gt;AutoCompleteTextView&lt;/a&gt;. I&amp;rsquo;ll explain here the steps needed to be done in order to make it work.&lt;/p&gt;
 
 &lt;p&gt;My model app was the Gmail app which looks like this :&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/final.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://www.drzon.net/images/posts/final.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;creating-the-layouts&#34;&gt;Creating the layouts&lt;/h2&gt;
 
@@ -333,7 +333,7 @@ There are some more stuff left to do. I&amp;rsquo;d like the action bar to not s
 
 &lt;p&gt;First, we&amp;rsquo;re gonna have to create a mechanism for the user to close the search box. Something like this :&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/clearable-autocompletetextview.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://www.drzon.net/images/posts/clearable-autocompletetextview.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;AutoCompleteTextView&lt;/code&gt; doesn&amp;rsquo;t come with a dismiss button so lets extend it and add the necessary code.&lt;/p&gt;
 
@@ -357,24 +357,24 @@ There are some more stuff left to do. I&amp;rsquo;d like the action bar to not s
 
 &lt;h3 id=&#34;closed-search-box&#34;&gt;closed search box&lt;/h3&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/search-box-closed.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://www.drzon.net/images/posts/search-box-closed.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&#34;opened-search-box&#34;&gt;opened search box&lt;/h3&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/search-box-opened.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://www.drzon.net/images/posts/search-box-opened.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&#34;opened-search-box-with-autocomplete-results&#34;&gt;opened search box with autocomplete results&lt;/h3&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/search-box-opened-ac.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://www.drzon.net/images/posts/search-box-opened-ac.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 </description>
     </item>
     
     <item>
       <title>i18n for Node &#43; Express</title>
-      <link>https://drzon.net/posts/i18n-for-node-express</link>
+      <link>https://www.drzon.net/posts/i18n-for-node-express</link>
       <pubDate>Tue, 26 Nov 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://drzon.net/posts/i18n-for-node-express</guid>
+      <guid>https://www.drzon.net/posts/i18n-for-node-express</guid>
       <description>
 
 &lt;p&gt;In this post i&amp;rsquo;m going to demonstrate a simple way to add multi language support to a node + express project.&lt;/p&gt;
@@ -439,11 +439,11 @@ There are some more stuff left to do. I&amp;rsquo;d like the action bar to not s
 
 &lt;p&gt;Lets test that everything is working okay. I am using &lt;a href=&#34;https://chrome.google.com/webstore/detail/postman-rest-client/fdmmgilgnpjigdojojpjoooidkmcomcm/details?hl=en&#34;&gt;Postman&lt;/a&gt; (which kicks ass) to call the server. First lets make a call with &lt;code&gt;Accept-Language=en&lt;/code&gt; header to see the english version :&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/postman-en.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://www.drzon.net/images/posts/postman-en.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Now lets change the header for &lt;code&gt;Accept-Language=iw&lt;/code&gt; (iw = Hebrew in case you wondered) :&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/postman-iw.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://www.drzon.net/images/posts/postman-iw.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;###Some notes&lt;/p&gt;
 
@@ -459,10 +459,10 @@ There are some more stuff left to do. I&amp;rsquo;d like the action bar to not s
     
     <item>
       <title>חתונה אזרחית בגיברלטר</title>
-      <link>https://drzon.net/posts/%D7%97%D7%AA%D7%95%D7%A0%D7%94-%D7%90%D7%96%D7%A8%D7%97%D7%99%D7%AA-%D7%91%D7%92%D7%99%D7%91%D7%A8%D7%9C%D7%98%D7%A8</link>
+      <link>https://www.drzon.net/posts/%D7%97%D7%AA%D7%95%D7%A0%D7%94-%D7%90%D7%96%D7%A8%D7%97%D7%99%D7%AA-%D7%91%D7%92%D7%99%D7%91%D7%A8%D7%9C%D7%98%D7%A8</link>
       <pubDate>Tue, 26 Nov 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://drzon.net/posts/%D7%97%D7%AA%D7%95%D7%A0%D7%94-%D7%90%D7%96%D7%A8%D7%97%D7%99%D7%AA-%D7%91%D7%92%D7%99%D7%91%D7%A8%D7%9C%D7%98%D7%A8</guid>
+      <guid>https://www.drzon.net/posts/%D7%97%D7%AA%D7%95%D7%A0%D7%94-%D7%90%D7%96%D7%A8%D7%97%D7%99%D7%AA-%D7%91%D7%92%D7%99%D7%91%D7%A8%D7%9C%D7%98%D7%A8</guid>
       <description>
 
 &lt;p&gt;התחתנו כמו רבים וטובים בטקס אזרחי בארץ. תיכננו ירח דבש בספרד ועל הדרך חשבנו שיהיה נחמד להתחתן בגיברלטר כדי שנוכל להירשם בארץ כנשואים.&lt;/p&gt;
@@ -537,11 +537,11 @@ There are some more stuff left to do. I&amp;rsquo;d like the action bar to not s
 
 &lt;h3 id=&#34;בתור-במשרד-הפנים-ב-secretary-lane&#34;&gt;בתור במשרד הפנים ב-Secretary Lane&lt;/h3&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/img-1247.jpg&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://www.drzon.net/images/posts/img-1247.jpg&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&#34;אחרי-הטקס-עם-ה-registrar-הג-ינג-י&#34;&gt;אחרי הטקס עם ה-Registrar הג׳ינג׳י&lt;/h3&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/img-1357.jpg&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://www.drzon.net/images/posts/img-1357.jpg&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;קישורים-לאתרים&#34;&gt;קישורים לאתרים :&lt;/h2&gt;
 

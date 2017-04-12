@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>I18n on Code and stuff</title>
-    <link>https://drzon.net/tags/i18n/index.xml</link>
+    <link>https://www.drzon.net/tags/i18n/index.xml</link>
     <description>Recent content in I18n on Code and stuff</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>All rights reserved - 2017</copyright>
-    <atom:link href="https://drzon.net/tags/i18n/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://www.drzon.net/tags/i18n/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Approaches to JSON internationalisation (i18n)</title>
-      <link>https://drzon.net/posts/approaches-to-json-internationalisation-i18n</link>
+      <link>https://www.drzon.net/posts/approaches-to-json-internationalisation-i18n</link>
       <pubDate>Sun, 23 Mar 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://drzon.net/posts/approaches-to-json-internationalisation-i18n</guid>
+      <guid>https://www.drzon.net/posts/approaches-to-json-internationalisation-i18n</guid>
       <description>
 
 &lt;p&gt;I needed to create an API that is capable of serving objects with strings in more than one language. Let me present the problem with an example.&lt;/p&gt;
@@ -119,10 +119,10 @@ Running on a much more complex object with around 100 keys and nested objects yi
     
     <item>
       <title>i18n for Node &#43; Express</title>
-      <link>https://drzon.net/posts/i18n-for-node-express</link>
+      <link>https://www.drzon.net/posts/i18n-for-node-express</link>
       <pubDate>Tue, 26 Nov 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://drzon.net/posts/i18n-for-node-express</guid>
+      <guid>https://www.drzon.net/posts/i18n-for-node-express</guid>
       <description>
 
 &lt;p&gt;In this post i&amp;rsquo;m going to demonstrate a simple way to add multi language support to a node + express project.&lt;/p&gt;
@@ -187,11 +187,11 @@ Running on a much more complex object with around 100 keys and nested objects yi
 
 &lt;p&gt;Lets test that everything is working okay. I am using &lt;a href=&#34;https://chrome.google.com/webstore/detail/postman-rest-client/fdmmgilgnpjigdojojpjoooidkmcomcm/details?hl=en&#34;&gt;Postman&lt;/a&gt; (which kicks ass) to call the server. First lets make a call with &lt;code&gt;Accept-Language=en&lt;/code&gt; header to see the english version :&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/postman-en.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://www.drzon.net/images/posts/postman-en.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Now lets change the header for &lt;code&gt;Accept-Language=iw&lt;/code&gt; (iw = Hebrew in case you wondered) :&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/postman-iw.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://www.drzon.net/images/posts/postman-iw.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;###Some notes&lt;/p&gt;
 

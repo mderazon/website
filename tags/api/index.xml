@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Api on Code and stuff</title>
-    <link>https://drzon.net/tags/api/index.xml</link>
+    <link>https://www.drzon.net/tags/api/index.xml</link>
     <description>Recent content in Api on Code and stuff</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>All rights reserved - 2017</copyright>
-    <atom:link href="https://drzon.net/tags/api/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://www.drzon.net/tags/api/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Approaches to JSON internationalisation (i18n)</title>
-      <link>https://drzon.net/posts/approaches-to-json-internationalisation-i18n</link>
+      <link>https://www.drzon.net/posts/approaches-to-json-internationalisation-i18n</link>
       <pubDate>Sun, 23 Mar 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://drzon.net/posts/approaches-to-json-internationalisation-i18n</guid>
+      <guid>https://www.drzon.net/posts/approaches-to-json-internationalisation-i18n</guid>
       <description>
 
 &lt;p&gt;I needed to create an API that is capable of serving objects with strings in more than one language. Let me present the problem with an example.&lt;/p&gt;

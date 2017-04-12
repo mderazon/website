@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Mobile Login on Code and stuff</title>
-    <link>https://drzon.net/tags/mobile-login/index.xml</link>
+    <link>https://www.drzon.net/tags/mobile-login/index.xml</link>
     <description>Recent content in Mobile Login on Code and stuff</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>All rights reserved - 2017</copyright>
-    <atom:link href="https://drzon.net/tags/mobile-login/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://www.drzon.net/tags/mobile-login/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Passwordless login in mobile apps</title>
-      <link>https://drzon.net/posts/passwordless-login-in-mobile-apps</link>
+      <link>https://www.drzon.net/posts/passwordless-login-in-mobile-apps</link>
       <pubDate>Wed, 29 Oct 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://drzon.net/posts/passwordless-login-in-mobile-apps</guid>
+      <guid>https://www.drzon.net/posts/passwordless-login-in-mobile-apps</guid>
       <description>
 
 &lt;p&gt;This post touches some problems with traditional email logins in mobile apps and suggests a different approach to handle login without requiring the user to enter any password.&lt;/p&gt;
@@ -61,7 +61,7 @@ Why let people create crappy and insecure passwords to access your service when 
 
 &lt;h4 id=&#34;step-1-get-the-user-s-email-address&#34;&gt;Step 1. Get the user&amp;rsquo;s email address&lt;/h4&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/email-signup.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://www.drzon.net/images/posts/email-signup.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Notice the absence of a password field.&lt;/p&gt;
 
@@ -72,7 +72,7 @@ Why let people create crappy and insecure passwords to access your service when 
 
 &lt;p&gt;After the email is sent, the call from the server returns back and the user is presented with the following screen:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/email-sent.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://www.drzon.net/images/posts/email-sent.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&#34;step-2-user-gets-an-email&#34;&gt;Step 2. User gets an email&lt;/h4&gt;
 
@@ -80,7 +80,7 @@ Why let people create crappy and insecure passwords to access your service when 
 
 &lt;p&gt;The mail can say anything you like but it should have a clear call to action, like this button.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/email.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://www.drzon.net/images/posts/email.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;The &amp;ldquo;Open app&amp;rdquo; button contains a &lt;em&gt;deeplink&lt;/em&gt; to the app with the token itself. Something like&lt;/p&gt;
 

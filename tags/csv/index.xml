@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Csv on Code and stuff</title>
-    <link>https://drzon.net/tags/csv/index.xml</link>
+    <link>https://www.drzon.net/tags/csv/index.xml</link>
     <description>Recent content in Csv on Code and stuff</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>All rights reserved - 2017</copyright>
-    <atom:link href="https://drzon.net/tags/csv/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://www.drzon.net/tags/csv/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Export all Google Sheets to csv</title>
-      <link>https://drzon.net/posts/export-all-google-sheets-to-csv</link>
+      <link>https://www.drzon.net/posts/export-all-google-sheets-to-csv</link>
       <pubDate>Wed, 26 Mar 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://drzon.net/posts/export-all-google-sheets-to-csv</guid>
+      <guid>https://www.drzon.net/posts/export-all-google-sheets-to-csv</guid>
       <description>&lt;p&gt;I had a Google Apps spreadsheet with around 40 sheets. Wanted to export them to &lt;code&gt;csv&lt;/code&gt;. Unfortunately Google only lets you export one sheet at a time.&lt;/p&gt;
 
 &lt;p&gt;Here&amp;rsquo;s a script that exports all sheets in a spreadsheet to &lt;code&gt;csv&lt;/code&gt;&lt;/p&gt;
@@ -29,10 +29,10 @@
     
     <item>
       <title>Export mongodb collections to csv without specifying fields</title>
-      <link>https://drzon.net/posts/export-mongodb-collections-to-csv-without-specifying-fields</link>
+      <link>https://www.drzon.net/posts/export-mongodb-collections-to-csv-without-specifying-fields</link>
       <pubDate>Tue, 31 Dec 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://drzon.net/posts/export-mongodb-collections-to-csv-without-specifying-fields</guid>
+      <guid>https://www.drzon.net/posts/export-mongodb-collections-to-csv-without-specifying-fields</guid>
       <description>&lt;p&gt;Sometimes you might want to export your Mongodb database in &lt;code&gt;csv&lt;/code&gt; format. If you have many collections, it can be a bit of a hassle since &lt;a href=&#34;http://docs.mongodb.org/v2.2/reference/mongoexport/&#34;&gt;mongoexport&lt;/a&gt; requires you to specify each field you want to be exported with the &lt;code&gt;--fields&lt;/code&gt; attribute and you have to do it for each collection seperately.&lt;/p&gt;
 
 &lt;p&gt;Here&amp;rsquo;s a little bash script that will do the work for you.&lt;/p&gt;

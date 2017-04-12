@@ -2,26 +2,26 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Android on Code and stuff</title>
-    <link>https://drzon.net/tags/android/index.xml</link>
+    <link>https://www.drzon.net/tags/android/index.xml</link>
     <description>Recent content in Android on Code and stuff</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>All rights reserved - 2017</copyright>
-    <atom:link href="https://drzon.net/tags/android/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://www.drzon.net/tags/android/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>How to create a clearable autocomplete dropdown with AutoCompleteTextView</title>
-      <link>https://drzon.net/posts/how-to-create-a-clearable-autocomplete-dropdown-with-autocompletetextview</link>
+      <link>https://www.drzon.net/posts/how-to-create-a-clearable-autocomplete-dropdown-with-autocompletetextview</link>
       <pubDate>Tue, 26 Nov 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://drzon.net/posts/how-to-create-a-clearable-autocomplete-dropdown-with-autocompletetextview</guid>
+      <guid>https://www.drzon.net/posts/how-to-create-a-clearable-autocomplete-dropdown-with-autocompletetextview</guid>
       <description>
 
 &lt;p&gt;I wanted to create a nice search box with autocomplete results dropdown in the ActionBar. I could have used the &lt;code&gt;SearchView&lt;/code&gt; widget but I didn&amp;rsquo;t want to create a &lt;em&gt;searchable activity&lt;/em&gt; and all the necessary overhead. Instead I used a more lightweight approach with &lt;a href=&#34;http://developer.android.com/reference/android/widget/AutoCompleteTextView.html&#34;&gt;AutoCompleteTextView&lt;/a&gt;. I&amp;rsquo;ll explain here the steps needed to be done in order to make it work.&lt;/p&gt;
 
 &lt;p&gt;My model app was the Gmail app which looks like this :&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/final.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://www.drzon.net/images/posts/final.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;creating-the-layouts&#34;&gt;Creating the layouts&lt;/h2&gt;
 
@@ -62,7 +62,7 @@ There are some more stuff left to do. I&amp;rsquo;d like the action bar to not s
 
 &lt;p&gt;First, we&amp;rsquo;re gonna have to create a mechanism for the user to close the search box. Something like this :&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/clearable-autocompletetextview.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://www.drzon.net/images/posts/clearable-autocompletetextview.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;AutoCompleteTextView&lt;/code&gt; doesn&amp;rsquo;t come with a dismiss button so lets extend it and add the necessary code.&lt;/p&gt;
 
@@ -86,15 +86,15 @@ There are some more stuff left to do. I&amp;rsquo;d like the action bar to not s
 
 &lt;h3 id=&#34;closed-search-box&#34;&gt;closed search box&lt;/h3&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/search-box-closed.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://www.drzon.net/images/posts/search-box-closed.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&#34;opened-search-box&#34;&gt;opened search box&lt;/h3&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/search-box-opened.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://www.drzon.net/images/posts/search-box-opened.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&#34;opened-search-box-with-autocomplete-results&#34;&gt;opened search box with autocomplete results&lt;/h3&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://drzon.net/images/posts/search-box-opened-ac.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://www.drzon.net/images/posts/search-box-opened-ac.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 </description>
     </item>
     
