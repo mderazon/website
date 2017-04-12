@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    
+
+
+    
+        <meta name="twitter:card" content="summary"/>
+    
+
+
+
+<meta name="twitter:title" content="i18n for Node &#43; Express"/>
+<meta name="twitter:description" content=""/>
+<meta name="twitter:site" content="@mderazon"/>
+
+
+
+  	<meta property="og:title" content="i18n for Node &#43; Express &middot; Code and stuff" />
+  	<meta property="og:site_name" content="Code and stuff" />
+  	<meta property="og:url" content="https://drzon.net/posts/i18n-for-node-express" />
+
+    
+        
+            <meta property="og:image" content="https://drzon.netimages/cover.jpg"/>
+        
+    
+
+    
+    <meta property="og:description" content="" />
+  	<meta property="og:type" content="article" />
+    <meta property="og:image" content="https://drzon.net" />
+    <meta property="article:published_time" content="2013-11-26T00:00:00Z" />
+
+    
+    <meta property="article:tag" content="node.js" />
+    
+    <meta property="article:tag" content="i18n" />
+    
+    <meta property="article:tag" content="express" />
+    
+    
+
+    <title>i18n for Node &#43; Express &middot; Code and stuff</title>
+
+    
+    <meta name="description" content="" />
+    
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="https://drzon.netimages/favicon.ico">
+	  <link rel="apple-touch-icon" href="https://drzon.netimages/apple-touch-icon.png" />
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://drzon.netcss/screen.css" />
+    <link rel="stylesheet" type="text/css" href="https://drzon.netcss/nav.css" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700i,300i|Alef:400,700|Open+Sans:700,400|Inconsolata" />
+
+    
+
+    
+      
+          <link href="https://drzon.netindex.xml" rel="alternate" type="application/rss+xml" title="Code and stuff" />
+      
+      
+    
+    <meta name="generator" content="Hugo 0.19" />
+
+    <link rel="canonical" href="https://drzon.net/posts/i18n-for-node-express" />
+
+    
+      
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": ,
+        "logo": https://drzon.netimages/selfie.png
+    },
+    "author": {
+        "@type": "Person",
+        "name": ,
+        
+        "image": {
+            "@type": "ImageObject",
+            "url": https://drzon.netimages/selfie.png,
+            "width": 250,
+            "height": 250
+        }, 
+        
+        "url": https://drzon.net,
+        "sameAs": [
+            
+            
+             
+             
+             
+             
+             
+            
+        ]
+    },
+    "headline": i18n for Node &#43; Express,
+    "name": i18n for Node &#43; Express,
+    "wordCount": 488,
+    "timeRequired": "PT3M",
+    "inLanguage": {
+      "@type": "Language",
+      "alternateName": en
+    },
+    "url": https://drzon.net/posts/i18n-for-node-express,
+    "datePublished": 2013-11-26T00:00Z,
+    "dateModified": 2013-11-26T00:00Z,
+    
+    "keywords": node.js, i18n, express,
+    "description": ,
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": https://drzon.net/posts/i18n-for-node-express
+    }
+}
+    </script>
+    
+
+
+    
+
+    
+
+    
+</head>
+<body class="nav-closed">
+
+  <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+        
+        
+        
+    </ul>
+    
+    
+    <a class="subscribe-button icon-feed" href="https://drzon.netindex.xml">Subscribe</a>
+    
+</div>
+<span class="nav-cover"></span>
+
+
+ <div class="site-wrapper">
+
+
+
+
+<header class="main-header post-head no-cover">
+  <nav class="main-nav clearfix">
+
+
+  
+      <a class="blog-logo" href="https://drzon.net"><img src="https://drzon.netimages/selfie.png" alt="Home" /></a>
+  
+  
+      <a class="menu-button icon-feed" href="https://drzon.netindex.xml"><i class="fa fa-rss" aria-hidden="true"></i>&nbsp;Subscribe</a>
+  
+  </nav>
+</header>
+
+
+
+<main class="content" role="main">
+
+
+
+
+  <article class="post post">
+
+    <header class="post-header ">
+        <h1 class="post-title">i18n for Node &#43; Express</h1>
+        <small></small>
+
+        <section class="post-meta">
+        
+          <time class="post-date" datetime="2013-11-26T00:00:00Z">
+            Nov 26, 2013
+          </time>
+        
+         
+          <span class="post-tag small"><a href="https://drzon.nettags/node.js/">#node.js</a></span>
+         
+          <span class="post-tag small"><a href="https://drzon.nettags/i18n/">#i18n</a></span>
+         
+          <span class="post-tag small"><a href="https://drzon.nettags/express/">#express</a></span>
+         
+        </section>
+    </header>
+
+    <section class='post-content '>
+      
+
+<p>In this post i&rsquo;m going to demonstrate a simple way to add multi language support to a node + express project.</p>
+
+<h3 id="simple-server">Simple server</h3>
+
+<p>Lets start with a simple server:</p>
+
+<script src="https://gist.github.com/mderazon/7229439.js"></script>
+
+<p>We first require <code>express</code>, then we tell express where to look for our templates files. In this case I used <code>ejs</code> as the template engine. I like it because it&rsquo;s syntax is basically html with special <code>&lt;% ... %&gt;</code> syntax for embedding code from the server. There are other (and more popular) template engines you can chose from.</p>
+
+<p>In line 7 we add a route for <code>/</code> and tell it to render <code>index.ejs</code>.</p>
+
+<p>Lets create our <code>index.ejs</code> file under <code>/views</code> dir.</p>
+
+<script src="https://gist.github.com/mderazon/7229648.js"></script>
+
+<p>Nothing special here, just plain html page. Express guesses what type of template to render by the extension. So when it sees <code>index.ejs</code> it knows it should first pass it through the <code>ejs</code> module to render.</p>
+
+<h3 id="adding-translation-module">Adding translation module</h3>
+
+<p>Now lets add the i18n functionality. I use <a href="https://github.com/mashpie/i18n-node">i18n-node</a> module. Create another file <code>i18n.js</code> :</p>
+
+<script src="https://gist.github.com/mderazon/7229824.js"></script>
+
+<p>First we set up some configurations. By default, i18n module uses <code>accept-language</code> request header to guess language settings. You can tell it to look for a cookie that contains the language if you want. In this case I used a cookie named <code>lang</code>.</p>
+
+<p>Now lets import our newly created module in our server file:</p>
+
+<script src="https://gist.github.com/mderazon/7230558.js"></script>
+
+<p>In line 7 we add the i18n module as middleware. Make sure you put it before any route is defined. What i18n module does is add a special function called <code>__()</code> to the response object. This function takes care of the translation.</p>
+
+<p>We need to add the translation <code>__()</code> method to the view file as well :
+<script src="https://gist.github.com/mderazon/7230774.js"></script></p>
+
+<h3 id="translation-files">Translation files</h3>
+
+<p>Now when you run the app, notice that i18n creates a folder in a location we previously defined in <code>i18n.js</code>. This folder will contain the translation files. In my case, I have two locales : <code>en</code> and <code>iw</code> so i18n will create two files :</p>
+
+<ul>
+<li><code>locales/en.json</code></li>
+<li><code>locales/iw.json</code></li>
+</ul>
+
+<p>The format is very simple. A valid JSON file that contains <code>&quot;sentence&quot; : &quot;translation&quot;</code> pairs. The first time we try to GET <code>/</code> i18n will automatically populate the files. Since I am using English in my code, i18n will populate <code>en.json</code> with:</p>
+
+<pre><code>{
+	&quot;Hello i18n&quot;: &quot;Hello i18n&quot;
+}
+</code></pre>
+
+<p>I will have to edit <code>iw.json</code> with the translation :</p>
+
+<pre><code>{
+	&quot;Hello i18n&quot;: &quot;שלום i18n&quot;
+}
+</code></pre>
+
+<h3 id="results">Results</h3>
+
+<p>Lets test that everything is working okay. I am using <a href="https://chrome.google.com/webstore/detail/postman-rest-client/fdmmgilgnpjigdojojpjoooidkmcomcm/details?hl=en">Postman</a> (which kicks ass) to call the server. First lets make a call with <code>Accept-Language=en</code> header to see the english version :</p>
+
+<p><img src="https://drzon.net/images/posts/postman-en.png" alt="image" /></p>
+
+<p>Now lets change the header for <code>Accept-Language=iw</code> (iw = Hebrew in case you wondered) :</p>
+
+<p><img src="https://drzon.net/images/posts/postman-iw.png" alt="image" /></p>
+
+<p>###Some notes</p>
+
+<ul>
+<li>Use escape <code>\</code> character if you want insert problematic characters : <code>__(&quot;can\'t do that&quot;)</code>. Otherwise nasty things will happen.</li>
+<li>In express <code>2.x</code> you need to specifically add <code>__()</code> function to the locals object. Do it by adding the following line just after <code>i18n.init()</code> in the i18n module :</li>
+</ul>
+
+<pre><code>res.local('__', res.__);
+</code></pre>
+
+    </section>
+
+
+  <footer class="post-footer">
+
+
+    
+    <figure class="author-image">
+        <a class="img" href="https://drzon.net" style="background-image: url(https://drzon.netimages/selfie.png)"><span class="hidden">Michael DeRazon's Picture</span></a>
+    </figure>
+    
+
+    
+
+
+
+
+
+<section class="author">
+  <h4><a href="https://drzon.net">Michael DeRazon</a></h4>
+  
+  <p>Read <a href="https://drzon.net">more posts</a> by this author.</p>
+  
+  <div class="author-meta">
+    <span class="author-location icon-location">New York, USA</span>
+    <span class="author-link icon-link"><a href="https://drzon.net">https://drzon.net</a></span>
+  </div>
+</section>
+
+
+
+    
+<section class="share">
+  <h4>Share this post</h4>
+  <a class="icon-twitter" style="font-size: 1.4em" href="https://twitter.com/share?text=i18n%20for%20Node%20%2b%20Express&nbsp;-&nbsp;Code%20and%20stuff&amp;url=https%3a%2f%2fdrzon.net%2fposts%2fi18n-for-node-express"
+      onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+      <span class="hidden">Twitter</span>
+  </a>
+  <a class="icon-facebook" style="font-size: 1.4em" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fdrzon.net%2fposts%2fi18n-for-node-express"
+      onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+      <span class="hidden">Facebook</span>
+  </a>
+  <a class="icon-pinterest" style="font-size: 1.4em" href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fdrzon.net%2fposts%2fi18n-for-node-express&amp;description=i18n%20for%20Node%20%2b%20Express"
+      onclick="window.open(this.href, 'pinterest-share','width=580,height=296');return false;">
+      <span class="hidden">Pinterest</span>
+  </a>
+  <a class="icon-google-plus" style="font-size: 1.4em" href="https://plus.google.com/share?url=https%3a%2f%2fdrzon.net%2fposts%2fi18n-for-node-express"
+     onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+      <span class="hidden">Google+</span>
+  </a>
+</section>
+
+
+
+    
+
+
+  </footer>
+</article>
+
+</main>
+    <footer class="site-footer clearfix">
+        <section class="copyright"><a href="">Code and stuff</a> All rights reserved - 2017</section>
+        
+        <section class="poweredby">Proudly generated by <a class="icon-hugo" href="http://gohugo.io">HUGO</a>, hosted on <a class="icon-theme" href="https://github.com/mderazon">Github</a></section>
+        
+    </footer>
+    </div>
+    
+    
+</body>
+</html>
+

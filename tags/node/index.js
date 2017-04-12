@@ -13,15 +13,15 @@
 
 
 
-<meta name="twitter:title" content="404 Page not found"/>
+<meta name="twitter:title" content="Node.Js"/>
 <meta name="twitter:description" content=""/>
 <meta name="twitter:site" content="@mderazon"/>
 
 
 
-  	<meta property="og:title" content="404 Page not found &middot; Code and stuff" />
+  	<meta property="og:title" content="Node.Js &middot; Code and stuff" />
   	<meta property="og:site_name" content="Code and stuff" />
-  	<meta property="og:url" content="https://drzon.net/404/" />
+  	<meta property="og:url" content="https://drzon.net/tags/node/index.js/" />
 
     
         
@@ -34,7 +34,7 @@
     <meta property="og:description" content="" />
     
 
-    <title>404 Page not found &middot; Code and stuff</title>
+    <title>Node.Js &middot; Code and stuff</title>
 
     
     <meta name="description" content="" />
@@ -58,12 +58,12 @@
           <link href="https://drzon.netindex.xml" rel="alternate" type="application/rss+xml" title="Code and stuff" />
       
       
-        <link href="https://drzon.net/404.html/index.xml" rel="alternate" type="application/rss+xml" title="404 Page not found &middot; Code and stuff" />
+        <link href="https://drzon.net/tags/node.js/index.xml" rel="alternate" type="application/rss+xml" title="Node.Js &middot; Code and stuff" />
       
     
     <meta name="generator" content="Hugo 0.19" />
 
-    <link rel="canonical" href="https://drzon.net/404/" />
+    <link rel="canonical" href="https://drzon.net/tags/node/index.js/" />
 
     
       
@@ -126,7 +126,7 @@
     </ul>
     
     
-    <a class="subscribe-button icon-feed" href="https://drzon.net/404.html/index.xml">Subscribe</a>
+    <a class="subscribe-button icon-feed" href="https://drzon.net/tags/node.js/index.xml">Subscribe</a>
     
 </div>
 <span class="nav-cover"></span>
@@ -136,55 +136,97 @@
 
 
 
-<header class="main-header " style="background-image: url(https://drzon.netimages/cover.jpg)">
 
+	 
+  <header class="main-header tag-head" style="background-image: url(https://drzon.netimages/cover.jpg)">
+  
 
-<nav class="main-nav overlay clearfix">
+    <nav class="main-nav overlay clearfix">
+      
+        <a class="blog-logo" href="https://drzon.net"><img src="https://drzon.netimages/selfie.png" alt="Home" /></a>
+      
+      
         
-            <a class="blog-logo" href="https://drzon.net/404/"><img src="https://drzon.netimages/selfie.png" alt="Blog Logo" /></a>
+          <a class="menu-button icon-feed" href="https://drzon.net/tags/node.js/index.xml">&nbsp;&nbsp;Subscribe</a>
         
-        
-            
-              <a class="menu-button icon-feed" href="https://drzon.net/404.html/index.xml">&nbsp;&nbsp;Subscribe</a>
-            
-        
+      
     </nav>
     <div class="vertical">
         <div class="main-header-content inner">
-            
-                <a class="bloglogo" href="https://www.linkedin.com/in/mderazon">
-                    <span class="icon-linkedin" style="color:white;font-size:2em"></span>
-                </a>
-            &nbsp;
-            
-            
-                <a  href="https://github.com/mderazon">
-                <span class="icon-github" style="color:white;font-size:2em"></span>
-                </a>
-            &nbsp;
-            
-            
-                <a class="bloglogo" href="https://twitter.com/mderazon">
-                    <span class="icon-twitter" style="color:white;font-size:2em"></span>
-                </a>
-            &nbsp;
-            
-
-            <h1 class="page-title">Code and stuff</h1>
-            <h2 class="page-description"></h2>
+            <h1 class="page-title">Node.Js</h1>
+            <h2 class="page-description">
+                
+            </h2>
         </div>
     </div>
-    <a class="scroll-down icon-arrow-left" href="#content"><span class="hidden">Scroll Down</span></a>
 </header>
 
+<main class="content" role="main">
+    
 
-<main id="content" class="content" role="main">
+	<div class="extra-pagination inner">
+    <nav class="pagination" role="navigation">
+	
+	<span class="page-number">Page 1 of 1</span>
+	
+</nav>
 
-  <article class="post">
-    <h1>404 Not Found</h1>
-    <p>Sorry, but we couldn't find the page you're looking for.</p>
-    <p>Please head back <a href="https://drzon.net/">home</a>.</p>
-  </article>
+	</div>
+
+	
+	   
+<article class="post post">
+    <header class='post-header '>
+        <h2 class="post-title">
+            <a href="https://drzon.net/posts/i18n-for-node-express">i18n for Node &#43; Express</a>
+        </h2>
+    </header>
+    <section class='post-excerpt '>
+        
+            <p>In this post i&rsquo;m going to demonstrate a simple way to add multi language support to a node + express project.
+Simple server Lets start with a simple server:
+ We first require express, then we tell express where to look for our templates files. In this case I used ejs as the template engine. I like it because it&rsquo;s syntax is basically html with special &lt;% ... %&gt; syntax for embedding code from the server. <a class="read-more" href="https://drzon.net/posts/i18n-for-node-express">&raquo;</a></p>
+        
+    </section>
+    <footer class="post-meta">
+        
+        
+            
+            
+        
+
+        
+            <img class="author-thumb" src="https://drzon.netimages/selfie.png" alt="Author image" nopin="nopin" />
+        
+        
+            Michael DeRazon
+        
+        on
+            
+                <a href="https://drzon.nettags/node.js/">#node.js</a>,
+            
+                <a href="https://drzon.nettags/i18n/">#i18n</a>,
+            
+                <a href="https://drzon.nettags/express/">#express</a>,
+            
+        
+        <time class="post-date" datetime="2013-11-26T00:00:00Z">
+            26 Nov 2013
+        </time>
+    </footer>
+</article>
+
+	
+
+	<nav class="pagination" role="navigation">
+	
+	<span class="page-number">Page 1 of 1</span>
+	
+</nav>
+
+</main>
+
+
 
     <footer class="site-footer clearfix">
         <section class="copyright"><a href="">Code and stuff</a> All rights reserved - 2017</section>

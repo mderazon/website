@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    
+
+
+    
+        <meta name="twitter:card" content="summary"/>
+    
+
+
+
+<meta name="twitter:title" content="Export all Google Sheets to csv"/>
+<meta name="twitter:description" content=""/>
+<meta name="twitter:site" content="@mderazon"/>
+
+
+
+  	<meta property="og:title" content="Export all Google Sheets to csv &middot; Code and stuff" />
+  	<meta property="og:site_name" content="Code and stuff" />
+  	<meta property="og:url" content="https://drzon.net/posts/export-all-google-sheets-to-csv" />
+
+    
+        
+            <meta property="og:image" content="https://drzon.netimages/cover.jpg"/>
+        
+    
+
+    
+    <meta property="og:description" content="" />
+  	<meta property="og:type" content="article" />
+    <meta property="og:image" content="https://drzon.net" />
+    <meta property="article:published_time" content="2014-03-26T00:00:00Z" />
+
+    
+    <meta property="article:tag" content="google sheets" />
+    
+    <meta property="article:tag" content="csv" />
+    
+    
+
+    <title>Export all Google Sheets to csv &middot; Code and stuff</title>
+
+    
+    <meta name="description" content="" />
+    
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="https://drzon.netimages/favicon.ico">
+	  <link rel="apple-touch-icon" href="https://drzon.netimages/apple-touch-icon.png" />
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://drzon.netcss/screen.css" />
+    <link rel="stylesheet" type="text/css" href="https://drzon.netcss/nav.css" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700i,300i|Alef:400,700|Open+Sans:700,400|Inconsolata" />
+
+    
+
+    
+      
+          <link href="https://drzon.netindex.xml" rel="alternate" type="application/rss+xml" title="Code and stuff" />
+      
+      
+    
+    <meta name="generator" content="Hugo 0.19" />
+
+    <link rel="canonical" href="https://drzon.net/posts/export-all-google-sheets-to-csv" />
+
+    
+      
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": ,
+        "logo": https://drzon.netimages/selfie.png
+    },
+    "author": {
+        "@type": "Person",
+        "name": ,
+        
+        "image": {
+            "@type": "ImageObject",
+            "url": https://drzon.netimages/selfie.png,
+            "width": 250,
+            "height": 250
+        }, 
+        
+        "url": https://drzon.net,
+        "sameAs": [
+            
+            
+             
+             
+             
+             
+             
+            
+        ]
+    },
+    "headline": Export all Google Sheets to csv,
+    "name": Export all Google Sheets to csv,
+    "wordCount": 80,
+    "timeRequired": "PT1M",
+    "inLanguage": {
+      "@type": "Language",
+      "alternateName": en
+    },
+    "url": https://drzon.net/posts/export-all-google-sheets-to-csv,
+    "datePublished": 2014-03-26T00:00Z,
+    "dateModified": 2014-03-26T00:00Z,
+    
+    "keywords": google sheets, csv,
+    "description": ,
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": https://drzon.net/posts/export-all-google-sheets-to-csv
+    }
+}
+    </script>
+    
+
+
+    
+
+    
+
+    
+</head>
+<body class="nav-closed">
+
+  <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+        
+        
+        
+    </ul>
+    
+    
+    <a class="subscribe-button icon-feed" href="https://drzon.netindex.xml">Subscribe</a>
+    
+</div>
+<span class="nav-cover"></span>
+
+
+ <div class="site-wrapper">
+
+
+
+
+<header class="main-header post-head no-cover">
+  <nav class="main-nav clearfix">
+
+
+  
+      <a class="blog-logo" href="https://drzon.net"><img src="https://drzon.netimages/selfie.png" alt="Home" /></a>
+  
+  
+      <a class="menu-button icon-feed" href="https://drzon.netindex.xml"><i class="fa fa-rss" aria-hidden="true"></i>&nbsp;Subscribe</a>
+  
+  </nav>
+</header>
+
+
+
+<main class="content" role="main">
+
+
+
+
+  <article class="post post">
+
+    <header class="post-header ">
+        <h1 class="post-title">Export all Google Sheets to csv</h1>
+        <small></small>
+
+        <section class="post-meta">
+        
+          <time class="post-date" datetime="2014-03-26T00:00:00Z">
+            Mar 26, 2014
+          </time>
+        
+         
+          <span class="post-tag small"><a href="https://drzon.nettags/google-sheets/">#google sheets</a></span>
+         
+          <span class="post-tag small"><a href="https://drzon.nettags/csv/">#csv</a></span>
+         
+        </section>
+    </header>
+
+    <section class='post-content '>
+      <p>I had a Google Apps spreadsheet with around 40 sheets. Wanted to export them to <code>csv</code>. Unfortunately Google only lets you export one sheet at a time.</p>
+
+<p>Here&rsquo;s a script that exports all sheets in a spreadsheet to <code>csv</code></p>
+
+<script src="https://gist.github.com/mderazon/9655893.js"></script>
+
+<p>To use, click on tools &ndash;&gt; script editor. Then create a new blank script and paste the code there.</p>
+
+<p>Click on the play button (run) and go back to your spreadsheet. You should then see the csv in the spreadsheet menu</p>
+
+    </section>
+
+
+  <footer class="post-footer">
+
+
+    
+    <figure class="author-image">
+        <a class="img" href="https://drzon.net" style="background-image: url(https://drzon.netimages/selfie.png)"><span class="hidden">Michael DeRazon's Picture</span></a>
+    </figure>
+    
+
+    
+
+
+
+
+
+<section class="author">
+  <h4><a href="https://drzon.net">Michael DeRazon</a></h4>
+  
+  <p>Read <a href="https://drzon.net">more posts</a> by this author.</p>
+  
+  <div class="author-meta">
+    <span class="author-location icon-location">New York, USA</span>
+    <span class="author-link icon-link"><a href="https://drzon.net">https://drzon.net</a></span>
+  </div>
+</section>
+
+
+
+    
+<section class="share">
+  <h4>Share this post</h4>
+  <a class="icon-twitter" style="font-size: 1.4em" href="https://twitter.com/share?text=Export%20all%20Google%20Sheets%20to%20csv&nbsp;-&nbsp;Code%20and%20stuff&amp;url=https%3a%2f%2fdrzon.net%2fposts%2fexport-all-google-sheets-to-csv"
+      onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+      <span class="hidden">Twitter</span>
+  </a>
+  <a class="icon-facebook" style="font-size: 1.4em" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fdrzon.net%2fposts%2fexport-all-google-sheets-to-csv"
+      onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+      <span class="hidden">Facebook</span>
+  </a>
+  <a class="icon-pinterest" style="font-size: 1.4em" href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fdrzon.net%2fposts%2fexport-all-google-sheets-to-csv&amp;description=Export%20all%20Google%20Sheets%20to%20csv"
+      onclick="window.open(this.href, 'pinterest-share','width=580,height=296');return false;">
+      <span class="hidden">Pinterest</span>
+  </a>
+  <a class="icon-google-plus" style="font-size: 1.4em" href="https://plus.google.com/share?url=https%3a%2f%2fdrzon.net%2fposts%2fexport-all-google-sheets-to-csv"
+     onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+      <span class="hidden">Google+</span>
+  </a>
+</section>
+
+
+
+    
+
+
+  </footer>
+</article>
+
+</main>
+    <footer class="site-footer clearfix">
+        <section class="copyright"><a href="">Code and stuff</a> All rights reserved - 2017</section>
+        
+        <section class="poweredby">Proudly generated by <a class="icon-hugo" href="http://gohugo.io">HUGO</a>, hosted on <a class="icon-theme" href="https://github.com/mderazon">Github</a></section>
+        
+    </footer>
+    </div>
+    
+    
+</body>
+</html>
+

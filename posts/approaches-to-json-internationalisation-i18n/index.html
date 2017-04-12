@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    
+
+
+    
+        <meta name="twitter:card" content="summary"/>
+    
+
+
+
+<meta name="twitter:title" content="Approaches to JSON internationalisation (i18n)"/>
+<meta name="twitter:description" content=""/>
+<meta name="twitter:site" content="@mderazon"/>
+
+
+
+  	<meta property="og:title" content="Approaches to JSON internationalisation (i18n) &middot; Code and stuff" />
+  	<meta property="og:site_name" content="Code and stuff" />
+  	<meta property="og:url" content="https://drzon.net/posts/approaches-to-json-internationalisation-i18n" />
+
+    
+        
+            <meta property="og:image" content="https://drzon.netimages/cover.jpg"/>
+        
+    
+
+    
+    <meta property="og:description" content="" />
+  	<meta property="og:type" content="article" />
+    <meta property="og:image" content="https://drzon.net" />
+    <meta property="article:published_time" content="2014-03-23T00:00:00Z" />
+
+    
+    <meta property="article:tag" content="json" />
+    
+    <meta property="article:tag" content="api" />
+    
+    <meta property="article:tag" content="i18n" />
+    
+    
+
+    <title>Approaches to JSON internationalisation (i18n) &middot; Code and stuff</title>
+
+    
+    <meta name="description" content="" />
+    
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="https://drzon.netimages/favicon.ico">
+	  <link rel="apple-touch-icon" href="https://drzon.netimages/apple-touch-icon.png" />
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://drzon.netcss/screen.css" />
+    <link rel="stylesheet" type="text/css" href="https://drzon.netcss/nav.css" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700i,300i|Alef:400,700|Open+Sans:700,400|Inconsolata" />
+
+    
+
+    
+      
+          <link href="https://drzon.netindex.xml" rel="alternate" type="application/rss+xml" title="Code and stuff" />
+      
+      
+    
+    <meta name="generator" content="Hugo 0.19" />
+
+    <link rel="canonical" href="https://drzon.net/posts/approaches-to-json-internationalisation-i18n" />
+
+    
+      
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": ,
+        "logo": https://drzon.netimages/selfie.png
+    },
+    "author": {
+        "@type": "Person",
+        "name": ,
+        
+        "image": {
+            "@type": "ImageObject",
+            "url": https://drzon.netimages/selfie.png,
+            "width": 250,
+            "height": 250
+        }, 
+        
+        "url": https://drzon.net,
+        "sameAs": [
+            
+            
+             
+             
+             
+             
+             
+            
+        ]
+    },
+    "headline": Approaches to JSON internationalisation (i18n),
+    "name": Approaches to JSON internationalisation (i18n),
+    "wordCount": 666,
+    "timeRequired": "PT4M",
+    "inLanguage": {
+      "@type": "Language",
+      "alternateName": en
+    },
+    "url": https://drzon.net/posts/approaches-to-json-internationalisation-i18n,
+    "datePublished": 2014-03-23T00:00Z,
+    "dateModified": 2014-03-23T00:00Z,
+    
+    "keywords": json, api, i18n,
+    "description": ,
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": https://drzon.net/posts/approaches-to-json-internationalisation-i18n
+    }
+}
+    </script>
+    
+
+
+    
+
+    
+
+    
+</head>
+<body class="nav-closed">
+
+  <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+        
+        
+        
+    </ul>
+    
+    
+    <a class="subscribe-button icon-feed" href="https://drzon.netindex.xml">Subscribe</a>
+    
+</div>
+<span class="nav-cover"></span>
+
+
+ <div class="site-wrapper">
+
+
+
+
+<header class="main-header post-head no-cover">
+  <nav class="main-nav clearfix">
+
+
+  
+      <a class="blog-logo" href="https://drzon.net"><img src="https://drzon.netimages/selfie.png" alt="Home" /></a>
+  
+  
+      <a class="menu-button icon-feed" href="https://drzon.netindex.xml"><i class="fa fa-rss" aria-hidden="true"></i>&nbsp;Subscribe</a>
+  
+  </nav>
+</header>
+
+
+
+<main class="content" role="main">
+
+
+
+
+  <article class="post post">
+
+    <header class="post-header ">
+        <h1 class="post-title">Approaches to JSON internationalisation (i18n)</h1>
+        <small></small>
+
+        <section class="post-meta">
+        
+          <time class="post-date" datetime="2014-03-23T00:00:00Z">
+            Mar 23, 2014
+          </time>
+        
+         
+          <span class="post-tag small"><a href="https://drzon.nettags/json/">#json</a></span>
+         
+          <span class="post-tag small"><a href="https://drzon.nettags/api/">#api</a></span>
+         
+          <span class="post-tag small"><a href="https://drzon.nettags/i18n/">#i18n</a></span>
+         
+        </section>
+    </header>
+
+    <section class='post-content '>
+      
+
+<p>I needed to create an API that is capable of serving objects with strings in more than one language. Let me present the problem with an example.</p>
+
+<p>Lets assume that we have a web app or a mobile client that wants to get information about coffee shops around the city. Also, lets assume also that we are going to have to support two languages, <em>English</em> and <em>Hebrew</em> (I know, right ?).</p>
+
+<p>So one client will like to get the information in English:</p>
+
+<pre><code class="language-js">{
+  &quot;venue_id&quot;: &quot;C001&quot;,
+  &quot;venue_location&quot;: &quot;Baker St.&quot;
+  &quot;venue_name&quot;: &quot;Aroma Coffee&quot;
+}
+</code></pre>
+
+<p>And another client will like to get the information in Hebrew:</p>
+
+<pre><code class="language-js">{
+  &quot;venue_id&quot;: &quot;C001&quot;,
+  &quot;venue_location&quot;: &quot;רחוב האופה&quot;
+  &quot;venue_name&quot;: &quot;קפה ארומה&quot;
+}
+</code></pre>
+
+<p>The two main questions i&rsquo;m interested in are :</p>
+
+<ol>
+<li>How do I store the data in the db ?</li>
+<li>How will the API serve the data in the right language ?</li>
+</ol>
+
+<p>Lets talk about both of them</p>
+
+<h3 id="how-to-store-the-multilingual-data">How to store the multilingual data</h3>
+
+<p>For the sake of the example, I will assume that you are using a document based database like Mongodb.</p>
+
+<p>You can approach the problem in couple of ways:</p>
+
+<h4 id="separate-languages-into-different-collections">Separate languages into different collections</h4>
+
+<p>Create a collection for each language and query the appropriate collection according to what the client accepts.
+We will have <code>venues_en</code> collection and also a <code>venues_he</code> collection.</p>
+
+<p>The obvious down side of this approach is that a lot of the data is being unnecessarily duplicated.</p>
+
+<h4 id="embed-the-multilingual-data-in-the-same-document">Embed the multilingual data in the same document</h4>
+
+<p>For each field that needs translation in a document (venue in our case), we will embed the multilingual data inside the field. For example :</p>
+
+<pre><code class="language-js">{
+  &quot;venue_id&quot;: &quot;C001&quot;,
+  &quot;venue_location&quot;: {
+    &quot;en&quot;: &quot;Baker St.&quot;,
+    &quot;he&quot;: &quot;רחוב האופה&quot;
+  }
+  &quot;venue_name&quot;: {
+    &quot;en&quot;: &quot;Aroma Coffee&quot;,
+    &quot;he&quot;: &quot;קפה ארומה&quot;
+  }
+}
+</code></pre>
+
+<p>This solves the duplication of fields from the previous approach but adds a little complexity to the object we&rsquo;re saving.</p>
+
+<p>I prefer the second method because I think it&rsquo;s much more scalable. Imagine we need to support 25 different languages. Maintaining all of the duplicate data in the first approach becomes a nightmare. In the second approach we added a single level of hierarchy to the object, not a big deal usually.</p>
+
+<h3 id="how-will-the-api-serve-the-data">How will the API serve the data</h3>
+
+<p>Eventually, after we pull the relevant data that we want to save, we are left with a question of how to serve the data to the client. The easiest way for a bad API will be to just push the data &ldquo;as is&rdquo; to the client and let it worry about picking the language and parsing it to display to the user.</p>
+
+<p>A better API should do the heavy lifting on the server side and will serve the client with normalised data in the language that it requested in the <code>Accept-Language</code> header.</p>
+
+<h2 id="easy-implementation-in-node-js">Easy implementation in Node.js</h2>
+
+<p>Here&rsquo;s a nice and clean way to strip the unnecessary languages from the response and serve only the relevant language to the client.</p>
+
+<p>I am using a nice node module to <a href="https://github.com/substack/js-traverse">traverse</a> the JSON object and strip it from other languages. Here&rsquo;s a simple example:</p>
+
+<p><script src="https://gist.github.com/mderazon/9729626.js"></script>
+The output would be:</p>
+
+<pre><code class="language-js">{
+  venue_id: &quot;C001&quot;,
+  venue_location: &quot;Baker St.&quot;,
+  venue_name: &quot;Aroma Coffee&quot;
+}
+</code></pre>
+
+<p>The <code>filter_language</code> function uses traverse module to go through the object tree and look for keys with the chosen <code>language</code>. If it finds one, it updates the parent&rsquo;s value to the chosen language value.</p>
+
+<p>This way, the client doesn&rsquo;t have to worry about choosing the right language and can focus on displaying the data.</p>
+
+<p>You can pass the function any json object you want as long as it&rsquo;s a valid json.</p>
+
+<h2 id="performance">Performance</h2>
+
+<p>Just to give a rough estimation, running 1 million entries of the above sample object through the <code>filter_language</code> function took 29 seconds on my MBA - throughput of 34.4 objects / ms.
+Running on a much more complex object with around 100 keys and nested objects yielded throughput of 0.6 objects / ms. So if your data contains around 1K complex objects, the overhead of this  will be around 500 ms.</p>
+
+    </section>
+
+
+  <footer class="post-footer">
+
+
+    
+    <figure class="author-image">
+        <a class="img" href="https://drzon.net" style="background-image: url(https://drzon.netimages/selfie.png)"><span class="hidden">Michael DeRazon's Picture</span></a>
+    </figure>
+    
+
+    
+
+
+
+
+
+<section class="author">
+  <h4><a href="https://drzon.net">Michael DeRazon</a></h4>
+  
+  <p>Read <a href="https://drzon.net">more posts</a> by this author.</p>
+  
+  <div class="author-meta">
+    <span class="author-location icon-location">New York, USA</span>
+    <span class="author-link icon-link"><a href="https://drzon.net">https://drzon.net</a></span>
+  </div>
+</section>
+
+
+
+    
+<section class="share">
+  <h4>Share this post</h4>
+  <a class="icon-twitter" style="font-size: 1.4em" href="https://twitter.com/share?text=Approaches%20to%20JSON%20internationalisation%20%28i18n%29&nbsp;-&nbsp;Code%20and%20stuff&amp;url=https%3a%2f%2fdrzon.net%2fposts%2fapproaches-to-json-internationalisation-i18n"
+      onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+      <span class="hidden">Twitter</span>
+  </a>
+  <a class="icon-facebook" style="font-size: 1.4em" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fdrzon.net%2fposts%2fapproaches-to-json-internationalisation-i18n"
+      onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+      <span class="hidden">Facebook</span>
+  </a>
+  <a class="icon-pinterest" style="font-size: 1.4em" href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fdrzon.net%2fposts%2fapproaches-to-json-internationalisation-i18n&amp;description=Approaches%20to%20JSON%20internationalisation%20%28i18n%29"
+      onclick="window.open(this.href, 'pinterest-share','width=580,height=296');return false;">
+      <span class="hidden">Pinterest</span>
+  </a>
+  <a class="icon-google-plus" style="font-size: 1.4em" href="https://plus.google.com/share?url=https%3a%2f%2fdrzon.net%2fposts%2fapproaches-to-json-internationalisation-i18n"
+     onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+      <span class="hidden">Google+</span>
+  </a>
+</section>
+
+
+
+    
+
+
+  </footer>
+</article>
+
+</main>
+    <footer class="site-footer clearfix">
+        <section class="copyright"><a href="">Code and stuff</a> All rights reserved - 2017</section>
+        
+        <section class="poweredby">Proudly generated by <a class="icon-hugo" href="http://gohugo.io">HUGO</a>, hosted on <a class="icon-theme" href="https://github.com/mderazon">Github</a></section>
+        
+    </footer>
+    </div>
+    
+    
+</body>
+</html>
+
