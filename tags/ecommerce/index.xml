@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ecommerce on Code and stuff</title>
+    <link>https://www.drzon.net/tags/ecommerce/index.xml</link>
+    <description>Recent content in Ecommerce on Code and stuff</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>All rights reserved - 2017</copyright>
+    <atom:link href="https://www.drzon.net/tags/ecommerce/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Generate a random order-number</title>
+      <link>https://www.drzon.net/posts/generate-random-order-number</link>
+      <pubDate>Sun, 16 Apr 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.drzon.net/posts/generate-random-order-number</guid>
+      <description>
+
+&lt;p&gt;For one of my projects, I needed to generate a random order number that will be sent to customers in an email after they order. Lots of companies do that, it usually looks like this:&lt;/p&gt;
+
+&lt;h3 id=&#34;requirements&#34;&gt;Requirements&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Has to be all digits.&lt;/li&gt;
+&lt;li&gt;Needs to be unique. We don&amp;rsquo;t want two orders to have the same order number.&lt;/li&gt;
+&lt;li&gt;Has to be random - i.e. not enumerable. We don&amp;rsquo;t want the orders to be consecutive for example (5001, 5002, 5003, &amp;hellip;) so that people can&amp;rsquo;t guess other orders numbers.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&#34;format&#34;&gt;Format&lt;/h3&gt;
+
+&lt;p&gt;Order number is &lt;em&gt;not&lt;/em&gt; the same as order id that you use internally to uniquely identify your orders. For order ids, it&amp;rsquo;s best to use a known format like &lt;a href=&#34;https://en.wikipedia.org/wiki/Universally_unique_identifier&#34;&gt;UUID&lt;/a&gt; or something similar.&lt;/p&gt;
+
+&lt;p&gt;There&amp;rsquo;s no standard format for order numbers. They should be long enough to be able to hold enough orders but at the same time not too long as people have to use them to identify an order and sometimes read them out loud to a customer support representative.
+It&amp;rsquo;s also good practice to divide them into couple of sections for better readability.&lt;/p&gt;
+
+&lt;p&gt;I chose a 4-6-4 format (x is a digit):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;xxxx-xxxxxx-xxxx
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;There wasn&amp;rsquo;t really any particular reason for this choice other than nicely symmetric. This gives us 14 characters to identify an order which should be plenty enough for most cases.&lt;/p&gt;
+
+&lt;h3 id=&#34;solution-1-generate-and-validate&#34;&gt;Solution #1 - Generate and validate&lt;/h3&gt;
+
+&lt;p&gt;The first approach for this problem is:
+1. Generate a random 14 digits number.
+2. Search for this number in database to see if we had it before (unique).
+3. If we found it, try another one. If it&amp;rsquo;s unique, use it.&lt;/p&gt;
+
+&lt;p&gt;This is an obvious approach and makes sure that we don&amp;rsquo;t have collisions.
+Problem is that we make a round-trip to the database and if the db is hosted somewhere else the call would involve the network and it can be slow. If we&amp;rsquo;re making the call to the db anyway chances are that in most cases we won&amp;rsquo;t have to make an extra call due to collision but we still have to add code path to handle the case of collision.&lt;/p&gt;
+
+&lt;p&gt;Can we remove the need to make a call to validate ?&lt;/p&gt;
+
+&lt;h3 id=&#34;solution-2-generate-a-universally-unique-number&#34;&gt;Solution #2 - Generate a universally unique number&lt;/h3&gt;
+
+&lt;p&gt;How can we generate a number that we&amp;rsquo;ll know is unique without having to validate ?&lt;/p&gt;
+
+&lt;p&gt;We use time 🕒&lt;/p&gt;
+
+&lt;p&gt;System time is easily accessible in every programming language and time is progressive which means that if we read it in one moment and then read it again a moment later, we are promised to get a different value.&lt;/p&gt;
+
+&lt;p&gt;A good approach will be to use the &lt;a href=&#34;https://en.wikipedia.org/wiki/Unix_time&#34;&gt;Unix epoch time&lt;/a&gt; format which returns a 13 digits integer (at least until year 2286 when it&amp;rsquo;ll become 14 digits).
+To get to 14, we can just add one random digit as padding.
+The number is guaranteed to be unique down to the resolution of a millisecond which is great and also the padding digit add a little extra safety for two orders that happened at the same time.&lt;/p&gt;
+
+&lt;p&gt;so, in Javascript we can do:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-js&#34;&gt;function orderNumber() {
+  let now = Date.now().toString() // &#39;1492341545873&#39;
+  // pad with extra random digit
+  now += now + Math.floor(Math.random() * 10)
+  // format
+  return  [now.slice(0, 4), now.slice(4, 10), now.slice(10, 14)].join(&#39;-&#39;)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Problem with this approach is that this number is not really random (excluding the padding digit) and we don&amp;rsquo;t want to expose our sophisticated order numbering scheme :-)&lt;/p&gt;
+
+&lt;h3 id=&#34;solution-3-generate-a-universally-unique-and-obfuscated-number&#34;&gt;Solution #3 - Generate a universally unique and obfuscated number&lt;/h3&gt;
+
+&lt;p&gt;The trick here is to use encryption to encrypt the epoch time:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Get current time and add extra digit.&lt;/li&gt;
+&lt;li&gt;Encrypt the result to obfuscate the original number and make it look random.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;If we use a symmetric-key encryption (encrypt and decrypt with same key) we preserve the uniqueness property of the number after encrypting since it&amp;rsquo;s always possible to decrypt it back to the original number.&lt;/p&gt;
+
+&lt;p&gt;We need to use an encryption algorithm that yields a numbers-only ciphertext. I have read about &lt;a href=&#34;https://en.wikipedia.org/wiki/Format-preserving_encryption&#34;&gt;format-preserving encryption&lt;/a&gt;:
+&amp;gt; In cryptography, format-preserving encryption (FPE) refers to encrypting in such a way that the output (the ciphertext) is in the same format as the input (the plaintext).&lt;/p&gt;
+
+&lt;p&gt;Meaning that if we encrypt a 14 digits number the result will also be a 14 digits number.&lt;/p&gt;
+
+&lt;p&gt;I have opted to use a simple FPE technique from a &amp;ldquo;&lt;a href=&#34;https://en.wikipedia.org/wiki/Format-preserving_encryption#FPE_from_a_prefix_cipher&#34;&gt;prefix cipher&lt;/a&gt;&amp;rdquo;.
+It&amp;rsquo;s a pretty straightforward method and consists of:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Take all digits [0..9] and encrypt each one of them however you want. I use &lt;code&gt;aes-256-cbc&lt;/code&gt; with the password &lt;code&gt;michael&lt;/code&gt; in this example:&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;digit&lt;/th&gt;
+&lt;th&gt;encrypted&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;cc542e3575b66e7e18da4efea5bd5dd0&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;05dc4db56eecf0bbe86ecd5b32b0bd8a&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;bb6aa9a0e4459e44dd1161f8151bf5b8&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;a4113f6a28d807ec67864284c4c8fa7f&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;136dbce2a64017352c433586441b961f&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;td&gt;cf3fc8ac69a41f1ac43d7ba37e7fb68c&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;6&lt;/td&gt;
+&lt;td&gt;7c154f41a8bbf39a844ffb8cce82e08f&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;7&lt;/td&gt;
+&lt;td&gt;736197baa4f81c7ec5de42f099e84902&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;8&lt;/td&gt;
+&lt;td&gt;5068ecec92f52719c904361c9b91b929&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;9&lt;/td&gt;
+&lt;td&gt;393d6b7d2eddcf2021600a744406fa2c&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Sort the encrypted results:&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;index&lt;/th&gt;
+&lt;th&gt;digit&lt;/th&gt;
+&lt;th&gt;encrypted&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;05dc4db56eecf0bbe86ecd5b32b0bd8a&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;136dbce2a64017352c433586441b961f&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;9&lt;/td&gt;
+&lt;td&gt;393d6b7d2eddcf2021600a744406fa2c&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;8&lt;/td&gt;
+&lt;td&gt;5068ecec92f52719c904361c9b91b929&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;7&lt;/td&gt;
+&lt;td&gt;736197baa4f81c7ec5de42f099e84902&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;td&gt;6&lt;/td&gt;
+&lt;td&gt;7c154f41a8bbf39a844ffb8cce82e08f&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;6&lt;/td&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;a4113f6a28d807ec67864284c4c8fa7f&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;7&lt;/td&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;bb6aa9a0e4459e44dd1161f8151bf5b8&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;8&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;cc542e3575b66e7e18da4efea5bd5dd0&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;9&lt;/td&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;td&gt;cf3fc8ac69a41f1ac43d7ba37e7fb68c&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;ol&gt;
+&lt;li&gt;We now have a cipher method to encrypt every digit:&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code&gt;F(0) = 1
+F(1) = 4
+F(2) = 9
+.
+.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I have created a small node library that uses this method to encrypt digits or other things. Check out the complete code if you want: &lt;a href=&#34;https://github.com/mderazon/node-fpe&#34;&gt;node-fpe&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&#34;summary&#34;&gt;Summary&lt;/h3&gt;
+
+&lt;p&gt;To wrap things up, here are the steps to generate a unique randomly looking order number:
+1. Get current Unix time (ms).
+2. Add another random digit to complete 14 digits.
+3. Encrypt with FPE
+4. Format (4-6-4)&lt;/p&gt;
+
+&lt;p&gt;That&amp;rsquo;s all.
+Code is available in my Github repo: &lt;a href=&#34;https://github.com/mderazon/order-id&#34;&gt;https://github.com/mderazon/order-id&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;collision-probability&#34;&gt;Collision probability&lt;/h3&gt;
+
+&lt;p&gt;The order number is not guaranteed to be unique. Two orders will have the same order number if they both happened in the same millisecond and also both have the same padding digit.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s divide this event into two separate probabilities and then multiply them to get the final probability:
+1. P(two orders at the same ms)
+2. P(two orders with the same padding digit)&lt;/p&gt;
+
+&lt;h4 id=&#34;probability-of-two-orders-at-the-same-millisecond&#34;&gt;Probability of two orders at the same millisecond&lt;/h4&gt;
+
+&lt;p&gt;We are assuming orders are independent of each other and can come at any time during the day. This means they are controlled by a &lt;a href=&#34;https://en.wikipedia.org/wiki/Poisson_distribution&#34;&gt;Poisson process&lt;/a&gt; with a parameter λ that gives the expected number of events per unit time.&lt;/p&gt;
+
+&lt;p&gt;Assuming we have 1,000,000 orders per day, λ = 1e6/8.64e7 (events per ms) = (events/day)*(days/ms).&lt;/p&gt;
+
+&lt;p&gt;In a Poisson process, the time between successive events (let&amp;rsquo;s call it the inter-event interval) has an &lt;a href=&#34;https://en.wikipedia.org/wiki/Exponential_distribution&#34;&gt;exponential distribution&lt;/a&gt; with mean 1/λ. In our example, this gives an average of 86.4ms between orders.&lt;/p&gt;
+
+&lt;p&gt;Given that an event has just occurred at time t0, we want to calculate the probability that the next event occurs at time t1 ≤ t0+1 ms. That is, the inter-event interval will be between 0 and 1ms. To do that, we can integrate the probability density function (PDF) of the inter-event interval from 0 to 1ms. This is the same as evaluating its cumulative distribution function (CDF) at 1ms. The CDF of the exponential distribution is:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;1−e^(−λt)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Evaluating this at λ=1e6/8.64e7 and t=1ms gives a probability of ~0.0115&lt;/p&gt;
+
+&lt;h4 id=&#34;probability-of-two-orders-with-the-same-padding-digit&#34;&gt;Probability of two orders with the same padding digit&lt;/h4&gt;
+
+&lt;p&gt;This one is easy, probability of choosing the same number twice is just &lt;sup&gt;1&lt;/sup&gt;&amp;frasl;&lt;sub&gt;10&lt;/sub&gt;.&lt;/p&gt;
+
+&lt;h4 id=&#34;overall-probability&#34;&gt;Overall probability&lt;/h4&gt;
+
+&lt;p&gt;Assuming 1,000,000 orders per day and a random padding number, the probability comes down to a simple multiplication:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;P(two orders with the same number) = 0.0115 * 0.1 = 0.00115
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Or roughly 0.1%
+&lt;sup&gt;1&lt;/sup&gt;&amp;frasl;&lt;sub&gt;99999999999999&lt;/sub&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

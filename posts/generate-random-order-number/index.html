@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    
+
+
+    
+        <meta name="twitter:card" content="summary"/>
+    
+
+
+
+<meta name="twitter:title" content="Generate a random order-number"/>
+<meta name="twitter:description" content=""/>
+<meta name="twitter:site" content="@mderazon"/>
+
+
+
+  	<meta property="og:title" content="Generate a random order-number &middot; Code and stuff" />
+  	<meta property="og:site_name" content="Code and stuff" />
+  	<meta property="og:url" content="https://www.drzon.net/posts/generate-random-order-number" />
+
+    
+        
+            <meta property="og:image" content="https://www.drzon.net/images/cover.jpg"/>
+        
+    
+
+    
+    <meta property="og:description" content="" />
+  	<meta property="og:type" content="article" />
+    <meta property="og:image" content="https://www.drzon.net/" />
+    <meta property="article:published_time" content="2017-04-16T00:00:00Z" />
+
+    
+    <meta property="article:tag" content="node" />
+    
+    <meta property="article:tag" content="ecommerce" />
+    
+    
+
+    <title>Generate a random order-number &middot; Code and stuff</title>
+
+    
+    <meta name="description" content="" />
+    
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="https://www.drzon.net/images/favicon.ico">
+	  <link rel="apple-touch-icon" href="https://www.drzon.net/images/apple-touch-icon.png" />
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://www.drzon.net/css/screen.css" />
+    <link rel="stylesheet" type="text/css" href="https://www.drzon.net/css/nav.css" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700i,300i|Alef:400,700|Open+Sans:700,400|Inconsolata" />
+
+    
+
+    
+      
+          <link href="https://www.drzon.net/index.xml" rel="alternate" type="application/rss+xml" title="Code and stuff" />
+      
+      
+    
+    <meta name="generator" content="Hugo 0.19" />
+
+    <link rel="canonical" href="https://www.drzon.net/posts/generate-random-order-number" />
+
+    
+      
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": ,
+        "logo": https://www.drzon.net/images/selfie.png
+    },
+    "author": {
+        "@type": "Person",
+        "name": ,
+        
+        "image": {
+            "@type": "ImageObject",
+            "url": https://www.drzon.net/images/selfie.png,
+            "width": 250,
+            "height": 250
+        }, 
+        
+        "url": https://www.drzon.net,
+        "sameAs": [
+            
+            
+             
+             
+             
+             
+             
+            
+        ]
+    },
+    "headline": Generate a random order-number,
+    "name": Generate a random order-number,
+    "wordCount": 1225,
+    "timeRequired": "PT6M",
+    "inLanguage": {
+      "@type": "Language",
+      "alternateName": en
+    },
+    "url": https://www.drzon.net/posts/generate-random-order-number,
+    "datePublished": 2017-04-16T00:00Z,
+    "dateModified": 2017-04-16T00:00Z,
+    
+    "keywords": node, ecommerce,
+    "description": ,
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": https://www.drzon.net/posts/generate-random-order-number
+    }
+}
+    </script>
+    
+
+
+    
+
+    
+
+    
+</head>
+<body class="nav-closed">
+
+  <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+        
+        
+        
+    </ul>
+    
+    
+    <a class="subscribe-button icon-feed" href="https://www.drzon.net/index.xml">Subscribe</a>
+    
+</div>
+<span class="nav-cover"></span>
+
+
+ <div class="site-wrapper">
+
+
+
+
+<header class="main-header post-head no-cover">
+  <nav class="main-nav clearfix">
+
+
+
+  
+      <a class="menu-button icon-feed" href="https://www.drzon.net/"><i class="fa fa-home" aria-hidden="true"></i>&nbsp;Home</a>
+  
+  </nav>
+</header>
+
+
+
+<main class="content" role="main">
+
+
+
+
+  <article class="post post">
+
+    <header class="post-header ">
+        <h1 class="post-title">Generate a random order-number</h1>
+        <small></small>
+
+        <section class="post-meta">
+        
+          <time class="post-date" datetime="2017-04-16T00:00:00Z">
+            Apr 16, 2017
+          </time>
+        
+         
+          <span class="post-tag small"><a href="https://www.drzon.net/tags/node/">#node</a></span>
+         
+          <span class="post-tag small"><a href="https://www.drzon.net/tags/ecommerce/">#ecommerce</a></span>
+         
+        </section>
+    </header>
+
+    <section class='post-content '>
+      
+
+<p>For one of my projects, I needed to generate a random order number that will be sent to customers in an email after they order. Lots of companies do that, it usually looks like this:</p>
+
+<h3 id="requirements">Requirements</h3>
+
+<ol>
+<li>Has to be all digits.</li>
+<li>Needs to be unique. We don&rsquo;t want two orders to have the same order number.</li>
+<li>Has to be random - i.e. not enumerable. We don&rsquo;t want the orders to be consecutive for example (5001, 5002, 5003, &hellip;) so that people can&rsquo;t guess other orders numbers.</li>
+</ol>
+
+<h3 id="format">Format</h3>
+
+<p>Order number is <em>not</em> the same as order id that you use internally to uniquely identify your orders. For order ids, it&rsquo;s best to use a known format like <a href="https://en.wikipedia.org/wiki/Universally_unique_identifier">UUID</a> or something similar.</p>
+
+<p>There&rsquo;s no standard format for order numbers. They should be long enough to be able to hold enough orders but at the same time not too long as people have to use them to identify an order and sometimes read them out loud to a customer support representative.
+It&rsquo;s also good practice to divide them into couple of sections for better readability.</p>
+
+<p>I chose a 4-6-4 format (x is a digit):</p>
+
+<pre><code>xxxx-xxxxxx-xxxx
+</code></pre>
+
+<p>There wasn&rsquo;t really any particular reason for this choice other than nicely symmetric. This gives us 14 characters to identify an order which should be plenty enough for most cases.</p>
+
+<h3 id="solution-1-generate-and-validate">Solution #1 - Generate and validate</h3>
+
+<p>The first approach for this problem is:
+1. Generate a random 14 digits number.
+2. Search for this number in database to see if we had it before (unique).
+3. If we found it, try another one. If it&rsquo;s unique, use it.</p>
+
+<p>This is an obvious approach and makes sure that we don&rsquo;t have collisions.
+Problem is that we make a round-trip to the database and if the db is hosted somewhere else the call would involve the network and it can be slow. If we&rsquo;re making the call to the db anyway chances are that in most cases we won&rsquo;t have to make an extra call due to collision but we still have to add code path to handle the case of collision.</p>
+
+<p>Can we remove the need to make a call to validate ?</p>
+
+<h3 id="solution-2-generate-a-universally-unique-number">Solution #2 - Generate a universally unique number</h3>
+
+<p>How can we generate a number that we&rsquo;ll know is unique without having to validate ?</p>
+
+<p>We use time 🕒</p>
+
+<p>System time is easily accessible in every programming language and time is progressive which means that if we read it in one moment and then read it again a moment later, we are promised to get a different value.</p>
+
+<p>A good approach will be to use the <a href="https://en.wikipedia.org/wiki/Unix_time">Unix epoch time</a> format which returns a 13 digits integer (at least until year 2286 when it&rsquo;ll become 14 digits).
+To get to 14, we can just add one random digit as padding.
+The number is guaranteed to be unique down to the resolution of a millisecond which is great and also the padding digit add a little extra safety for two orders that happened at the same time.</p>
+
+<p>so, in Javascript we can do:</p>
+
+<pre><code class="language-js">function orderNumber() {
+  let now = Date.now().toString() // '1492341545873'
+  // pad with extra random digit
+  now += now + Math.floor(Math.random() * 10)
+  // format
+  return  [now.slice(0, 4), now.slice(4, 10), now.slice(10, 14)].join('-')
+}
+</code></pre>
+
+<p>Problem with this approach is that this number is not really random (excluding the padding digit) and we don&rsquo;t want to expose our sophisticated order numbering scheme :-)</p>
+
+<h3 id="solution-3-generate-a-universally-unique-and-obfuscated-number">Solution #3 - Generate a universally unique and obfuscated number</h3>
+
+<p>The trick here is to use encryption to encrypt the epoch time:</p>
+
+<ol>
+<li>Get current time and add extra digit.</li>
+<li>Encrypt the result to obfuscate the original number and make it look random.</li>
+</ol>
+
+<p>If we use a symmetric-key encryption (encrypt and decrypt with same key) we preserve the uniqueness property of the number after encrypting since it&rsquo;s always possible to decrypt it back to the original number.</p>
+
+<p>We need to use an encryption algorithm that yields a numbers-only ciphertext. I have read about <a href="https://en.wikipedia.org/wiki/Format-preserving_encryption">format-preserving encryption</a>:
+&gt; In cryptography, format-preserving encryption (FPE) refers to encrypting in such a way that the output (the ciphertext) is in the same format as the input (the plaintext).</p>
+
+<p>Meaning that if we encrypt a 14 digits number the result will also be a 14 digits number.</p>
+
+<p>I have opted to use a simple FPE technique from a &ldquo;<a href="https://en.wikipedia.org/wiki/Format-preserving_encryption#FPE_from_a_prefix_cipher">prefix cipher</a>&rdquo;.
+It&rsquo;s a pretty straightforward method and consists of:</p>
+
+<ol>
+<li>Take all digits [0..9] and encrypt each one of them however you want. I use <code>aes-256-cbc</code> with the password <code>michael</code> in this example:</li>
+</ol>
+
+<table>
+<thead>
+<tr>
+<th>digit</th>
+<th>encrypted</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>0</td>
+<td>cc542e3575b66e7e18da4efea5bd5dd0</td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>05dc4db56eecf0bbe86ecd5b32b0bd8a</td>
+</tr>
+
+<tr>
+<td>2</td>
+<td>bb6aa9a0e4459e44dd1161f8151bf5b8</td>
+</tr>
+
+<tr>
+<td>3</td>
+<td>a4113f6a28d807ec67864284c4c8fa7f</td>
+</tr>
+
+<tr>
+<td>4</td>
+<td>136dbce2a64017352c433586441b961f</td>
+</tr>
+
+<tr>
+<td>5</td>
+<td>cf3fc8ac69a41f1ac43d7ba37e7fb68c</td>
+</tr>
+
+<tr>
+<td>6</td>
+<td>7c154f41a8bbf39a844ffb8cce82e08f</td>
+</tr>
+
+<tr>
+<td>7</td>
+<td>736197baa4f81c7ec5de42f099e84902</td>
+</tr>
+
+<tr>
+<td>8</td>
+<td>5068ecec92f52719c904361c9b91b929</td>
+</tr>
+
+<tr>
+<td>9</td>
+<td>393d6b7d2eddcf2021600a744406fa2c</td>
+</tr>
+</tbody>
+</table>
+
+<ol>
+<li>Sort the encrypted results:</li>
+</ol>
+
+<table>
+<thead>
+<tr>
+<th>index</th>
+<th>digit</th>
+<th>encrypted</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>05dc4db56eecf0bbe86ecd5b32b0bd8a</td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>4</td>
+<td>136dbce2a64017352c433586441b961f</td>
+</tr>
+
+<tr>
+<td>2</td>
+<td>9</td>
+<td>393d6b7d2eddcf2021600a744406fa2c</td>
+</tr>
+
+<tr>
+<td>3</td>
+<td>8</td>
+<td>5068ecec92f52719c904361c9b91b929</td>
+</tr>
+
+<tr>
+<td>4</td>
+<td>7</td>
+<td>736197baa4f81c7ec5de42f099e84902</td>
+</tr>
+
+<tr>
+<td>5</td>
+<td>6</td>
+<td>7c154f41a8bbf39a844ffb8cce82e08f</td>
+</tr>
+
+<tr>
+<td>6</td>
+<td>3</td>
+<td>a4113f6a28d807ec67864284c4c8fa7f</td>
+</tr>
+
+<tr>
+<td>7</td>
+<td>2</td>
+<td>bb6aa9a0e4459e44dd1161f8151bf5b8</td>
+</tr>
+
+<tr>
+<td>8</td>
+<td>0</td>
+<td>cc542e3575b66e7e18da4efea5bd5dd0</td>
+</tr>
+
+<tr>
+<td>9</td>
+<td>5</td>
+<td>cf3fc8ac69a41f1ac43d7ba37e7fb68c</td>
+</tr>
+</tbody>
+</table>
+
+<ol>
+<li>We now have a cipher method to encrypt every digit:</li>
+</ol>
+
+<pre><code>F(0) = 1
+F(1) = 4
+F(2) = 9
+.
+.
+</code></pre>
+
+<p>I have created a small node library that uses this method to encrypt digits or other things. Check out the complete code if you want: <a href="https://github.com/mderazon/node-fpe">node-fpe</a>.</p>
+
+<h3 id="summary">Summary</h3>
+
+<p>To wrap things up, here are the steps to generate a unique randomly looking order number:
+1. Get current Unix time (ms).
+2. Add another random digit to complete 14 digits.
+3. Encrypt with FPE
+4. Format (4-6-4)</p>
+
+<p>That&rsquo;s all.
+Code is available in my Github repo: <a href="https://github.com/mderazon/order-id">https://github.com/mderazon/order-id</a></p>
+
+<h3 id="collision-probability">Collision probability</h3>
+
+<p>The order number is not guaranteed to be unique. Two orders will have the same order number if they both happened in the same millisecond and also both have the same padding digit.</p>
+
+<p>Let&rsquo;s divide this event into two separate probabilities and then multiply them to get the final probability:
+1. P(two orders at the same ms)
+2. P(two orders with the same padding digit)</p>
+
+<h4 id="probability-of-two-orders-at-the-same-millisecond">Probability of two orders at the same millisecond</h4>
+
+<p>We are assuming orders are independent of each other and can come at any time during the day. This means they are controlled by a <a href="https://en.wikipedia.org/wiki/Poisson_distribution">Poisson process</a> with a parameter λ that gives the expected number of events per unit time.</p>
+
+<p>Assuming we have 1,000,000 orders per day, λ = 1e6/8.64e7 (events per ms) = (events/day)*(days/ms).</p>
+
+<p>In a Poisson process, the time between successive events (let&rsquo;s call it the inter-event interval) has an <a href="https://en.wikipedia.org/wiki/Exponential_distribution">exponential distribution</a> with mean 1/λ. In our example, this gives an average of 86.4ms between orders.</p>
+
+<p>Given that an event has just occurred at time t0, we want to calculate the probability that the next event occurs at time t1 ≤ t0+1 ms. That is, the inter-event interval will be between 0 and 1ms. To do that, we can integrate the probability density function (PDF) of the inter-event interval from 0 to 1ms. This is the same as evaluating its cumulative distribution function (CDF) at 1ms. The CDF of the exponential distribution is:</p>
+
+<pre><code>1−e^(−λt)
+</code></pre>
+
+<p>Evaluating this at λ=1e6/8.64e7 and t=1ms gives a probability of ~0.0115</p>
+
+<h4 id="probability-of-two-orders-with-the-same-padding-digit">Probability of two orders with the same padding digit</h4>
+
+<p>This one is easy, probability of choosing the same number twice is just <sup>1</sup>&frasl;<sub>10</sub>.</p>
+
+<h4 id="overall-probability">Overall probability</h4>
+
+<p>Assuming 1,000,000 orders per day and a random padding number, the probability comes down to a simple multiplication:</p>
+
+<pre><code>P(two orders with the same number) = 0.0115 * 0.1 = 0.00115
+</code></pre>
+
+<p>Or roughly 0.1%
+<sup>1</sup>&frasl;<sub>99999999999999</sub></p>
+
+    </section>
+
+
+  <footer class="post-footer">
+
+
+    
+    <figure class="author-image">
+        <a class="img" href="https://www.drzon.net/" style="background-image: url(https://www.drzon.net/images/selfie.png)"><span class="hidden">Michael DeRazon's Picture</span></a>
+    </figure>
+    
+
+    
+
+
+
+
+
+<section class="author">
+  <h4><a href="https://www.drzon.net/">Michael DeRazon</a></h4>
+  
+  <p>Read <a href="https://www.drzon.net/">more posts</a> by this author.</p>
+  
+  <div class="author-meta">
+    <span class="author-location icon-location">New York, USA</span>
+    <span class="author-link icon-link"><a href="https://www.drzon.net">https://www.drzon.net</a></span>
+  </div>
+</section>
+
+
+
+    
+<section class="share">
+  <h4>Share this post</h4>
+  <a class="icon-twitter" style="font-size: 1.4em" href="https://twitter.com/share?text=Generate%20a%20random%20order-number&nbsp;-&nbsp;Code%20and%20stuff&amp;url=https%3a%2f%2fwww.drzon.net%2fposts%2fgenerate-random-order-number"
+      onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+      <span class="hidden">Twitter</span>
+  </a>
+  <a class="icon-facebook" style="font-size: 1.4em" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwww.drzon.net%2fposts%2fgenerate-random-order-number"
+      onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+      <span class="hidden">Facebook</span>
+  </a>
+  <a class="icon-pinterest" style="font-size: 1.4em" href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fwww.drzon.net%2fposts%2fgenerate-random-order-number&amp;description=Generate%20a%20random%20order-number"
+      onclick="window.open(this.href, 'pinterest-share','width=580,height=296');return false;">
+      <span class="hidden">Pinterest</span>
+  </a>
+  <a class="icon-google-plus" style="font-size: 1.4em" href="https://plus.google.com/share?url=https%3a%2f%2fwww.drzon.net%2fposts%2fgenerate-random-order-number"
+     onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+      <span class="hidden">Google+</span>
+  </a>
+</section>
+
+
+
+    
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  var disqus_shortname = 'drzone';
+  var disqus_url = 'https:\/\/www.drzon.net\/posts\/generate-random-order-number';
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+  </footer>
+</article>
+
+</main>
+    <footer class="site-footer clearfix">
+        <section class="copyright"><a href="">Code and stuff</a> All rights reserved - 2017</section>
+        
+        <section class="poweredby">Proudly generated by <a class="icon-hugo" href="http://gohugo.io">HUGO</a>, hosted on <a class="icon-theme" href="https://github.com/mderazon/blog">Github</a></section>
+        
+    </footer>
+    </div>
+    
+    
+</body>
+</html>
+
