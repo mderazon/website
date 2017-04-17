@@ -55,17 +55,15 @@ Problem is that we make a round-trip to the database and if the db is hosted som
 
 &lt;h3 id=&#34;solution-2-generate-a-universally-unique-number&#34;&gt;Solution #2 - Generate a universally unique number&lt;/h3&gt;
 
-&lt;p&gt;How can we generate a number that we&amp;rsquo;ll know is unique without having to validate ?&lt;/p&gt;
-
-&lt;p&gt;We use time 🕒&lt;/p&gt;
+&lt;p&gt;We can try use time 🕒 to generate a number that&amp;rsquo;s&amp;rsquo; unique.&lt;/p&gt;
 
 &lt;p&gt;System time is easily accessible in every programming language and time is progressive which means that if we read it in one moment and then read it again a moment later, we are promised to get a different value.&lt;/p&gt;
 
-&lt;p&gt;A good approach will be to use the &lt;a href=&#34;https://en.wikipedia.org/wiki/Unix_time&#34;&gt;Unix epoch time&lt;/a&gt; format which returns a 13 digits integer (at least until year 2286 when it&amp;rsquo;ll become 14 digits).
+&lt;p&gt;A good approach would be to use the &lt;a href=&#34;https://en.wikipedia.org/wiki/Unix_time&#34;&gt;Unix epoch time&lt;/a&gt; format which returns a 13 digits integer (at least until year 2286 when it&amp;rsquo;ll become 14 digits).
 To get to 14, we can just add one random digit as padding.
-The number is guaranteed to be unique down to the resolution of a millisecond which is great and also the padding digit add a little extra safety for two orders that happened at the same time.&lt;/p&gt;
+The number is guaranteed to be unique down to the resolution of a millisecond and also the padding digit adds a little extra safety for two orders that happen at the same time.&lt;/p&gt;
 
-&lt;p&gt;so, in Javascript we can do:&lt;/p&gt;
+&lt;p&gt;So, in Javascript we can do:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-js&#34;&gt;function orderNumber() {
   let now = Date.now().toString() // &#39;1492341545873&#39;
@@ -253,18 +251,19 @@ F(2) = 9
 
 &lt;h3 id=&#34;summary&#34;&gt;Summary&lt;/h3&gt;
 
-&lt;p&gt;To wrap things up, here are the steps to generate a unique randomly looking order number:
+&lt;p&gt;To wrap things up, here are the steps to generate an almost unique randomly looking order number:
 1. Get current Unix time (ms).
 2. Add another random digit to complete 14 digits.
 3. Encrypt with FPE
 4. Format (4-6-4)&lt;/p&gt;
 
-&lt;p&gt;That&amp;rsquo;s all.
-Code is available in my Github repo: &lt;a href=&#34;https://github.com/mderazon/order-id&#34;&gt;https://github.com/mderazon/order-id&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Code is available at my Github repo: &lt;a href=&#34;https://github.com/mderazon/order-id&#34;&gt;https://github.com/mderazon/order-id&lt;/a&gt;&lt;/p&gt;
 
 &lt;h3 id=&#34;collision-probability&#34;&gt;Collision probability&lt;/h3&gt;
 
-&lt;p&gt;The order number is not guaranteed to be unique. Two orders will have the same order number if they both happened in the same millisecond and also both have the same padding digit.&lt;/p&gt;
+&lt;p&gt;The order number is not guaranteed to be unique. Two orders will have the same order number if they both happened at the same millisecond and also both have the same padding digit.&lt;/p&gt;
+
+&lt;p&gt;It&amp;rsquo;s important to understand the probability for a collision to see if this can work reasonable in a real system.&lt;/p&gt;
 
 &lt;p&gt;Let&amp;rsquo;s divide this event into two separate probabilities and then multiply them to get the final probability:
 1. P(two orders at the same ms)
@@ -274,16 +273,16 @@ Code is available in my Github repo: &lt;a href=&#34;https://github.com/mderazon
 
 &lt;p&gt;We are assuming orders are independent of each other and can come at any time during the day. This means they are controlled by a &lt;a href=&#34;https://en.wikipedia.org/wiki/Poisson_distribution&#34;&gt;Poisson process&lt;/a&gt; with a parameter λ that gives the expected number of events per unit time.&lt;/p&gt;
 
-&lt;p&gt;Assuming we have 1,000,000 orders per day, λ = 1e6/8.64e7 (events per ms) = (events/day)*(days/ms).&lt;/p&gt;
+&lt;p&gt;Assuming we have 1,000 orders per day, λ = 1e3/8.64e7 (events per ms) = (events/day)*(days/ms).&lt;/p&gt;
 
-&lt;p&gt;In a Poisson process, the time between successive events (let&amp;rsquo;s call it the inter-event interval) has an &lt;a href=&#34;https://en.wikipedia.org/wiki/Exponential_distribution&#34;&gt;exponential distribution&lt;/a&gt; with mean 1/λ. In our example, this gives an average of 86.4ms between orders.&lt;/p&gt;
+&lt;p&gt;In a Poisson process, the time between successive events (let&amp;rsquo;s call it the inter-event interval) has an &lt;a href=&#34;https://en.wikipedia.org/wiki/Exponential_distribution&#34;&gt;exponential distribution&lt;/a&gt; with mean 1/λ. In our example, this gives an average of 86.4s between orders.&lt;/p&gt;
 
 &lt;p&gt;Given that an event has just occurred at time t0, we want to calculate the probability that the next event occurs at time t1 ≤ t0+1 ms. That is, the inter-event interval will be between 0 and 1ms. To do that, we can integrate the probability density function (PDF) of the inter-event interval from 0 to 1ms. This is the same as evaluating its cumulative distribution function (CDF) at 1ms. The CDF of the exponential distribution is:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;1−e^(−λt)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Evaluating this at λ=1e6/8.64e7 and t=1ms gives a probability of ~0.0115&lt;/p&gt;
+&lt;p&gt;Evaluating this at λ=1e3/8.64e7 and t=1ms gives a probability of ~0.0000115&lt;/p&gt;
 
 &lt;h4 id=&#34;probability-of-two-orders-with-the-same-padding-digit&#34;&gt;Probability of two orders with the same padding digit&lt;/h4&gt;
 
@@ -291,13 +290,26 @@ Code is available in my Github repo: &lt;a href=&#34;https://github.com/mderazon
 
 &lt;h4 id=&#34;overall-probability&#34;&gt;Overall probability&lt;/h4&gt;
 
-&lt;p&gt;Assuming 1,000,000 orders per day and a random padding number, the probability comes down to a simple multiplication:&lt;/p&gt;
+&lt;p&gt;Assuming 1,000 orders per day and a random padding number, the probability comes down to a simple multiplication:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;P(two orders with the same number) = 0.0115 * 0.1 = 0.00115
+&lt;pre&gt;&lt;code&gt;P(two orders with the same number) = 0.0000115 * 0.1 = 0.00000115
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Or roughly 0.1%
-&lt;sup&gt;1&lt;/sup&gt;&amp;frasl;&lt;sub&gt;99999999999999&lt;/sub&gt;&lt;/p&gt;
+&lt;p&gt;This is very low and reasonable.&lt;/p&gt;
+
+&lt;p&gt;But what about big scale ? According to &lt;a href=&#34;https://www.quora.com/How-many-orders-per-day-does-Amazon-get&#34;&gt;some estimations&lt;/a&gt;, Amazon has 35 orders per second, which means ~3M orders per day.
+Plugging this number into our probability equation yields 0.003 or 0.3% chance that two orders will have the same order number. This is too high to ignore and thus makes our solution not that great.
+Also, our calculation assumed the distribution is homogeneous and we know that real life models don&amp;rsquo;t behave like that. People order more at certain times and less at other times. This makes the probability for collision even higher.&lt;/p&gt;
+
+&lt;h3 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h3&gt;
+
+&lt;p&gt;This was a nice try for me to think of a way to create random numbers without needing to check for collisions. Building on system time could have been a good approach but the granularity (ms) is not enough in a system with large volume of orders.&lt;/p&gt;
+
+&lt;p&gt;Therefor I think that the preferred solution is still to generate a random number and validate it&amp;rsquo;s unique.&lt;/p&gt;
+
+&lt;p&gt;You can see the code mentioned in this post here:
+1. &lt;a href=&#34;https://github.com/mderazon/node-fpe&#34;&gt;node-fpe&lt;/a&gt; - Format preserving encryption for Node.js.
+2. &lt;a href=&#34;https://github.com/mderazon/order-id&#34;&gt;order-id&lt;/a&gt; - Time based library for generating random looking order numbers.&lt;/p&gt;
 </description>
     </item>
     
