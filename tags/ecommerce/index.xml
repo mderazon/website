@@ -43,10 +43,13 @@ It&amp;rsquo;s also good practice to divide them into couple of sections for bet
 
 &lt;h3 id=&#34;solution-1-generate-and-validate&#34;&gt;Solution #1 - Generate and validate&lt;/h3&gt;
 
-&lt;p&gt;The first approach for this problem is:
-1. Generate a random 14 digits number.
-2. Search for this number in database to see if we had it before (unique).
-3. If we found it, try another one. If it&amp;rsquo;s unique, use it.&lt;/p&gt;
+&lt;p&gt;The first approach for this problem is:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Generate a random 14 digits number.&lt;/li&gt;
+&lt;li&gt;Search for this number in database to see if we had it before (unique).&lt;/li&gt;
+&lt;li&gt;If we found it, try another one. If it&amp;rsquo;s unique, use it.&lt;/li&gt;
+&lt;/ol&gt;
 
 &lt;p&gt;This is an obvious approach and makes sure that we don&amp;rsquo;t have collisions.
 Problem is that we make a round-trip to the database and if the db is hosted somewhere else the call would involve the network and it can be slow. If we&amp;rsquo;re making the call to the db anyway chances are that in most cases we won&amp;rsquo;t have to make an extra call due to collision but we still have to add code path to handle the case of collision.&lt;/p&gt;
@@ -251,11 +254,14 @@ F(2) = 9
 
 &lt;h3 id=&#34;summary&#34;&gt;Summary&lt;/h3&gt;
 
-&lt;p&gt;To wrap things up, here are the steps to generate an almost unique randomly looking order number:
-1. Get current Unix time (ms).
-2. Add another random digit to complete 14 digits.
-3. Encrypt with FPE
-4. Format (4-6-4)&lt;/p&gt;
+&lt;p&gt;To wrap things up, here are the steps to generate an almost unique randomly looking order number:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Get current Unix time (ms).&lt;/li&gt;
+&lt;li&gt;Add another random digit to complete 14 digits.&lt;/li&gt;
+&lt;li&gt;Encrypt with FPE&lt;/li&gt;
+&lt;li&gt;Format (4-6-4)&lt;/li&gt;
+&lt;/ol&gt;
 
 &lt;p&gt;Code is available at my Github repo: &lt;a href=&#34;https://github.com/mderazon/order-id&#34;&gt;https://github.com/mderazon/order-id&lt;/a&gt;&lt;/p&gt;
 
@@ -265,9 +271,12 @@ F(2) = 9
 
 &lt;p&gt;It&amp;rsquo;s important to understand the probability for a collision to see if this can work reasonable in a real system.&lt;/p&gt;
 
-&lt;p&gt;Let&amp;rsquo;s divide this event into two separate probabilities and then multiply them to get the final probability:
-1. P(two orders at the same ms)
-2. P(two orders with the same padding digit)&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s divide this event into two separate probabilities and then multiply them to get the final probability:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;P(two orders at the same ms)&lt;/li&gt;
+&lt;li&gt;P(two orders with the same padding digit)&lt;/li&gt;
+&lt;/ol&gt;
 
 &lt;h4 id=&#34;probability-of-two-orders-at-the-same-millisecond&#34;&gt;Probability of two orders at the same millisecond&lt;/h4&gt;
 
@@ -307,9 +316,12 @@ Also, our calculation assumed the distribution is homogeneous and we know that r
 
 &lt;p&gt;Therefor I think that the preferred solution is still to generate a random number and validate it&amp;rsquo;s unique.&lt;/p&gt;
 
-&lt;p&gt;You can see the code mentioned in this post here:
-1. &lt;a href=&#34;https://github.com/mderazon/node-fpe&#34;&gt;node-fpe&lt;/a&gt; - Format preserving encryption for Node.js.
-2. &lt;a href=&#34;https://github.com/mderazon/order-id&#34;&gt;order-id&lt;/a&gt; - Time based library for generating random looking order numbers.&lt;/p&gt;
+&lt;p&gt;You can see the code mentioned in this post here:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/mderazon/node-fpe&#34;&gt;node-fpe&lt;/a&gt; - Format preserving encryption for Node.js.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/mderazon/order-id&#34;&gt;order-id&lt;/a&gt; - Time based library for generating random looking order numbers.&lt;/li&gt;
+&lt;/ol&gt;
 </description>
     </item>
     
