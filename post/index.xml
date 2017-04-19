@@ -7,8 +7,95 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>All rights reserved - 2017</copyright>
-    <lastBuildDate>Sun, 16 Apr 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 19 Apr 2017 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://www.drzon.net/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Automatic deployment to Google Cloud Functions</title>
+      <link>https://www.drzon.net/posts/automatic-deployments-to-google-cloud-functions-with-travis-ci</link>
+      <pubDate>Wed, 19 Apr 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.drzon.net/posts/automatic-deployments-to-google-cloud-functions-with-travis-ci</guid>
+      <description>
+
+&lt;p&gt;In this post I&amp;rsquo;ll show you how to achieve a Heroku-like push-to-deploy capability on Google Cloud Functions.&lt;/p&gt;
+
+&lt;p&gt;If you don&amp;rsquo;t know Google Cloud Functions (GCF), it&amp;rsquo;s a serverless architecture for running services on Google&amp;rsquo;s services. It&amp;rsquo;s equivalent to AWS Lambda.
+You can read about it &lt;a href=&#34;https://cloud.google.com/functions&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&#34;goal&#34;&gt;Goal&lt;/h3&gt;
+
+&lt;p&gt;Pushing any code to the &lt;code&gt;master&lt;/code&gt; branch of our Github repository should automatically trigger a deploy of our new code to GCF.&lt;/p&gt;
+
+&lt;h3 id=&#34;overview&#34;&gt;Overview&lt;/h3&gt;
+
+&lt;p&gt;We&amp;rsquo;ll need an intermediary service to listen for code changes from Github and pull that code and deploy it to GCF.&lt;/p&gt;
+
+&lt;p&gt;We&amp;rsquo;ll use a continuous integration service (CI) for this. In this example, I&amp;rsquo;ll use &lt;a href=&#34;https://travis-ci.com&#34;&gt;Travis-CI&lt;/a&gt; but any other CI can be used, the instructions will be a bit different though.&lt;/p&gt;
+
+&lt;p&gt;* note: Travis is free for public GH repos and costs money for private repos. This tutorial is relevant for both the free and paid versions.&lt;/p&gt;
+
+&lt;h4 id=&#34;flow&#34;&gt;Flow&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://www.drzon.net/images/posts/gcf-diagram.svg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Code gets pushed to a remote Github repo.&lt;/li&gt;
+&lt;li&gt;Github triggers a build in Travis.&lt;/li&gt;
+&lt;li&gt;Travis triggers a deploy on GCF.&lt;/li&gt;
+&lt;li&gt;GCF pulls code from Google Cloud Source Repositories and deploys it.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&#34;set-up-travis&#34;&gt;Set up Travis&lt;/h3&gt;
+
+&lt;p&gt;I won&amp;rsquo;t go into the details on how to connect Travis and Github, it&amp;rsquo;s pretty straightforward.
+Assuming this is a Node.js project (as for now, GCF only supports Node), we&amp;rsquo;ll use the following &lt;code&gt;.travis.yml&lt;/code&gt; file:
+&lt;script src=&#34;https://gist.github.com/mderazon/5a5b50d92f4c4adaf44d5f49dd95d0ef.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;google-service-account-key&#34;&gt;Google service account key&lt;/h4&gt;
+
+&lt;p&gt;We need to be able to log in to our Google Cloud project and deploy a function from the build machine.&lt;/p&gt;
+
+&lt;p&gt;To do that, we first need to obtain a service account key from Google IAM. You can do it from &lt;a href=&#34;https://console.cloud.google.com/iam-admin/serviceaccounts/project&#34;&gt;here&lt;/a&gt;. You&amp;rsquo;ll need to give the service account the project &lt;em&gt;Editor&lt;/em&gt; role (read in their &lt;a href=&#34;https://cloud.google.com/functions/docs/concepts/iam&#34;&gt;doc&lt;/a&gt;). This is so that our build script can access the GCF project and deploy functions.&lt;/p&gt;
+
+&lt;p&gt;Download the service account key in json format and put it in the root folder of your project. Name it &lt;code&gt;gcloud-service-key.json&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;This file allows anyone access to our GCP project so we don&amp;rsquo;t want to commit it to our code base and push to Github. We&amp;rsquo;ll have to encrypt it first. Luckily, Travis supports this. See their &lt;a href=&#34;https://docs.travis-ci.com/user/encrypting-files/&#34;&gt;tutorial&lt;/a&gt; on how to encrypt files.
+If you have travis CLI, you can encrypt it with:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ travis encrypt-file gcloud-service-key.json
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Then you should be given a line to put into the build script. Something like:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;openssl aes-256-cbc -K $encrypted_0a6446eb3ae3_key -iv $encrypted_0a6446eb3ae3_key -in gcloud-service-key.json.enc -out gcloud-service-key.json -d
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;(This is just an example, use the one from the &lt;code&gt;travis encrypt-file&lt;/code&gt; command)&lt;/p&gt;
+
+&lt;p&gt;You should add this line in place of the line in the build script (&lt;a href=&#34;https://gist.github.com/mderazon/5a5b50d92f4c4adaf44d5f49dd95d0ef#file-travis-yml-L33&#34;&gt;L33&lt;/a&gt;)&lt;/p&gt;
+
+&lt;p&gt;So now you should have two files in your project root:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;gcloud-service-key.json&lt;/li&gt;
+&lt;li&gt;gcloud-service-key.json.enc&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;You can go ahead and delete the original service key &lt;code&gt;gcloud-service-key.json&lt;/code&gt; now so that we don&amp;rsquo;t commit it by accident.&lt;/p&gt;
+
+&lt;h4 id=&#34;google-cloud-source-repository&#34;&gt;Google Cloud Source Repository&lt;/h4&gt;
+
+&lt;p&gt;Cloud Functions can&amp;rsquo;t pull code directly from Github. Instead, code gets pulled from &lt;a href=&#34;https://cloud.google.com/source-repositories/&#34;&gt;Cloud Source Repository&lt;/a&gt;. Read the &lt;a href=&#34;https://cloud.google.com/source-repositories/docs/connecting-hosted-repositories&#34;&gt;instructions&lt;/a&gt; on how to connect our Github project to a GCloud repository. The GCloud repo will effectively mirror our Github repo so that the code in the two will be identical at all times.&lt;/p&gt;
+
+&lt;p&gt;Once you create a link between your Github and GCloud repositories, replace &lt;em&gt;PROJECT&lt;/em&gt; and &lt;em&gt;REPO&lt;/em&gt; in our build script (&lt;a href=&#34;https://gist.github.com/mderazon/5a5b50d92f4c4adaf44d5f49dd95d0ef#file-travis-yml-L36&#34;&gt;L36&lt;/a&gt;, &lt;a href=&#34;https://gist.github.com/mderazon/5a5b50d92f4c4adaf44d5f49dd95d0ef#file-travis-yml-L42&#34;&gt;L42&lt;/a&gt;) with your values.&lt;/p&gt;
+
+&lt;h3 id=&#34;push-to-deploy&#34;&gt;Push to deploy&lt;/h3&gt;
+
+&lt;p&gt;Now all left to do is to push code your Github repo and check Travis logs to see that everything runs smoothly.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Generate a random order-number</title>

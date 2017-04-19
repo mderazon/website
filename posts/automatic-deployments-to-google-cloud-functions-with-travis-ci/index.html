@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    
+
+
+    
+        <meta name="twitter:card" content="summary"/>
+    
+
+
+
+<meta name="twitter:title" content="Automatic deployment to Google Cloud Functions"/>
+<meta name="twitter:description" content=""/>
+<meta name="twitter:site" content="@mderazon"/>
+
+
+
+  	<meta property="og:title" content="Automatic deployment to Google Cloud Functions &middot; Code and stuff" />
+  	<meta property="og:site_name" content="Code and stuff" />
+  	<meta property="og:url" content="https://www.drzon.net/posts/automatic-deployments-to-google-cloud-functions-with-travis-ci" />
+
+    
+        
+            <meta property="og:image" content="https://www.drzon.net/images/cover.jpg"/>
+        
+    
+
+    
+    <meta property="og:description" content="" />
+  	<meta property="og:type" content="article" />
+    <meta property="og:image" content="https://www.drzon.net/" />
+    <meta property="article:published_time" content="2017-04-19T00:00:00Z" />
+
+    
+    <meta property="article:tag" content="node" />
+    
+    <meta property="article:tag" content="google cloud functions" />
+    
+    <meta property="article:tag" content="serverless" />
+    
+    <meta property="article:tag" content="deployment" />
+    
+    <meta property="article:tag" content="paas" />
+    
+    
+
+    <title>Automatic deployment to Google Cloud Functions &middot; Code and stuff</title>
+
+    
+    <meta name="description" content="" />
+    
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="https://www.drzon.net/images/favicon.ico">
+	  <link rel="apple-touch-icon" href="https://www.drzon.net/images/apple-touch-icon.png" />
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://www.drzon.net/css/screen.css" />
+    <link rel="stylesheet" type="text/css" href="https://www.drzon.net/css/nav.css" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700i,300i|Alef:400,700|Open+Sans:700,400|Inconsolata" />
+
+    
+
+    
+      
+          <link href="https://www.drzon.net/index.xml" rel="alternate" type="application/rss+xml" title="Code and stuff" />
+      
+      
+    
+    <meta name="generator" content="Hugo 0.19" />
+
+    <link rel="canonical" href="https://www.drzon.net/posts/automatic-deployments-to-google-cloud-functions-with-travis-ci" />
+
+    
+      
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": ,
+        "logo": https://www.drzon.net/images/selfie.png
+    },
+    "author": {
+        "@type": "Person",
+        "name": ,
+        
+        "image": {
+            "@type": "ImageObject",
+            "url": https://www.drzon.net/images/selfie.png,
+            "width": 250,
+            "height": 250
+        }, 
+        
+        "url": https://www.drzon.net,
+        "sameAs": [
+            
+            
+             
+             
+             
+             
+             
+            
+        ]
+    },
+    "headline": Automatic deployment to Google Cloud Functions,
+    "name": Automatic deployment to Google Cloud Functions,
+    "wordCount": 562,
+    "timeRequired": "PT3M",
+    "inLanguage": {
+      "@type": "Language",
+      "alternateName": en
+    },
+    "url": https://www.drzon.net/posts/automatic-deployments-to-google-cloud-functions-with-travis-ci,
+    "datePublished": 2017-04-19T00:00Z,
+    "dateModified": 2017-04-19T00:00Z,
+    
+    "keywords": node, google cloud functions, serverless, deployment, paas,
+    "description": ,
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": https://www.drzon.net/posts/automatic-deployments-to-google-cloud-functions-with-travis-ci
+    }
+}
+    </script>
+    
+
+
+    
+
+    
+
+    
+</head>
+<body class="nav-closed">
+
+  <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+        
+        
+        
+    </ul>
+    
+    
+    <a class="subscribe-button icon-feed" href="https://www.drzon.net/index.xml">Subscribe</a>
+    
+</div>
+<span class="nav-cover"></span>
+
+
+ <div class="site-wrapper">
+
+
+
+
+<header class="main-header post-head no-cover">
+  <nav class="main-nav clearfix">
+
+
+
+  
+      <a class="menu-button icon-feed" href="https://www.drzon.net/"><i class="fa fa-home" aria-hidden="true"></i>&nbsp;Home</a>
+  
+  </nav>
+</header>
+
+
+
+<main class="content" role="main">
+
+
+
+
+  <article class="post post">
+
+    <header class="post-header ">
+        <h1 class="post-title">Automatic deployment to Google Cloud Functions</h1>
+        <small></small>
+
+        <section class="post-meta">
+        
+          <time class="post-date" datetime="2017-04-19T00:00:00Z">
+            Apr 19, 2017
+          </time>
+        
+         
+          <span class="post-tag small"><a href="https://www.drzon.net/tags/node/">#node</a></span>
+         
+          <span class="post-tag small"><a href="https://www.drzon.net/tags/google-cloud-functions/">#google cloud functions</a></span>
+         
+          <span class="post-tag small"><a href="https://www.drzon.net/tags/serverless/">#serverless</a></span>
+         
+          <span class="post-tag small"><a href="https://www.drzon.net/tags/deployment/">#deployment</a></span>
+         
+          <span class="post-tag small"><a href="https://www.drzon.net/tags/paas/">#paas</a></span>
+         
+        </section>
+    </header>
+
+    <section class='post-content '>
+      
+
+<p>In this post I&rsquo;ll show you how to achieve a Heroku-like push-to-deploy capability on Google Cloud Functions.</p>
+
+<p>If you don&rsquo;t know Google Cloud Functions (GCF), it&rsquo;s a serverless architecture for running services on Google&rsquo;s services. It&rsquo;s equivalent to AWS Lambda.
+You can read about it <a href="https://cloud.google.com/functions">here</a>.</p>
+
+<h3 id="goal">Goal</h3>
+
+<p>Pushing any code to the <code>master</code> branch of our Github repository should automatically trigger a deploy of our new code to GCF.</p>
+
+<h3 id="overview">Overview</h3>
+
+<p>We&rsquo;ll need an intermediary service to listen for code changes from Github and pull that code and deploy it to GCF.</p>
+
+<p>We&rsquo;ll use a continuous integration service (CI) for this. In this example, I&rsquo;ll use <a href="https://travis-ci.com">Travis-CI</a> but any other CI can be used, the instructions will be a bit different though.</p>
+
+<p>* note: Travis is free for public GH repos and costs money for private repos. This tutorial is relevant for both the free and paid versions.</p>
+
+<h4 id="flow">Flow</h4>
+
+<p><img src="https://www.drzon.net/images/posts/gcf-diagram.svg" alt="" /></p>
+
+<ol>
+<li>Code gets pushed to a remote Github repo.</li>
+<li>Github triggers a build in Travis.</li>
+<li>Travis triggers a deploy on GCF.</li>
+<li>GCF pulls code from Google Cloud Source Repositories and deploys it.</li>
+</ol>
+
+<h3 id="set-up-travis">Set up Travis</h3>
+
+<p>I won&rsquo;t go into the details on how to connect Travis and Github, it&rsquo;s pretty straightforward.
+Assuming this is a Node.js project (as for now, GCF only supports Node), we&rsquo;ll use the following <code>.travis.yml</code> file:
+<script src="https://gist.github.com/mderazon/5a5b50d92f4c4adaf44d5f49dd95d0ef.js"></script></p>
+
+<h4 id="google-service-account-key">Google service account key</h4>
+
+<p>We need to be able to log in to our Google Cloud project and deploy a function from the build machine.</p>
+
+<p>To do that, we first need to obtain a service account key from Google IAM. You can do it from <a href="https://console.cloud.google.com/iam-admin/serviceaccounts/project">here</a>. You&rsquo;ll need to give the service account the project <em>Editor</em> role (read in their <a href="https://cloud.google.com/functions/docs/concepts/iam">doc</a>). This is so that our build script can access the GCF project and deploy functions.</p>
+
+<p>Download the service account key in json format and put it in the root folder of your project. Name it <code>gcloud-service-key.json</code>.</p>
+
+<p>This file allows anyone access to our GCP project so we don&rsquo;t want to commit it to our code base and push to Github. We&rsquo;ll have to encrypt it first. Luckily, Travis supports this. See their <a href="https://docs.travis-ci.com/user/encrypting-files/">tutorial</a> on how to encrypt files.
+If you have travis CLI, you can encrypt it with:</p>
+
+<pre><code>$ travis encrypt-file gcloud-service-key.json
+</code></pre>
+
+<p>Then you should be given a line to put into the build script. Something like:</p>
+
+<pre><code>openssl aes-256-cbc -K $encrypted_0a6446eb3ae3_key -iv $encrypted_0a6446eb3ae3_key -in gcloud-service-key.json.enc -out gcloud-service-key.json -d
+
+</code></pre>
+
+<p>(This is just an example, use the one from the <code>travis encrypt-file</code> command)</p>
+
+<p>You should add this line in place of the line in the build script (<a href="https://gist.github.com/mderazon/5a5b50d92f4c4adaf44d5f49dd95d0ef#file-travis-yml-L33">L33</a>)</p>
+
+<p>So now you should have two files in your project root:</p>
+
+<ol>
+<li>gcloud-service-key.json</li>
+<li>gcloud-service-key.json.enc</li>
+</ol>
+
+<p>You can go ahead and delete the original service key <code>gcloud-service-key.json</code> now so that we don&rsquo;t commit it by accident.</p>
+
+<h4 id="google-cloud-source-repository">Google Cloud Source Repository</h4>
+
+<p>Cloud Functions can&rsquo;t pull code directly from Github. Instead, code gets pulled from <a href="https://cloud.google.com/source-repositories/">Cloud Source Repository</a>. Read the <a href="https://cloud.google.com/source-repositories/docs/connecting-hosted-repositories">instructions</a> on how to connect our Github project to a GCloud repository. The GCloud repo will effectively mirror our Github repo so that the code in the two will be identical at all times.</p>
+
+<p>Once you create a link between your Github and GCloud repositories, replace <em>PROJECT</em> and <em>REPO</em> in our build script (<a href="https://gist.github.com/mderazon/5a5b50d92f4c4adaf44d5f49dd95d0ef#file-travis-yml-L36">L36</a>, <a href="https://gist.github.com/mderazon/5a5b50d92f4c4adaf44d5f49dd95d0ef#file-travis-yml-L42">L42</a>) with your values.</p>
+
+<h3 id="push-to-deploy">Push to deploy</h3>
+
+<p>Now all left to do is to push code your Github repo and check Travis logs to see that everything runs smoothly.</p>
+
+    </section>
+
+
+  <footer class="post-footer">
+
+
+    
+    <figure class="author-image">
+        <a class="img" href="https://www.drzon.net/" style="background-image: url(https://www.drzon.net/images/selfie.png)"><span class="hidden">Michael DeRazon's Picture</span></a>
+    </figure>
+    
+
+    
+
+
+
+
+
+<section class="author">
+  <h4><a href="https://www.drzon.net/">Michael DeRazon</a></h4>
+  
+  <p>Read <a href="https://www.drzon.net/">more posts</a> by this author.</p>
+  
+  <div class="author-meta">
+    <span class="author-location icon-location">New York, USA</span>
+    <span class="author-link icon-link"><a href="https://www.drzon.net">https://www.drzon.net</a></span>
+  </div>
+</section>
+
+
+
+    
+<section class="share">
+  <h4>Share this post</h4>
+  <a class="icon-twitter" style="font-size: 1.4em" href="https://twitter.com/share?text=Automatic%20deployment%20to%20Google%20Cloud%20Functions&nbsp;-&nbsp;Code%20and%20stuff&amp;url=https%3a%2f%2fwww.drzon.net%2fposts%2fautomatic-deployments-to-google-cloud-functions-with-travis-ci"
+      onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+      <span class="hidden">Twitter</span>
+  </a>
+  <a class="icon-facebook" style="font-size: 1.4em" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwww.drzon.net%2fposts%2fautomatic-deployments-to-google-cloud-functions-with-travis-ci"
+      onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+      <span class="hidden">Facebook</span>
+  </a>
+  <a class="icon-pinterest" style="font-size: 1.4em" href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fwww.drzon.net%2fposts%2fautomatic-deployments-to-google-cloud-functions-with-travis-ci&amp;description=Automatic%20deployment%20to%20Google%20Cloud%20Functions"
+      onclick="window.open(this.href, 'pinterest-share','width=580,height=296');return false;">
+      <span class="hidden">Pinterest</span>
+  </a>
+  <a class="icon-google-plus" style="font-size: 1.4em" href="https://plus.google.com/share?url=https%3a%2f%2fwww.drzon.net%2fposts%2fautomatic-deployments-to-google-cloud-functions-with-travis-ci"
+     onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+      <span class="hidden">Google+</span>
+  </a>
+</section>
+
+
+
+    
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  var disqus_shortname = 'drzone';
+  var disqus_url = 'https:\/\/www.drzon.net\/posts\/automatic-deployments-to-google-cloud-functions-with-travis-ci';
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+  </footer>
+</article>
+
+</main>
+    <footer class="site-footer clearfix">
+        <section class="copyright"><a href="">Code and stuff</a> All rights reserved - 2017</section>
+        
+        <section class="poweredby">Proudly generated by <a class="icon-hugo" href="http://gohugo.io">HUGO</a>, hosted on <a class="icon-theme" href="https://github.com/mderazon/blog">Github</a></section>
+        
+    </footer>
+    </div>
+    
+    
+</body>
+</html>
+
